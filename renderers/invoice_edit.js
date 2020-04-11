@@ -331,10 +331,11 @@ const isvalid = () => {
 	}
 };
 
-var form = document.querySelector("form");
+const updateBtn = document.getElementById("btnSave");
 
-form.addEventListener("submit", function (event) {
+updateBtn.addEventListener("click", function (event) {
 	event.preventDefault();
+	var form = document.querySelector("form");
 	if (isvalid()) {
 		let data = new FormData(form);
 		let invoiceData = {
@@ -948,7 +949,8 @@ function generateInvoice() {
 	doc.save(`${InvoiceNumber}.pdf`);
 }
 
-document.getElementById("download").addEventListener("click", () => {
+document.getElementById("download").addEventListener("click", (event) => {
+	event.preventDefault();
 	generateInvoice();
 });
 

@@ -95,7 +95,7 @@ form.addEventListener("submit", function (event) {
 function checkPaymentType(paymentTag) {
 	var x = paymentTag.options[paymentTag.selectedIndex].text;
 
-	if (x === "BANK-PAYMENT") {
+	if (x === "BANK-RECEIVE") {
 		$("#bank_name").prop("disabled", false);
 		$("#cheque").prop("disabled", false);
 	} else {

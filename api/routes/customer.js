@@ -18,3 +18,9 @@ router.delete("/", checkToken, deleteUser);
 router.get("/states", getStates);
 
 module.exports = router;
+// SELECT (credit - debit) as balance
+//      FROM (
+//     (SELECT SUM(Credit_Amount) as credit,Credit_Account FROM recieve where Credit_Account = 3 GROUP BY Credit_Account) as credit
+//        LEFT JOIN
+//     (SELECT SUM(Debit_Amount) as debit,Debit_Account FROM payments where Debit_Account=3 GROUP BY Debit_Account) as debit
+//      ON debit.Debit_Account = credit.Credit_Account)
