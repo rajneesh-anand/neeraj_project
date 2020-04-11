@@ -116,9 +116,12 @@ invListButton.addEventListener("click", (event) => {
 	generateInvoiceDataTable();
 });
 
-function printInvoicePdf() {
+function printInvoicePdf(id) {
 	axios
-		.get(`http://localhost:3000/api/printinvoicepdf`, {
+		.get(`http://localhost:3000/api/generatepdf`, {
+			params: {
+				Invoice_id: id,
+			},
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
@@ -191,7 +194,7 @@ function generateInvoiceDataTable() {
 			{
 				text: "Print Selected Invoice",
 				action: function (e, dt, node, config) {
-					printInvoicePdf();
+					printInvoicePdf(invoiceId);
 				},
 
 				enabled: false,
@@ -218,6 +221,10 @@ function generateInvoiceDataTable() {
 		$("#invTable")
 			.DataTable()
 			.button(0)
+			.enable(selectedRows === 1);
+		$("#invTable")
+			.DataTable()
+			.button(1)
 			.enable(selectedRows === 1);
 	});
 }

@@ -14,11 +14,13 @@ const customerRouter = require(__dirname + "/routes/customer");
 const userRouter = require(__dirname + "/routes/users");
 const invoiceRouter = require(__dirname + "/routes/invoice");
 const accountRouter = require(__dirname + "/routes/accounts");
+const pdfRouter = require(__dirname + "/routes/pdfgenerator");
 
 app.use("/api", customerRouter);
 app.use("/api", userRouter);
 app.use("/api", invoiceRouter);
 app.use("/api", accountRouter);
+app.use("/api", pdfRouter);
 
 // app.get("/", (req, res) => {
 // 	res.sendFile(path.join(__dirname, "../renderers/index.html"));
