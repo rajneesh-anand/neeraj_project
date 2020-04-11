@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--Import Google Icon Font-->
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<!--Import materialize.css-->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			input {
+				text-transform: uppercase;
+			}
+		</style>
+	</head>
+
+	<body onkeydown="return (event.keyCode!=13)" style="width: 100%;">
+		<div
+			class="row"
+			style="display: flex; padding-left: 1rem; padding-right: 1rem;"
+		>
+			<h6 class="flow-text">CREATE ACCOUNT</h6>
+
+			<a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
+				<i class="material-icons right">close</i></a
+			>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<form method="post" class="col s12">
+				<div class="row">
+					<div class="input-field col s4">
+						<i class="material-icons prefix">date_range</i>
+						<input
+							id="payment_date"
+							type="text"
+							name="payment_date"
+							class="datepicker"
+							required
+						/>
+						<label for="payment_date"> DATE</label>
+					</div>
+					<div class="input-field col s8">
+						<i class="material-icons prefix">person</i>
+						<input
+							id="account"
+							type="text"
+							class="validate"
+							name="account"
+							required
+						/>
+						<label for="account">ACCOUNT NAME</label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s8">
+						<i class="material-icons prefix">person</i>
+						<input id="comment" type="text" name="comment" class="validate" />
+						<label for="comment">REMARKS / COMMENTS</label>
+					</div>
+					<div class="input-field col s4">
+						<i class="material-icons prefix">add_location</i>
+						<input
+							id="amount"
+							name="amount"
+							type="text"
+							class="validate"
+							required
+							onkeypress="return isNumberKey(event,this);"
+						/>
+						<label for="amount">OPENING BALANCE</label>
+					</div>
+				</div>
+
+				<div class="right-align">
+					<button
+						class="btn waves-effect waves-light"
+						type="submit"
+						id="btnSave"
+						name="action"
+					>
+						Save & Exit <i class="material-icons right">save</i>
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<script>
+			if (typeof module === "object") {
+				window.module = module;
+				module = undefined;
+			}
+		</script>
+
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"
+		></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+		<script src="./account.js"></script>
+
+		<script>
+			if (window.module) module = window.module;
+		</script>
+	</body>
+</html>
