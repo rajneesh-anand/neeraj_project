@@ -89,6 +89,8 @@ form.addEventListener("submit", function (event) {
 			.catch((error) => {
 				alert(error.response.data.message);
 			});
+
+		$(":input").prop("disabled", true);
 	}
 });
 
