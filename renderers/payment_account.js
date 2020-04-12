@@ -92,6 +92,22 @@ form.addEventListener("submit", function (event) {
 	}
 });
 
+function getAccountBalance() {
+	let accountId = document.getElementById("agent").value;
+	let balanceField = document.getElementById("showBalance");
+	console.log(accountId);
+
+	axios
+		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
+		.then((response) => {
+			let Balance = response.data.data[0];
+			balanceField.innerHTML = `INR { ${Balance.Balance} }`;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+}
+
 function checkPaymentType(paymentTag) {
 	var x = paymentTag.options[paymentTag.selectedIndex].text;
 
