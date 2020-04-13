@@ -156,3 +156,17 @@ ipcRenderer.on("fetchAccounts", (event, data) => {
 	$(".fromAccount").append(Options);
 	$(".fromAccount").formSelect();
 });
+
+document.getElementById("ledger").addEventListener("click", (event) => {
+	event.preventDefault();
+	let accountId = document.getElementById("agent").value;
+
+	axios
+		.get(`http://localhost:3000/api/ledgerpdf/${accountId}`)
+		.then((response) => {
+			console.log(response.data);
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+});

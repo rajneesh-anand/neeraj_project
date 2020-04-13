@@ -111,7 +111,7 @@ module.exports = {
 
 	getInvoiceByID: (req, res) => {
 		const invoiceId = req.params.id;
-		console.log(invoiceId);
+
 		pool.query(
 			`SELECT * from invoices where Invoice_Id=?`,
 			[invoiceId],

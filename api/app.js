@@ -2,12 +2,28 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const expValidator = require("express-validator");
+
 require("dotenv").config();
 
 const app = express();
-app.use(express.json());
 
-app.use(bodyParser.json());
+// set view engine
+
+// app.engine("handlebars", hbs.engine);
+// app.set("view engine", "handlebars");
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Set the static folder
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+	express.urlencoded({
+		extended: false,
+	})
+);
+app.use(express.json());
 app.use(expValidator());
 
 const customerRouter = require(__dirname + "/routes/customer");

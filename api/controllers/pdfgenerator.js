@@ -4,19 +4,8 @@ const puppeteer = require("puppeteer");
 const handlebars = require("handlebars");
 const pool = require("../config/database");
 
-// const data = {
-// 	title: "A new Brazilian School",
-// 	date: "05/12/2018",
-// 	name: "Rodolfo Luis Marcos",
-// 	age: 28,
-// 	birthdate: "12/07/1990",
-// 	course: "Computer Science",
-// 	obs:
-// 		"Graduated in 2014 by Federal University of Lavras, work with Full-Stack development and E-commerce.",
-// };
-
-function dateddmmmyyyy(args) {
-	let event = new Date(`${args}`);
+handlebars.registerHelper("formatDate", function (dateString) {
+	let event = new Date(`${dateString}`);
 	let month = event.getMonth();
 	let date = event.getDate();
 	let year = event.getFullYear();
@@ -60,9 +49,8 @@ function dateddmmmyyyy(args) {
 			month = "Dec";
 			break;
 	}
-
 	return `${date} ${month} ${year}`;
-}
+});
 
 function getdata(id, callback) {
 	pool.query(
@@ -104,7 +92,7 @@ exports.generatePdf = (req, res) => {
 				currencyCode = "&#x24;";
 				break;
 		}
-		console.log(currencyCode);
+
 		let net_amount =
 			results.Base_Amt +
 			results.NCF_Amt +
@@ -118,8 +106,8 @@ exports.generatePdf = (req, res) => {
 		let SGST_AMT = ((net_amount * results.SGST) / 100).toFixed(2);
 		const data = {
 			Invoice_Number: results.Invoice_Number,
-			Invoice_Date: dateddmmmyyyy(results.Invoice_Date),
-			Departure_Date: dateddmmmyyyy(results.Departure_Date),
+			Invoice_Date: results.Invoice_Date,
+			Departure_Date: results.Departure_Date,
 			TotalINR: results.Total_Payable_Amt_INR,
 			Pass_Name: results.Pass_Name,
 			PAX: results.PAX,
@@ -155,16 +143,13 @@ exports.generatePdf = (req, res) => {
 		};
 
 		var templateHtml = fs.readFileSync(
-			path.join(__dirname, "/template.html"),
+			path.join(__dirname, "../public/invoicetemplate.handlebars"),
 			"utf8"
 		);
 		var template = handlebars.compile(templateHtml);
 		var html = template(data);
 
-		var milis = new Date();
-		milis = milis.getTime();
-
-		var pdfPath = path.join("pdfalpha", `${data.Invoice_Number}-${milis}.pdf`);
+		var pdfPath = path.join("pdfalpha", `${data.Invoice_Number}.pdf`);
 
 		var options = {
 			// width: "1230px",
@@ -177,7 +162,7 @@ exports.generatePdf = (req, res) => {
 			// },
 			printBackground: true,
 			path: pdfPath,
-			// format: "A4",
+			format: "A4",
 		};
 
 		const browser = await puppeteer.launch({
@@ -194,51 +179,6 @@ exports.generatePdf = (req, res) => {
 		await page.pdf(options);
 		await browser.close();
 
-		res.json({ message: "INVOICE Downloaded !" });
+		res.json({ message: "INVOICE GENERATED " });
 	});
 };
-
-// setTimeout(async () => {
-// 	console.log(data);
-
-// 	var templateHtml = fs.readFileSync(
-// 		path.join(__dirname, "/template.html"),
-// 		"utf8"
-// 	);
-// 	var template = handlebars.compile(templateHtml);
-// 	var html = template(data);
-
-// 	var milis = new Date();
-// 	milis = milis.getTime();
-
-// 	var pdfPath = path.join("pdfalpha", `${data.Invoice_Number}-${milis}.pdf`);
-
-// 	var options = {
-// 		width: "1230px",
-// 		headerTemplate: "<p></p>",
-// 		footerTemplate: "<p></p>",
-// 		displayHeaderFooter: false,
-// 		margin: {
-// 			top: "10px",
-// 			bottom: "30px",
-// 		},
-// 		printBackground: true,
-// 		path: pdfPath,
-// 		format: "A4",
-// 	};
-
-// 	const browser = await puppeteer.launch({
-// 		headless: true,
-// 	});
-
-// 	var page = await browser.newPage();
-
-// 	await page.goto(`data:text/html;charset=UTF-8,${html}`, {
-// 		waitUntil: "networkidle0",
-// 	});
-
-// 	await page.pdf(options);
-// 	await browser.close();
-
-// 	res.json({ message: "INVOICE Downloaded !" });
-// }, 6000);

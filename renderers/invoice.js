@@ -337,7 +337,7 @@ form.addEventListener("submit", function (event) {
 			Credit_Amount: gross_amount_inr,
 			Debit_Account: data.get("agent"),
 			Debit_Amount: gross_amount_inr,
-			EntryType: "Invoice-Entry",
+			EntryType: "INVOICE",
 			InvoiceNumber: data.get("invoice_no"),
 		};
 

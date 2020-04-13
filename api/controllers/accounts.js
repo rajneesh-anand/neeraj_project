@@ -88,6 +88,31 @@ module.exports = {
 			}
 		);
 	},
+
+	createLedger: (req, res) => {
+		const accountId = req.params.id;
+		pool.query(
+			`SELECT EntryDate as EntryDate, EntryType, Invoice_Number, Debit_Amount as Debit, NULL as Credit FROM payments where Debit_Account =?
+			UNION ALL 
+			SELECT EntryDate as EntryDate,EntryType,Invoice_Number,  NULL as Debit,Credit_Amount as Credit FROM recieve where Credit_Account =?
+			ORDER BY EntryDate`,
+			[accountId, accountId],
+			(error, results, fields) => {
+				if (error) {
+					return res.status(403).json({
+						error: error,
+						message: `Error : ${error}`,
+					});
+				} else {
+					return res.status(200).json({
+						message: "Ledger Success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	createReceipt: (req, res) => {
 		const data = req.body;
 		pool.query(
