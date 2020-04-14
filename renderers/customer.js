@@ -1,6 +1,7 @@
 const electron = require("electron");
 const remote = electron.remote;
 const { ipcRenderer } = electron;
+const axios = require("axios");
 
 let states = [];
 
@@ -55,32 +56,53 @@ const isvalid = () => {
 	}
 };
 
+// const btnSave = document.getElementById("btnSave");
 let form = document.querySelector("form");
 
-form.addEventListener("submit", function (event) {
+form.addEventListener("click", (event) => {
 	event.preventDefault();
+
 	if (isvalid()) {
-		var data = new FormData(form);
-		ipcRenderer.send("add:customer", {
-			first_name: data.get("first_name"),
-			last_name: data.get("last_name"),
-			address_line_one: data.get("address_line_one"),
-			address_line_two: data.get("address_line_two"),
-			city: data.get("city"),
+		let data = new FormData(form);
+		let customerData = {
+			first_name: data.get("first_name").toUpperCase(),
+			last_name: data.get("last_name").toUpperCase(),
+			address_line_one: data.get("address_one").toUpperCase(),
+			address_line_two: data.get("address_two").toUpperCase(),
+			city: data.get("city").toUpperCase(),
 			pincode: data.get("pincode"),
 			state: data.get("state"),
 			phone: data.get("phone"),
 			mobile: data.get("mobile"),
-			gstin: data.get("gstin"),
+			gstin: data.get("gstin").toUpperCase(),
 			email: data.get("email"),
-		});
+		};
+
+		axios
+			.post(
+				`http://localhost:3000/api/customer`,
+				customerData,
+
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then((response) => {
+				alert(response.data.message);
+			})
+			.catch((error) => {
+				alert(error.response.data.message);
+			});
 	}
 });
 
-ipcRenderer.on("customer:added", (event, args) => {
-	alert(args);
-	$(":input").prop("disabled", true);
-});
+// ipcRenderer.on("customer:added", (event, args) => {
+// 	alert(args);
+// 	$(":input").prop("disabled", true);
+// });
 
 ipcRenderer.on("fetchStates", (event, data) => {
 	states = [...data];

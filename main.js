@@ -78,6 +78,7 @@ function createWindow() {
 		resizable: false,
 		height: maxiSize.height,
 		width: maxiSize.width,
+		alwaysOnTop: false,
 		webPreferences: {
 			nodeIntegration: true,
 		},
@@ -196,27 +197,27 @@ ipcMain.on("add:user", async function (event, args) {
 		});
 });
 
-ipcMain.on("add:customer", async function (event, args) {
-	console.log(args);
-	await axios
-		.post(
-			`http://localhost:3000/api/customer`,
-			args,
+// ipcMain.on("add:customer", async function (event, args) {
+// 	console.log(args);
+// 	await axios
+// 		.post(
+// 			`http://localhost:3000/api/customer`,
+// 			args,
 
-			{
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			}
-		)
-		.then((Response) => {
-			event.reply("customer:added", Response.data.message);
-		})
-		.catch((error) => {
-			event.reply("customer:added", error.response.data.message);
-		});
-});
+// 			{
+// 				headers: {
+// 					Accept: "application/json",
+// 					"Content-Type": "application/json",
+// 				},
+// 			}
+// 		)
+// 		.then((Response) => {
+// 			event.reply("customer:added", Response.data.message);
+// 		})
+// 		.catch((error) => {
+// 			event.reply("customer:added", error.response.data.message);
+// 		});
+// });
 
 ipcMain.on("update:customer", async function (event, args) {
 	console.log(args);
@@ -311,6 +312,10 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
 		statesData().then((data) => {
 			win.webContents.send("fetchStates", data);
 		});
+	});
+
+	win.on("closed", () => {
+		win = null;
 	});
 });
 

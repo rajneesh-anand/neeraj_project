@@ -89,7 +89,7 @@ module.exports = {
 					});
 				} else {
 					return res.status(200).json({
-						message: "Success",
+						message: "success",
 						data: results,
 					});
 				}

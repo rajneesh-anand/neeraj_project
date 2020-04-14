@@ -7,7 +7,7 @@ const axios = require("axios");
 let addWindow;
 let data = [];
 let cusdata = [];
-const texts = require("electron").remote.getGlobal("sharedObject").someProperty;
+const texts = remote.getGlobal("sharedObject").someProperty;
 
 // document.getElementById("abc").value = texts;
 
@@ -37,43 +37,26 @@ function createaddWindow() {
 	});
 }
 
-// function createCustomerWindow() {
-// 	const modalPath = path.join("file://", __dirname, "customer.html");
-
-// 	customerWindow = new BrowserWindow({
-// 		resizable: false,
-// 		height: 1000,
-// 		width: 900,
-// 		frame: false,
-// 		title: "Add Customer",
-// 		parent: electron.remote.getCurrentWindow(),
-// 		modal: true,
-// 		webPreferences: {
-// 			nodeIntegration: true
-// 		}
-// 	});
-
-// 	customerWindow.webContents.openDevTools();
-
-// 	customerWindow.loadURL(modalPath);
-// 	customerWindow.show();
-
-// 	customerWindow.on("close", () => {
-// 		customerWindow = null;
-// 	});
-// }
-
-$(document).ready(function () {
+function getInvoiceListAPICall(callback) {
 	axios
 		.get(`http://localhost:3000/api/getinvoices`)
 		.then((response) => {
-			console.log(response.data.data);
 			const invData = response.data.data;
-			return (data = [...invData]);
+			data = [...invData];
+			return callback(response.data.message);
 		})
 		.catch((error) => {
 			if (error) throw new Error(error);
 		});
+}
+
+$(document).ready(function () {
+	getInvoiceListAPICall((response) => {
+		console.log(response);
+		if (response === "success") {
+			generateInvoiceDataTable();
+		}
+	});
 });
 
 const button = document.getElementById("newUser");
@@ -108,7 +91,24 @@ recButton.addEventListener("click", (event) => {
 
 const cusListButton = document.getElementById("cusList");
 cusListButton.addEventListener("click", (event) => {
-	ipcRenderer.send("fetchCustomers", "customerList");
+	$("#invTable_wrapper").remove();
+	const tableDiv = document.getElementById("createTable");
+	const custTable = document.createElement(
+		`< table id="cusTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>AGENT NAME</th>
+					<th>CITY</th>
+					<th>STATE</th>
+					<th>GSTIN</th>	   
+				</tr>
+			</thead> 
+		</table>
+	`
+	);
+	tableDiv.appendChild(custTable);
+	// ipcRenderer.send("fetchCustomers", "customerList");
 });
 
 const invListButton = document.getElementById("invList");
@@ -138,7 +138,7 @@ function printInvoicePdf(id) {
 function generateInvoiceDataTable() {
 	let rowIndex;
 	let invoiceId;
-	var codeBlock = ` 
+	let htmlTemplate = `
 	<thead>
 		<tr>
 		<th>ID</th>
@@ -148,8 +148,9 @@ function generateInvoiceDataTable() {
 			<th>BILL AMOUNT</th>	   
 		</tr>
 	</thead> 
+	</table>
 `;
-	document.getElementById("invTable").innerHTML = codeBlock;
+	document.getElementById("invTable").innerHTML = htmlTemplate;
 
 	$("#invTable").dataTable({
 		paging: true,
