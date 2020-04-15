@@ -112,6 +112,44 @@ module.exports = {
 			}
 		);
 	},
+	getledgerlist: (req, res) => {
+		pool.query(
+			`SELECT ot.Credit_Account, op.Debit_Account,	ot.Credit,op.Debit,	ot.custName,ot.city
+			FROM (
+			SELECT
+				r.Credit_Account, c.first_name as custName ,c.city as city,
+				SUM(r.Credit_Amount) AS Credit
+			FROM
+				recieve r, customers c where r.Credit_Account=c.id
+			GROUP BY
+				r.Credit_Account
+		) AS ot
+		INNER JOIN (
+			SELECT
+				Debit_Account,
+				SUM(Debit_Amount) AS Debit
+			FROM
+				payments
+			GROUP BY
+				Debit_Account
+		) AS op ON (op.Debit_Account = ot.Credit_Account)
+	;`,
+			[],
+			(error, results) => {
+				if (error) {
+					return res.status(403).json({
+						error: error,
+						message: `Error : ${error}`,
+					});
+				} else {
+					return res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
 
 	createReceipt: (req, res) => {
 		const data = req.body;

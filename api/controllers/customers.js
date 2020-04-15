@@ -53,7 +53,7 @@ module.exports = {
 				return;
 			}
 			return res.json({
-				success: 1,
+				message: "success",
 				data: results,
 			});
 		});

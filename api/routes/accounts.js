@@ -6,6 +6,7 @@ const {
 	createPayment,
 	createReceipt,
 	createLedger,
+	getledgerlist,
 } = require("../controllers/accounts");
 
 const { generateLedgerPdf } = require("../controllers/ledgerpdf");
@@ -16,5 +17,6 @@ router.post("/payment", createPayment);
 router.post("/receipt", createReceipt);
 router.get("/ledger/:id", createLedger);
 router.get("/ledgerpdf/:id", generateLedgerPdf);
+router.get("/ledgerlist", getledgerlist);
 
 module.exports = router;
