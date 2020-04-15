@@ -149,7 +149,10 @@ exports.generatePdf = (req, res) => {
 		var template = handlebars.compile(templateHtml);
 		var html = template(data);
 
-		var pdfPath = path.join("pdfalpha", `${data.Invoice_Number}.pdf`);
+		var pdfPath = path.join(
+			__dirname,
+			`../../pdfreports/${data.Invoice_Number}.pdf`
+		);
 
 		var options = {
 			// width: "1230px",
