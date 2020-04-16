@@ -1,5 +1,5 @@
 {
-	"name": "CruiseCarrot",
+	"name": "carrotcruise",
 	"version": "1.0.0",
 	"description": "Accounting project for shipping",
 	"main": "main.js",
@@ -43,6 +43,12 @@
 		"appId": "com.shipping.app",
 		"directories": {
 			"buildResources": "."
+		},
+		"extraResources": [
+			"build/**/*"
+		],
+		"win": {
+			"icon": "build/icon.ico"
 		}
 	}
 }

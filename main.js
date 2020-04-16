@@ -304,7 +304,7 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
 		},
 	});
 
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 
 	win.loadURL(modalPath);
 
@@ -321,14 +321,14 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
 
 ipcMain.on("create:invoiceWindow", (event, fileName) => {
 	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-	console.log(width - 66);
+	console.log(height);
 	const modalPath = path.join(
 		`file://${__dirname}/renderers/` + fileName + `.html`
 	);
 
 	let win = new BrowserWindow({
 		resizable: false,
-		height: height,
+		height: 728,
 		width: width - 66,
 		frame: false,
 		title: "Add Invoice",
@@ -339,7 +339,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
 		},
 	});
 
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 
 	win.loadURL(modalPath);
 
@@ -350,6 +350,10 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
 		getInvoiceNumber().then((inv) => {
 			win.webContents.send("sendInvoiceNumber", inv);
 		});
+	});
+
+	win.on("closed", () => {
+		win = null;
 	});
 });
 

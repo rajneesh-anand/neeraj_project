@@ -3,40 +3,67 @@ const { ipcRenderer, remote } = electron;
 const path = require("path");
 const BrowserWindow = remote.BrowserWindow;
 const axios = require("axios");
+const app = remote.app;
+// const fs = require("fs");
+// const puppeteer = require("puppeteer");
+const handlebars = require("handlebars");
 
-let addWindow;
 let data = [];
 let cusdata = [];
 let leddata = [];
+// let invResults = null;
+
+handlebars.registerHelper("formatDate", function (dateString) {
+	let event = new Date(`${dateString}`);
+	let month = event.getMonth();
+	let date = event.getDate();
+	let year = event.getFullYear();
+
+	switch (month) {
+		case 0:
+			month = "Jan";
+			break;
+		case 1:
+			month = "Feb";
+			break;
+		case 2:
+			month = "Mar";
+			break;
+		case 3:
+			month = "Apr";
+			break;
+		case 4:
+			month = "May";
+			break;
+		case 5:
+			month = "Jun";
+			break;
+		case 6:
+			month = "Jul";
+			break;
+
+		case 7:
+			month = "Aug";
+			break;
+		case 8:
+			month = "Sep";
+			break;
+		case 9:
+			month = "Oct";
+			break;
+		case 10:
+			month = "Nov";
+			break;
+		case 11:
+			month = "Dec";
+			break;
+	}
+	return `${date} ${month} ${year}`;
+});
+
 const texts = remote.getGlobal("sharedObject").someProperty;
 
 // document.getElementById("abc").value = texts;
-
-function createaddWindow() {
-	const modalPath = path.join("file://", __dirname, "user.html");
-
-	addWindow = new BrowserWindow({
-		resizable: false,
-		height: 600,
-		width: 800,
-		frame: false,
-		title: "Add User",
-		parent: electron.remote.getCurrentWindow(),
-		modal: true,
-		webPreferences: {
-			nodeIntegration: true,
-		},
-	});
-
-	addWindow.webContents.openDevTools();
-
-	addWindow.loadURL(modalPath);
-	addWindow.show();
-
-	addWindow.on("close", () => {
-		addWindow = null;
-	});
-}
 
 function getInvoiceListAPICall(callback) {
 	axios
@@ -146,25 +173,6 @@ invListButton.addEventListener("click", (event) => {
 	generateInvoiceDataTable();
 });
 
-function printInvoicePdf(id) {
-	axios
-		.get(`http://localhost:3000/api/generatepdf`, {
-			params: {
-				Invoice_id: id,
-			},
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-		})
-		.then((response) => {
-			alert(response.data.message);
-		})
-		.catch((error) => {
-			alert(error.response.data.message);
-		});
-}
-
 function printLedger(accountId) {
 	console.log(accountId);
 	axios
@@ -240,6 +248,7 @@ function generateInvoiceDataTable() {
 				text: "Print Selected Invoice",
 				action: function (e, dt, node, config) {
 					printInvoicePdf(invoiceId);
+					// generateInvoicePDF();
 				},
 
 				enabled: false,

@@ -99,11 +99,6 @@ form.addEventListener("click", (event) => {
 	}
 });
 
-// ipcRenderer.on("customer:added", (event, args) => {
-// 	alert(args);
-// 	$(":input").prop("disabled", true);
-// });
-
 ipcRenderer.on("fetchStates", (event, data) => {
 	states = [...data];
 
