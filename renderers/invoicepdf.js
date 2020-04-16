@@ -103,15 +103,15 @@ function printInvoicePdf(invoice_id) {
 				currency: currencyCode,
 			};
 
-			// let templateHtml = fs.readFileSync(
-			// 	path.join(app.getAppPath(), "../build/invoicetemplate.handlebars"),
-			// 	"utf8"
-			// );
-
 			let templateHtml = fs.readFileSync(
-				path.join(__dirname, "../build/invoicetemplate.handlebars"),
+				path.join(app.getAppPath(), "../build/invoicetemplate.handlebars"),
 				"utf8"
 			);
+
+			// let templateHtml = fs.readFileSync(
+			// 	path.join(__dirname, "../build/invoicetemplate.handlebars"),
+			// 	"utf8"
+			// );
 
 			let template = handlebars.compile(templateHtml);
 			let html = template(data);
@@ -126,10 +126,10 @@ function printInvoicePdf(invoice_id) {
 
 			const browser = await puppeteer.launch({
 				headless: true,
-				// executablePath: path.join(
-				// 	app.getAppPath(),
-				// 	"../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
-				// ),
+				executablePath: path.join(
+					app.getAppPath(),
+					"../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+				),
 				args: ["--no-sandbox", "--disable-setuid-sandbox"],
 			});
 
