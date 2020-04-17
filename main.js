@@ -4,6 +4,10 @@ const express = require(__dirname + "/api/app");
 const url = require("url");
 const axios = require("axios");
 const path = require("path");
+const EOL = require("os").EOL;
+const fs = require("fs");
+
+let CWD = process.cwd();
 
 let mainWindow = null;
 
@@ -430,7 +434,7 @@ ipcMain.on("add:invoice", async function (event, args) {
 		});
 });
 
-// Payment Window 
+// Payment Window
 
 ipcMain.on("create:paymentWindow", (event, fileName) => {
 	const modalPath = path.join(
@@ -468,7 +472,6 @@ ipcMain.on("create:paymentWindow", (event, fileName) => {
 
 // Journal Window
 
-
 ipcMain.on("create:journalWindow", (event, fileName) => {
 	const modalPath = path.join(
 		`file://${__dirname}/renderers/` + fileName + `.html`
@@ -492,7 +495,6 @@ ipcMain.on("create:journalWindow", (event, fileName) => {
 	jWin.loadURL(modalPath);
 
 	jWin.webContents.on("did-finish-load", (event) => {
-		
 		accountData().then((args) => {
 			console.log(args);
 			jWin.webContents.send("fetchAccounts", args);
@@ -504,8 +506,7 @@ ipcMain.on("create:journalWindow", (event, fileName) => {
 	});
 });
 
-
-// Receipt Window 
+// Receipt Window
 
 ipcMain.on("create:receiptWindow", (event, fileName) => {
 	const modalPath = path.join(
@@ -590,3 +591,23 @@ app.on("before-quit", (event) => {
 app.on("activate", () => {
 	if (mainWindow === null) createWindow();
 });
+
+process.on("uncaughtException", (err) => {
+	appLog("error", `Uncaught error: ${err.stack}`);
+	throw err;
+});
+
+// executable there is no console to see logs
+function appLog(level, message) {
+	const origMsg = message;
+
+	message += EOL;
+
+	if (level === "info") {
+		console.log(origMsg);
+		fs.appendFileSync(path.join(CWD, "logs/app-info-shipping.log"), message);
+	} else if (level === "error") {
+		console.error(origMsg);
+		fs.appendFileSync(path.join(CWD, "logs/app-error-shipping.log"), message);
+	}
+}

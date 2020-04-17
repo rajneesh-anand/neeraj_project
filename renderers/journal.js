@@ -113,7 +113,7 @@ form.addEventListener("submit", function (event) {
 function checkPaymentType(paymentTag) {
 	var x = paymentTag.options[paymentTag.selectedIndex].text;
 
-	if (x === "BANK-PAYMENT") {
+	if (x === "BANK-TRANSACTION") {
 		$("#bank_name").prop("disabled", false);
 		$("#cheque").prop("disabled", false);
 	} else {
@@ -130,7 +130,6 @@ function formattedDate(dateValue) {
 	return `${year}-${month}-${getdate}`;
 }
 
-
 ipcRenderer.on("fetchAccounts", (event, data) => {
 	accounts = [...data];
 
@@ -142,21 +141,7 @@ ipcRenderer.on("fetchAccounts", (event, data) => {
 	});
 
 	$(".fromAccount").append(Options);
-    $(".fromAccount").formSelect();
-    $(".toAccount").append(Options);
+	$(".fromAccount").formSelect();
+	$(".toAccount").append(Options);
 	$(".toAccount").formSelect();
-});
-
-document.getElementById("ledger").addEventListener("click", (event) => {
-	event.preventDefault();
-	let accountId = document.getElementById("agent").value;
-
-	axios
-		.get(`http://localhost:3000/api/ledgerpdf/${accountId}`)
-		.then((response) => {
-			console.log(response.data);
-		})
-		.catch((error) => {
-			if (error) throw new Error(error);
-		});
 });

@@ -1,6 +1,3 @@
-const fs = require("fs");
-const puppeteer = require("puppeteer");
-
 let invResults = null;
 const printInvoiceAPICall = (id) => {
 	return axios
@@ -104,12 +101,12 @@ function printInvoicePdf(invoice_id) {
 			};
 
 			let templateHtml = fs.readFileSync(
-				path.join(app.getAppPath(), "../build/invoicetemplate.handlebars"),
+				path.join(app.getAppPath(), "../build/invoicetemplate.html"),
 				"utf8"
 			);
 
 			// let templateHtml = fs.readFileSync(
-			// 	path.join(__dirname, "../build/invoicetemplate.handlebars"),
+			// 	path.join(__dirname, "../build/invoicetemplate.html"),
 			// 	"utf8"
 			// );
 
