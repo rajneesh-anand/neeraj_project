@@ -126,7 +126,7 @@ module.exports = {
 		pool.query(
 			`SELECT EntryDate as EntryDate, EntryType, Invoice_Number, Debit_Amount as Debit, NULL as Credit FROM payments where Debit_Account =?
 			UNION ALL 
-			SELECT EntryDate as EntryDate,EntryType,Invoice_Number,  NULL as Debit,Credit_Amount as Credit FROM recieve where Credit_Account =?
+			SELECT EntryDate as EntryDate,EntryType,Invoice_Number,  NULL as Debit,Credit_Amount as Credit FROM receive where Credit_Account =?
 			ORDER BY EntryDate`,
 			[accountId, accountId],
 			(error, results, fields) => {
@@ -152,7 +152,7 @@ module.exports = {
 				r.Credit_Account, c.first_name as custName ,c.city as city,
 				SUM(r.Credit_Amount) AS Credit
 			FROM
-				recieve r, customers c where r.Credit_Account=c.id
+				receive r, customers c where r.Credit_Account=c.id
 			GROUP BY
 				r.Credit_Account
 		) AS ot
@@ -186,7 +186,7 @@ module.exports = {
 	createReceipt: (req, res) => {
 		const data = req.body;
 		pool.query(
-			`insert into recieve(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,ChequeNumber,BankName,Comments) 
+			`insert into receive(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,ChequeNumber,BankName,Comments) 
             values(?,?,?,?,?,?,?,?,?)`,
 			[
 				data.date,
