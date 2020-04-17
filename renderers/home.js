@@ -133,6 +133,13 @@ payButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:paymentWindow", "payment_account");
 });
 
+
+const jouButton = document.getElementById("journal");
+jouButton.addEventListener("click", (event) => {
+	ipcRenderer.send("create:journalWindow", "journal");
+});
+
+
 const accButton = document.getElementById("account");
 accButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:accountWindow", "account");

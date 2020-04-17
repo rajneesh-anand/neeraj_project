@@ -89,6 +89,38 @@ module.exports = {
 		);
 	},
 
+	createJournal: (req, res) => {
+		const data = req.body;
+		pool.query(
+			`insert into journal(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,ChequeNumber,BankName,Comments) 
+            values(?,?,?,?,?,?,?,?,?)`,
+			[
+				data.date,
+				data.creditAccount,
+				data.creditAmount,
+				data.debitAccount,
+				data.debitAmount,
+				data.entryType,
+				data.chequeNumber,
+				data.bankName,
+				data.remarks,
+			],
+			(error, results, fields) => {
+				if (error) {
+					return res.status(403).json({
+						error: error,
+						message: "Error : Transaction not successful",
+					});
+				} else {
+					return res.status(200).json({
+						message: "Transaction done successfully ",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	createLedger: (req, res) => {
 		const accountId = req.params.id;
 		pool.query(

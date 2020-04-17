@@ -430,7 +430,7 @@ ipcMain.on("add:invoice", async function (event, args) {
 		});
 });
 
-//----------- Payment --------------
+// Payment Window 
 
 ipcMain.on("create:paymentWindow", (event, fileName) => {
 	const modalPath = path.join(
@@ -466,8 +466,46 @@ ipcMain.on("create:paymentWindow", (event, fileName) => {
 	});
 });
 
-//--------------------------
-// -----Receipt Window ----
+// Journal Window
+
+
+ipcMain.on("create:journalWindow", (event, fileName) => {
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/` + fileName + `.html`
+	);
+
+	let jWin = new BrowserWindow({
+		resizable: false,
+		height: 500,
+		width: 900,
+		frame: false,
+		title: "Journal",
+		parent: mainWindow,
+		modal: true,
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	jWin.webContents.openDevTools();
+
+	jWin.loadURL(modalPath);
+
+	jWin.webContents.on("did-finish-load", (event) => {
+		
+		accountData().then((args) => {
+			console.log(args);
+			jWin.webContents.send("fetchAccounts", args);
+		});
+	});
+
+	jWin.on("closed", () => {
+		jWin = null;
+	});
+});
+
+
+// Receipt Window 
 
 ipcMain.on("create:receiptWindow", (event, fileName) => {
 	const modalPath = path.join(

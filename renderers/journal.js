@@ -38,16 +38,16 @@ $(document).ready(function () {
 
 const isvalid = () => {
 	let aName = document.querySelector(".fromAccount");
-	let bName = document.querySelector(".agentName");
+	let bName = document.querySelector(".toAccount");
 	let amount = document.getElementById("amount").value;
 	let fromname = aName.options[aName.selectedIndex].text;
-	let agentname = bName.options[bName.selectedIndex].text;
+	let toname = bName.options[bName.selectedIndex].text;
 
 	if (
 		amount === "" ||
 		amount === 0 ||
 		fromname === "Select Account" ||
-		agentname === "Select Agent"
+		toname === "Select Account"
 	) {
 		return false;
 	} else {
@@ -68,8 +68,8 @@ form.addEventListener("submit", function (event) {
 			date: formattedDate(data.get("payment_date")),
 			entryType: Entry,
 			creditAccount: data.get("fromAccount"),
-			creditAmount: data.get("toAccount"),
-			debitAccount: data.get("agent"),
+			creditAmount: data.get("amount"),
+			debitAccount: data.get("toAccount"),
 			debitAmount: data.get("amount"),
 			chequeNumber: data.get("cheque"),
 			remarks: data.get("comment"),
@@ -77,7 +77,7 @@ form.addEventListener("submit", function (event) {
 		};
 
 		axios
-			.post(`http://localhost:3000/api/payment`, paymentData, {
+			.post(`http://localhost:3000/api/journal`, paymentData, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -94,21 +94,21 @@ form.addEventListener("submit", function (event) {
 	}
 });
 
-function getAccountBalance() {
-	let accountId = document.getElementById("agent").value;
-	let balanceField = document.getElementById("showBalance");
-	console.log(accountId);
+// function getAccountBalance() {
+// 	let accountId = document.getElementById("agent").value;
+// 	let balanceField = document.getElementById("showBalance");
+// 	console.log(accountId);
 
-	axios
-		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
-		.then((response) => {
-			let Balance = response.data.data[0];
-			balanceField.innerHTML = `INR { ${Balance.Balance} }`;
-		})
-		.catch((error) => {
-			if (error) throw new Error(error);
-		});
-}
+// 	axios
+// 		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
+// 		.then((response) => {
+// 			let Balance = response.data.data[0];
+// 			balanceField.innerHTML = `INR { ${Balance.Balance} }`;
+// 		})
+// 		.catch((error) => {
+// 			if (error) throw new Error(error);
+// 		});
+// }
 
 function checkPaymentType(paymentTag) {
 	var x = paymentTag.options[paymentTag.selectedIndex].text;
