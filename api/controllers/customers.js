@@ -84,11 +84,13 @@ module.exports = {
 		const id = req.params.id;
 
 		pool.query(
-			` SELECT (credit - debit) as Balance FROM ( (SELECT SUM(Credit_Amount) as credit, Credit_Account FROM receive where Credit_Account = ? GROUP BY Credit_Account) as credit
-      		  LEFT JOIN
-    		 (SELECT SUM(Debit_Amount) as debit,Debit_Account FROM payments where Debit_Account=? GROUP BY Debit_Account) as debit
-    		  ON debit.Debit_Account = credit.Credit_Account)`,
+			// ` SELECT (credit - debit) as Balance FROM ( (SELECT SUM(Credit_Amount) as credit, Credit_Account FROM receive where Credit_Account = ? GROUP BY Credit_Account) as credit
+			//   LEFT JOIN
+			//  (SELECT SUM(Debit_Amount) as debit,Debit_Account FROM payments where Debit_Account=? GROUP BY Debit_Account) as debit
+			//   ON debit.Debit_Account = credit.Credit_Account)`,
 
+			`SELECT IFNULL( (SELECT SUM(Credit_Amount) as credit FROM receive where Credit_Account = ? GROUP BY Credit_Account),0 ) as credit;
+			SELECT IFNULL( (SELECT SUM(Debit_Amount) as debit FROM payments where Debit_Account=? GROUP BY Debit_Account),0) as debit`,
 			[id, id],
 			(error, results) => {
 				if (error) {
@@ -96,7 +98,7 @@ module.exports = {
 				}
 
 				return res.status(200).json({
-					message: "Balance retrieved",
+					message: "balance retrieved",
 					data: results,
 				});
 			}

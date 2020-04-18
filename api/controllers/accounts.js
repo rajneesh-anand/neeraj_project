@@ -146,26 +146,29 @@ module.exports = {
 	},
 	getledgerlist: (req, res) => {
 		pool.query(
-			`SELECT ot.Credit_Account, op.Debit_Account,	ot.Credit,op.Debit,	ot.custName,ot.city
-			FROM (
-			SELECT
-				r.Credit_Account, c.first_name as custName ,c.city as city,
-				SUM(r.Credit_Amount) AS Credit
-			FROM
-				receive r, customers c where r.Credit_Account=c.id
-			GROUP BY
-				r.Credit_Account
-		) AS ot
-		INNER JOIN (
-			SELECT
-				Debit_Account,
-				SUM(Debit_Amount) AS Debit
-			FROM
-				payments
-			GROUP BY
-				Debit_Account
-		) AS op ON (op.Debit_Account = ot.Credit_Account)
-	;`,
+			// 	`SELECT ot.Credit_Account, op.Debit_Account,	ot.Credit,op.Debit,	ot.custName,ot.city
+			// 	FROM (
+			// 	SELECT
+			// 		r.Credit_Account, c.first_name as custName ,c.city as city,
+			// 		SUM(r.Credit_Amount) AS Credit
+			// 	FROM
+			// 		receive r, customers c where r.Credit_Account=c.id
+			// 	GROUP BY
+			// 		r.Credit_Account
+			// ) AS ot
+			// INNER JOIN (
+			// 	SELECT
+			// 		Debit_Account,
+			// 		SUM(Debit_Amount) AS Debit
+			// 	FROM
+			// 		payments
+			// 	GROUP BY
+			// 		Debit_Account
+			// ) AS op ON (op.Debit_Account = ot.Credit_Account)
+			// ;`,
+			`(SELECT	r.Credit_Account, NULL as Debit_Account, SUM(r.Credit_Amount) AS Credit, NULL as Debit FROM	receive r GROUP BY r.Credit_Account) 
+	UNION
+	(SELECT	 NULL as Credit_Account,p.Debit_Account, NULL as Credit, SUM(Debit_Amount) AS Debit	FROM payments p GROUP BY p.Debit_Account) `,
 			[],
 			(error, results) => {
 				if (error) {

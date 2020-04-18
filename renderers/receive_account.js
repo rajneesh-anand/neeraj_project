@@ -106,15 +106,19 @@ function getAccountBalance() {
 	axios
 		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
 		.then((response) => {
-			let Balance = response.data.data.length > 0 ? response.data.data[0] : 0;
-			// console.log(Balance);
+			let Credit = response.data.data[0];
+			let CreditAmount = Credit[0].credit;
+			let Debit = response.data.data[1];
+			let DebitAmount = Debit[0].debit;
+			console.log(CreditAmount);
+			console.log(DebitAmount);
+			let Balance = (CreditAmount - DebitAmount).toFixed(2);
+			console.log(Balance);
 
-			if (Balance.Balance > 0) {
-				balanceField.innerText = `Balance : INR { ${Balance.Balance} Credit }`;
-			} else if (Balance.Balance < 0) {
-				balanceField.innerText = `Balance : INR { ${Math.abs(
-					Balance.Balance
-				)} Debit }`;
+			if (Balance > 0) {
+				balanceField.innerText = `Balance : INR { ${Balance} Credit }`;
+			} else if (Balance < 0) {
+				balanceField.innerText = `Balance : INR { ${Math.abs(Balance)} Debit }`;
 			} else {
 				balanceField.innerText = `Balance : INR { 0.00 }`;
 			}

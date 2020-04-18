@@ -101,8 +101,16 @@ function getLedgerListAPICall(callback) {
 		.get(`http://localhost:3000/api/ledgerlist`)
 		.then((response) => {
 			const ledgerData = response.data.data;
-			leddata = [...ledgerData];
-			return callback(response.data.message);
+			console.log(ledgerData);
+
+			ledgerData.map((Element, index) => {
+				let credit = Element.Credit ? Element.Credit : 0;
+				let debit = Element.Debit ? Element.Debit : 0;
+				console.log(`Credit - ${credit}  and Debit - ${debit}`);
+			});
+
+			// leddata = [...ledgerData];
+			// return callback(response.data.message);
 		})
 		.catch((error) => {
 			if (error) throw new Error(error);
