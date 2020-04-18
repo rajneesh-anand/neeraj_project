@@ -71,9 +71,11 @@ form.addEventListener("submit", function (event) {
 			creditAmount: data.get("amount"),
 			debitAccount: data.get("fromAccount"),
 			debitAmount: data.get("amount"),
-			chequeNumber: data.get("cheque"),
-			remarks: data.get("comment"),
-			bankName: data.get("bank_name"),
+			chequeNumber: data.get("cheque") ? data.get("cheque").toUpperCase() : "",
+			remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
+			bankName: data.get("bank_name")
+				? data.get("bank_name").toUpperCase()
+				: "",
 		};
 
 		axios
@@ -85,6 +87,10 @@ form.addEventListener("submit", function (event) {
 			})
 			.then((response) => {
 				alert(response.data.message);
+				$("#bank_name").val("");
+				$("#cheque").val("");
+				$("#comment").val("");
+				$("#showBalance").text("");
 			})
 			.catch((error) => {
 				alert(error.response.data.message);
@@ -95,13 +101,23 @@ form.addEventListener("submit", function (event) {
 function getAccountBalance() {
 	let accountId = document.getElementById("agent").value;
 	let balanceField = document.getElementById("showBalance");
-	console.log(accountId);
+	// console.log(accountId);
 
 	axios
 		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
 		.then((response) => {
-			let Balance = response.data.data[0];
-			balanceField.innerHTML = `INR { ${Balance.Balance} }`;
+			let Balance = response.data.data.length > 0 ? response.data.data[0] : 0;
+			// console.log(Balance);
+
+			if (Balance.Balance > 0) {
+				balanceField.innerText = `Balance : INR { ${Balance.Balance} Credit }`;
+			} else if (Balance.Balance < 0) {
+				balanceField.innerText = `Balance : INR { ${Math.abs(
+					Balance.Balance
+				)} Debit }`;
+			} else {
+				balanceField.innerText = `Balance : INR { 0.00 }`;
+			}
 		})
 		.catch((error) => {
 			if (error) throw new Error(error);
@@ -115,6 +131,8 @@ function checkPaymentType(paymentTag) {
 		$("#bank_name").prop("disabled", false);
 		$("#cheque").prop("disabled", false);
 	} else {
+		$("#bank_name").val("");
+		$("#cheque").val("");
 		$("#bank_name").prop("disabled", true);
 		$("#cheque").prop("disabled", true);
 	}
@@ -130,7 +148,7 @@ function formattedDate(dateValue) {
 
 ipcRenderer.on("fetchCustomers", (event, data) => {
 	customers = [...data];
-	console.log(customers);
+	// console.log(customers);
 	var Options = "";
 	data.map(function (element, i) {
 		Options =

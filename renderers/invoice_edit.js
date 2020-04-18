@@ -955,7 +955,6 @@ document.getElementById("download").addEventListener("click", (event) => {
 });
 
 function setInvoiceData(data) {
-	console.log(data);
 	document.getElementById("invoice_no").value = data.Invoice_Number;
 	document.getElementById("invoice_date").value = dateddmmmyyyy(
 		data.Invoice_Date

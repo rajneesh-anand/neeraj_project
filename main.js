@@ -6,6 +6,7 @@ const axios = require("axios");
 const path = require("path");
 const EOL = require("os").EOL;
 const fs = require("fs");
+const { exec } = require("child_process");
 
 let CWD = process.cwd();
 
@@ -180,27 +181,6 @@ const getInvoiceNumber = async () => {
 		});
 };
 
-ipcMain.on("add:user", async function (event, args) {
-	await axios
-		.post(
-			`http://localhost:3000/api/signup`,
-			args,
-
-			{
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			}
-		)
-		.then((Response) => {
-			event.reply("user:added", Response.data.message);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-});
-
 // ipcMain.on("add:customer", async function (event, args) {
 // 	console.log(args);
 // 	await axios
@@ -245,6 +225,19 @@ ipcMain.on("update:customer", async function (event, args) {
 		});
 });
 
+// Customer Edit
+
+const fetchCustomerDataByID = async (id) => {
+	return await axios
+		.get(`http://localhost:3000/api/customer/${id}`)
+		.then((response) => {
+			return response.data.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
 ipcMain.on("customer:edit", function (event, args) {
 	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 	const modalPath = path.join(
@@ -272,7 +265,10 @@ ipcMain.on("customer:edit", function (event, args) {
 		statesData().then((data) => {
 			cuseditWindow.webContents.send("fetchStates", data);
 		});
-		cuseditWindow.webContents.send("sendCustomerData", args.customerData);
+
+		fetchCustomerDataByID(args.cusID).then((cusData) => {
+			cuseditWindow.webContents.send("sendCustomerDataForEdit", cusData);
+		});
 	});
 
 	cuseditWindow.on("closed", () => {
@@ -308,7 +304,7 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
 		},
 	});
 
-	// win.webContents.openDevTools();
+	win.webContents.openDevTools();
 
 	win.loadURL(modalPath);
 
@@ -384,10 +380,10 @@ ipcMain.on("invoice:edit", (event, args) => {
 
 	let inveditWin = new BrowserWindow({
 		resizable: false,
-		height: height,
+		height: 728,
 		width: width - 66,
 		frame: false,
-		title: "Add Invoice",
+		title: "Edit Invoice",
 		parent: mainWindow,
 		modal: true,
 		webPreferences: {
@@ -553,7 +549,7 @@ ipcMain.on("create:accountWindow", (event, fileName) => {
 
 	let aWin = new BrowserWindow({
 		resizable: false,
-		height: 400,
+		height: 450,
 		width: 700,
 		frame: false,
 		title: "Account",
@@ -567,12 +563,63 @@ ipcMain.on("create:accountWindow", (event, fileName) => {
 	aWin.webContents.openDevTools();
 
 	aWin.loadURL(modalPath);
+
+	aWin.on("closed", () => {
+		aWin = null;
+	});
+});
+
+// User window
+
+ipcMain.on("create:user", (event, fileName) => {
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/` + fileName + `.html`
+	);
+
+	let aWin = new BrowserWindow({
+		resizable: false,
+		height: 500,
+		width: 700,
+		frame: false,
+		title: "User",
+		parent: mainWindow,
+		modal: true,
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	aWin.webContents.openDevTools();
+
+	aWin.loadURL(modalPath);
+
+	aWin.on("closed", () => {
+		aWin = null;
+	});
 });
 
 ipcMain.on("fetchCustomers", (event, args) => {
 	customerData().then((data) => {
 		event.reply("customerData", data);
 	});
+});
+
+ipcMain.on("data:backup", (event, args) => {
+	// var wstream = fs.createWriteStream(path.join(__dirname, "dumpfilename.sql"));
+	// var child = spawn("mysqldump", ["-u", "root", "-praj2neo", "shipping"]);
+	// child.stdout.pipe(wstream).on("finish", function () {
+	// 	console.log("Completed");
+	// });
+	// .on("error", function (err) {
+	// 	console.log(err);
+	// });
+	// let date = new Date();
+	// const child = exec(
+	// 	`mysqldump -u root -p[raj2neo] [shipping] > ${date.getDate()}-datadump.sql`
+	// );
+	// child.stdout.pipe();
+	// console.log(child);
+	// event.reply("backup:done", "DATA BACKUP DONE ");
 });
 
 // Electron `app` is ready
@@ -605,9 +652,9 @@ function appLog(level, message) {
 
 	if (level === "info") {
 		console.log(origMsg);
-		fs.appendFileSync(path.join(CWD, "logs/app-info-shipping.log"), message);
+		fs.appendFileSync(path.join(CWD, "app-info-shipping.log"), message);
 	} else if (level === "error") {
 		console.error(origMsg);
-		fs.appendFileSync(path.join(CWD, "logs/app-error-shipping.log"), message);
+		fs.appendFileSync(path.join(CWD, "app-error-shipping.log"), message);
 	}
 }

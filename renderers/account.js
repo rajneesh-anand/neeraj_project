@@ -20,6 +20,8 @@ function thFormat(num) {
 }
 
 $(document).ready(function () {
+	$("select").formSelect();
+
 	const btnClose = document.getElementById("btnClose");
 	btnClose.addEventListener("click", (event) => {
 		const window = remote.getCurrentWindow();
@@ -32,45 +34,50 @@ $(document).ready(function () {
 		format: "dd mmm yyyy",
 		setDefaultDate: true,
 	});
+});
 
-	const isvalid = () => {
-		let accountName = document.getElementById("account").value;
+const isvalid = () => {
+	let accountName = document.getElementById("account").value;
 
-		if (accountName === "") {
-			return false;
-		} else {
-			return true;
-		}
-	};
+	if (accountName === "") {
+		return false;
+	} else {
+		return true;
+	}
+};
 
-	let form = document.querySelector("form");
+let form = document.querySelector("form");
 
-	form.addEventListener("submit", function (event) {
-		event.preventDefault();
-		if (isvalid) {
-			var data = new FormData(form);
-			accountData = {
-				date: formattedDate(data.get("payment_date")),
-				account_name: data.get("account"),
-				remarks: data.get("comment"),
-				opening_balance: data.get("amount"),
-			};
+form.addEventListener("submit", function (event) {
+	event.preventDefault();
+	if (isvalid()) {
+		var data = new FormData(form);
+		accountData = {
+			date: formattedDate(data.get("payment_date")),
+			account_name: data.get("account").toUpperCase(),
+			remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
+			credit_opening: data.get("entry") === "1" ? data.get("amount") : 0,
+			debit_opening: data.get("entry") === "2" ? data.get("amount") : 0,
+			opening_balance: data.get("amount"),
+		};
 
-			axios
-				.post(`http://localhost:3000/api/account`, accountData, {
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-				})
-				.then((response) => {
-					alert(response.data.message);
-				})
-				.catch((error) => {
-					alert(error.response.data.message);
-				});
-		}
-	});
+		axios
+			.post(`http://localhost:3000/api/account`, accountData, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				alert(response.data.message);
+				$("#comment").val("");
+				$("#account").val("");
+				$("#amount").val("");
+			})
+			.catch((error) => {
+				alert(error.response.data.message);
+			});
+	}
 });
 
 function formattedDate(dateValue) {

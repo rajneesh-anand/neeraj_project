@@ -50,7 +50,6 @@
 							type="text"
 							name="last_name"
 							class="validate"
-							required
 						/>
 						<label for="last_name">Last Name</label>
 					</div>
@@ -73,7 +72,7 @@
 						<input
 							placeholder=""
 							id="address_two"
-							name="address_line_two"
+							name="address_two"
 							type="text"
 							class="validate"
 						/>
@@ -102,14 +101,13 @@
 							name="pincode"
 							type="text"
 							class="validate"
-							required
 							onkeypress="return ValidateNumbers(event)"
 						/>
 						<label for="pincode">Pin Code</label>
 					</div>
 					<div class="col s4">
 						<label>STATE</label>
-						<select name="state" class="browser-default stateName">
+						<select name="state" id="state" class="browser-default stateName">
 							<option value="" disabled selected>Select State</option>
 						</select>
 					</div>

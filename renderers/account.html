@@ -45,7 +45,7 @@
 						<label for="payment_date"> DATE</label>
 					</div>
 					<div class="input-field col s8">
-						<i class="material-icons prefix">person</i>
+						<i class="material-icons prefix">create</i>
 						<input
 							id="account"
 							type="text"
@@ -58,13 +58,16 @@
 				</div>
 
 				<div class="row">
-					<div class="input-field col s8">
-						<i class="material-icons prefix">person</i>
+					<div class="input-field col s12">
+						<i class="material-icons prefix">create</i>
 						<input id="comment" type="text" name="comment" class="validate" />
 						<label for="comment">REMARKS / COMMENTS</label>
 					</div>
-					<div class="input-field col s4">
-						<i class="material-icons prefix">add_location</i>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="material-icons prefix">create</i>
 						<input
 							id="amount"
 							name="amount"
@@ -75,6 +78,13 @@
 						/>
 						<label for="amount">OPENING BALANCE</label>
 					</div>
+					<div class="col s6">
+						<label>BALANCE TYPE</label>
+						<select id="entry" name="entry" class="browser-default">
+							<option value="1">CREDIT OPENING BALANCE</option>
+							<option value="2">DEBIT OPENING BALANCE</option>
+						</select>
+					</div>
 				</div>
 
 				<div class="right-align">
@@ -84,7 +94,7 @@
 						id="btnSave"
 						name="action"
 					>
-						Save & Exit <i class="material-icons right">save</i>
+						SAVE<i class="material-icons right">save</i>
 					</button>
 				</div>
 			</form>

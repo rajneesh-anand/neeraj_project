@@ -71,9 +71,11 @@ form.addEventListener("submit", function (event) {
 			creditAmount: data.get("amount"),
 			debitAccount: data.get("toAccount"),
 			debitAmount: data.get("amount"),
-			chequeNumber: data.get("cheque"),
-			remarks: data.get("comment"),
-			bankName: data.get("bank_name"),
+			chequeNumber: data.get("cheque") ? data.get("cheque").toUpperCase() : "",
+			remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
+			bankName: data.get("bank_name")
+				? data.get("bank_name").toUpperCase()
+				: "",
 		};
 
 		axios
@@ -85,12 +87,14 @@ form.addEventListener("submit", function (event) {
 			})
 			.then((response) => {
 				alert(response.data.message);
+				$("#bank_name").val("");
+				$("#cheque").val("");
+				$("#comment").val("");
+				$("#amount").val("");
 			})
 			.catch((error) => {
 				alert(error.response.data.message);
 			});
-
-		$(":input").prop("disabled", true);
 	}
 });
 
@@ -117,6 +121,8 @@ function checkPaymentType(paymentTag) {
 		$("#bank_name").prop("disabled", false);
 		$("#cheque").prop("disabled", false);
 	} else {
+		$("#bank_name").val("");
+		$("#cheque").val("");
 		$("#bank_name").prop("disabled", true);
 		$("#cheque").prop("disabled", true);
 	}

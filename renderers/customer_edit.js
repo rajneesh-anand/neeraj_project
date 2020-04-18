@@ -37,18 +37,11 @@ $(document).ready(function () {
 
 const isvalid = () => {
 	let firstName = document.getElementById("first_name").value;
-	let lastName = document.getElementById("last_name").value;
+	let address = document.getElementById("address_one").value;
 	let gstin = document.getElementById("gstin").value;
 	let city = document.getElementById("city").value;
-	let pincode = document.getElementById("pincode").value;
 
-	if (
-		firstName === "" ||
-		lastName === "" ||
-		gstin === "" ||
-		city === "" ||
-		pincode === ""
-	) {
+	if (firstName === "" || address === "" || gstin === "" || city === "") {
 		return false;
 	} else {
 		return true;
@@ -109,7 +102,7 @@ ipcRenderer.on("fetchStates", (event, data) => {
 	$(".stateName").formSelect();
 });
 
-ipcRenderer.on("sendCustomerData", (event, data) => {
+ipcRenderer.on("sendCustomerDataForEdit", (event, data) => {
 	document.getElementById("id").value = data.id;
 	document.getElementById("first_name").value = data.first_name;
 	document.getElementById("last_name").value = data.last_name;
@@ -121,15 +114,5 @@ ipcRenderer.on("sendCustomerData", (event, data) => {
 	document.getElementById("phone").value = data.phone;
 	document.getElementById("email").value = data.email;
 	document.getElementById("gstin").value = data.gstin;
-	const selectedCategory = document.querySelector(".stateName");
-	const materializeSelectedCategory = M.FormSelect.init(selectedCategory);
-
-	selectedCategory.value = data.state;
-	if (typeof Event === "function") {
-		var event = new Event("change");
-	} else {
-		var event = document.createEvent("Event");
-		event.initEvent("change", true, true);
-	}
-	selectedCategory.dispatchEvent(event);
+	document.getElementById("state").value = data.state;
 });

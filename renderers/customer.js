@@ -38,18 +38,12 @@ $(document).ready(function () {
 
 const isvalid = () => {
 	let firstName = document.getElementById("first_name").value;
-	let lastName = document.getElementById("last_name").value;
+	// let lastName = document.getElementById("last_name").value;
 	let gstin = document.getElementById("gstin").value;
 	let city = document.getElementById("city").value;
-	let pincode = document.getElementById("pincode").value;
+	// let pincode = document.getElementById("pincode").value;
 
-	if (
-		firstName === "" ||
-		lastName === "" ||
-		gstin === "" ||
-		city === "" ||
-		pincode === ""
-	) {
+	if (firstName === "" || gstin === "" || city === "") {
 		return false;
 	} else {
 		return true;
@@ -92,6 +86,7 @@ form.addEventListener("click", (event) => {
 			)
 			.then((response) => {
 				alert(response.data.message);
+				$("input").val("");
 			})
 			.catch((error) => {
 				alert(error.response.data.message);

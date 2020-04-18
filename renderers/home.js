@@ -3,7 +3,6 @@ const { ipcRenderer, remote } = electron;
 const path = require("path");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
-const BrowserWindow = remote.BrowserWindow;
 const axios = require("axios");
 const app = remote.app;
 const handlebars = require("handlebars");
@@ -121,7 +120,7 @@ $(document).ready(function () {
 
 const button = document.getElementById("newUser");
 button.addEventListener("click", (event) => {
-	createaddWindow();
+	ipcRenderer.send("create:user", "user");
 });
 
 const custButton = document.getElementById("newCustomer");
@@ -149,6 +148,11 @@ accButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:accountWindow", "account");
 });
 
+const backupButton = document.getElementById("dbbackup");
+backupButton.addEventListener("click", (event) => {
+	ipcRenderer.send("data:backup", "mysql_db");
+});
+
 const recButton = document.getElementById("receipt");
 recButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:receiptWindow", "receive_account");
@@ -160,7 +164,6 @@ ledgerButton.addEventListener("click", (event) => {
 	$("#cusTable_wrapper").remove();
 
 	getLedgerListAPICall((response) => {
-		console.log(response);
 		if (response === "success") {
 			generateLedgerDataTable();
 		}
@@ -172,7 +175,6 @@ cusListButton.addEventListener("click", (event) => {
 	$("#invTable_wrapper").remove();
 
 	getCustomerListAPICall((response) => {
-		console.log(response);
 		if (response === "success") {
 			generateCustomerDataTable();
 		}
@@ -335,7 +337,7 @@ function generateLedgerDataTable() {
 		],
 	});
 
-	//------------- Table row selection condition ------
+	//Table row selection condition ------
 
 	$("#ledTable tbody").on("click", "tr", function () {
 		if ($(this).hasClass("selected")) {
@@ -361,7 +363,7 @@ function generateLedgerDataTable() {
 //Customer DataTable
 
 function generateCustomerDataTable() {
-	let rowIndex;
+	let cusID;
 	const htmlTemplate = `<table id="cusTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 			<thead>
 				<tr>
@@ -403,7 +405,7 @@ function generateCustomerDataTable() {
 				text: "Edit Selected Customer",
 				action: function (e, dt, node, config) {
 					ipcRenderer.send("customer:edit", {
-						customerData: cusdata[rowIndex],
+						cusID: cusID,
 					});
 				},
 
@@ -425,7 +427,9 @@ function generateCustomerDataTable() {
 
 	$("#cusTable tbody").on("click", "tr", function () {
 		rowIndex = $("#cusTable").DataTable().row(this).index();
-		console.log(rowIndex);
+
+		cusID = $("#cusTable").DataTable().cell(".selected", 0).data();
+
 		var selectedRows = $("tr.selected").length;
 		$("#cusTable")
 			.DataTable()
@@ -433,3 +437,7 @@ function generateCustomerDataTable() {
 			.enable(selectedRows === 1);
 	});
 }
+
+ipcRenderer.on("backup:done", (event, args) => {
+	alert(args);
+});
