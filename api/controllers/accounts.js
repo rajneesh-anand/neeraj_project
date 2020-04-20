@@ -166,9 +166,10 @@ module.exports = {
 			// 		Debit_Account
 			// ) AS op ON (op.Debit_Account = ot.Credit_Account)
 			// ;`,
-			`(SELECT	r.Credit_Account, NULL as Debit_Account, SUM(r.Credit_Amount) AS Credit, NULL as Debit FROM	receive r GROUP BY r.Credit_Account) 
-	UNION
-	(SELECT	 NULL as Credit_Account,p.Debit_Account, NULL as Credit, SUM(Debit_Amount) AS Debit	FROM payments p GROUP BY p.Debit_Account) `,
+			`select t.Acc,SUM(IFNULL( t.Credit, 0 )) AS Credit,SUM(IFNULL( t.Debit, 0 )) AS Debit, c.first_name,c.city from (
+				select Credit_Account AS Acc,  Credit_Amount AS Credit, NULL as Debit from receive
+				union
+				select Debit_Account AS Acc , NULL as Credit, Debit_Amount AS Debit from payments ) as t, customers c where t.Acc = c.id Group by t.Acc`,
 			[],
 			(error, results) => {
 				if (error) {

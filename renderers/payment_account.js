@@ -118,9 +118,13 @@ function getAccountBalance() {
 			console.log(Balance);
 
 			if (Balance > 0) {
-				balanceField.innerText = `Balance : INR { ${Balance} Credit }`;
+				balanceField.innerText = `Balance : INR { ${thFormat(
+					Balance
+				)} } Credit `;
 			} else if (Balance < 0) {
-				balanceField.innerText = `Balance : INR { ${Math.abs(Balance)} Debit }`;
+				balanceField.innerText = `Balance : INR { ${thFormat(
+					Math.abs(Balance)
+				)} } Debit `;
 			} else {
 				balanceField.innerText = `Balance : INR { 0.00 }`;
 			}

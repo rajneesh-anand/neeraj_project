@@ -103,14 +103,14 @@ function getLedgerListAPICall(callback) {
 			const ledgerData = response.data.data;
 			console.log(ledgerData);
 
-			ledgerData.map((Element, index) => {
-				let credit = Element.Credit ? Element.Credit : 0;
-				let debit = Element.Debit ? Element.Debit : 0;
-				console.log(`Credit - ${credit}  and Debit - ${debit}`);
-			});
+			// ledgerData.map((Element, index) => {
+			// 	let credit = Element.Credit ? Element.Credit : 0;
+			// 	let debit = Element.Debit ? Element.Debit : 0;
+			// 	console.log(`Credit - ${credit}  and Debit - ${debit}`);
+			// });
 
-			// leddata = [...ledgerData];
-			// return callback(response.data.message);
+			leddata = [...ledgerData];
+			return callback(response.data.message);
 		})
 		.catch((error) => {
 			if (error) throw new Error(error);
@@ -324,8 +324,8 @@ function generateLedgerDataTable() {
 		pageLength: 100,
 		data: leddata,
 		columns: [
-			{ data: "Credit_Account" },
-			{ data: "custName" },
+			{ data: "Acc" },
+			{ data: "first_name" },
 			{ data: "city" },
 			{ data: "Credit" },
 			{ data: "Debit" },
