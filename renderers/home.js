@@ -10,6 +10,7 @@ const handlebars = require("handlebars");
 let data = [];
 let cusdata = [];
 let leddata = [];
+let paydata = [];
 
 handlebars.registerHelper("ifEqual", function (a, b, options) {
 	if (a === b) {
@@ -117,6 +118,21 @@ function getLedgerListAPICall(callback) {
 		});
 }
 
+function getPaymentListAPICall(callback) {
+	axios
+		.get(`http://localhost:3000/api/paymentlist`)
+		.then((response) => {
+			const paymmentData = response.data.data;
+			console.log(paymmentData);
+
+			paydata = [...ledgerData];
+			return callback(response.data.message);
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+}
+
 $(document).ready(function () {
 	getInvoiceListAPICall((response) => {
 		// console.log(response);
@@ -174,6 +190,19 @@ ledgerButton.addEventListener("click", (event) => {
 	getLedgerListAPICall((response) => {
 		if (response === "success") {
 			generateLedgerDataTable();
+		}
+	});
+});
+
+const listPaymentButton = document.getElementById("listPayments");
+listPaymentButton.addEventListener("click", (event) => {
+	$("#invTable_wrapper").remove();
+	$("#cusTable_wrapper").remove();
+	$("#ledTable_wrapper").remove();
+
+	getPaymentListAPICall((response) => {
+		if (response === "success") {
+			generatePaymentDataTable();
 		}
 	});
 });

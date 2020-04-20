@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--Import Google Icon Font-->
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<!--Import materialize.css-->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+
+	<body onkeydown="return (event.keyCode!=13)" style="width: 100%;">
+		<div
+			class="row"
+			style="display: flex; padding-left: 1rem; padding-right: 1rem;"
+		>
+			<h6 class="flow-text">PAYMENT TRANSACTION FORM</h6>
+
+			<a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
+				<i class="material-icons right">close</i></a
+			>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<form method="post" class="col s12">
+				<div class="row">
+					<div class="input-field col s3">
+						<i class="material-icons prefix">date_range</i>
+						<input
+							placeholder=""
+							id="payment_date"
+							type="text"
+							name="payment_date"
+							class="datepicker"
+							required
+						/>
+						<label for="payment_date">TRANSACTION DATE</label>
+					</div>
+					<div class="col s3">
+						<label>ENTRY TYPE</label>
+						<select
+							id="entry"
+							name="entryType"
+							class="browser-default"
+							onchange="checkPaymentType(this)"
+						>
+							<option value="1">CASH-PAYMENT</option>
+							<option value="2">BANK-PAYMENT</option>
+						</select>
+					</div>
+					<div class="col s5 right-align">
+						<h5 id="showBalance"></h5>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s6">
+						<label>FROM ACCOUNT</label>
+						<select name="fromAccount" class="browser-default fromAccount">
+							<option value="" disabled selected>Select Account</option>
+						</select>
+					</div>
+					<div class="col s6">
+						<label>AGENT NAME</label>
+						<select
+							name="agent"
+							id="agent"
+							class="browser-default agentName"
+							onchange="getAccountBalance()"
+						>
+							<option value="" disabled selected>Select Agent</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="material-icons prefix">create</i>
+						<input
+							placeholder=""
+							id="bank_name"
+							type="text"
+							class="validate"
+							name="bank_name"
+							disabled
+						/>
+						<label for="bank_name">BANK DETAILS</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="material-icons prefix">create</i>
+						<input
+							placeholder=""
+							id="cheque"
+							type="text"
+							name="cheque"
+							class="validate"
+							disabled
+						/>
+						<label for="cheque">CHEQUE/NEFT/RTGS DETAILS</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s8">
+						<i class="material-icons prefix">create</i>
+						<input
+							placeholder=""
+							id="comment"
+							type="text"
+							name="comment"
+							class="validate"
+						/>
+						<label for="comment">REMARKS / COMMENTS</label>
+					</div>
+					<div class="input-field col s4">
+						<i class="material-icons prefix">create</i>
+						<input
+							placeholder=""
+							id="amount"
+							name="amount"
+							type="text"
+							class="validate"
+							required
+							onkeypress="return isNumberKey(event,this);"
+						/>
+						<label for="amount">AMOUNT</label>
+					</div>
+				</div>
+
+				<div class="right-align">
+					<button
+						class="btn waves-effect waves-light"
+						type="submit"
+						id="btnSave"
+						name="action"
+					>
+						UPDATE<i class="material-icons right">save</i>
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<script>
+			if (typeof module === "object") {
+				window.module = module;
+				module = undefined;
+			}
+		</script>
+
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"
+		></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+		<script src="./payment_edit.js"></script>
+
+		<script>
+			if (window.module) module = window.module;
+		</script>
+	</body>
+</html>
