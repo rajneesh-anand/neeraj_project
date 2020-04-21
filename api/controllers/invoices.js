@@ -79,7 +79,7 @@ module.exports = {
 
 	getInvoices: (req, res) => {
 		pool.query(
-			`SELECT i.Invoice_Id,i.Invoice_Number,i.Invoice_Date,i.Total_Payable_Amt,c.first_name as Agent_Name FROM customers c, invoices i where i.Agent_Name =c.id`,
+			`SELECT i.Invoice_Id,i.Invoice_Number,i.Invoice_Date,i.Total_Payable_Amt,c.first_name as Agent_Name FROM customers c, invoices i where i.Agent_Name =concat(c.Prefix,c.id)`,
 			[],
 			(error, results, fields) => {
 				if (error) {

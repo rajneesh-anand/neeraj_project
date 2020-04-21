@@ -257,6 +257,7 @@ ipcMain.on("customer:edit", function (event, args) {
 		},
 	});
 
+	console.log(args.cusID);
 	cuseditWindow.webContents.openDevTools();
 
 	cuseditWindow.loadURL(modalPath);
@@ -266,7 +267,7 @@ ipcMain.on("customer:edit", function (event, args) {
 			cuseditWindow.webContents.send("fetchStates", data);
 		});
 
-		fetchCustomerDataByID(args.cusID).then((cusData) => {
+		fetchCustomerDataByID(args.cusID.slice(-1)).then((cusData) => {
 			cuseditWindow.webContents.send("sendCustomerDataForEdit", cusData);
 		});
 	});
@@ -275,6 +276,8 @@ ipcMain.on("customer:edit", function (event, args) {
 		cuseditWindow = null;
 	});
 });
+
+// Payment Edit
 
 // ipcMain.on("close:window", (event, args) => {
 // 	args.close();
@@ -339,7 +342,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
 		},
 	});
 
-	// win.webContents.openDevTools();
+	win.webContents.openDevTools();
 
 	win.loadURL(modalPath);
 
@@ -463,6 +466,62 @@ ipcMain.on("create:paymentWindow", (event, fileName) => {
 			console.log(args);
 			pWin.webContents.send("fetchAccounts", args);
 		});
+	});
+});
+
+// Payment Edit Window
+
+const fetchPaymentDataByID = async (id) => {
+	return await axios
+		.get(`http://localhost:3000/api/payment/${id}`)
+		.then((response) => {
+			return response.data.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
+ipcMain.on("payment:edit", function (event, args) {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/payment_edit.html`
+	);
+
+	let payeditWin = new BrowserWindow({
+		resizable: false,
+		height: 500,
+		width: 900,
+		frame: false,
+		title: "Payment",
+		parent: mainWindow,
+		modal: true,
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	console.log(args.paymentId);
+	payeditWin.webContents.openDevTools();
+
+	payeditWin.loadURL(modalPath);
+
+	payeditWin.webContents.on("did-finish-load", (event) => {
+		customerData().then((data) => {
+			payeditWin.webContents.send("fetchCustomers", data);
+		});
+
+		accountData().then((args) => {
+			payeditWin.webContents.send("fetchAccounts", args);
+		});
+
+		fetchPaymentDataByID(args.paymentId).then((payData) => {
+			payeditWin.webContents.send("sendPaymentDataForEdit", payData[0]);
+		});
+	});
+
+	payeditWin.on("closed", () => {
+		payeditWin = null;
 	});
 });
 

@@ -19,6 +19,55 @@ function thFormat(num) {
 	return num_parts.join(".");
 }
 
+function dateddmmmyyyy(args) {
+	let event = new Date(`${args}`);
+	let month = event.getMonth();
+	let date = event.getDate();
+	let year = event.getFullYear();
+
+	switch (month) {
+		case 0:
+			month = "Jan";
+			break;
+		case 1:
+			month = "Feb";
+			break;
+		case 2:
+			month = "Mar";
+			break;
+		case 3:
+			month = "Apr";
+			break;
+		case 4:
+			month = "May";
+			break;
+		case 5:
+			month = "Jun";
+			break;
+		case 6:
+			month = "Jul";
+			break;
+
+		case 7:
+			month = "Aug";
+			break;
+		case 8:
+			month = "Sep";
+			break;
+		case 9:
+			month = "Oct";
+			break;
+		case 10:
+			month = "Nov";
+			break;
+		case 11:
+			month = "Dec";
+			break;
+	}
+
+	return `${date} ${month} ${year}`;
+}
+
 $(document).ready(function () {
 	//-- closing form
 
@@ -59,14 +108,15 @@ let form = document.querySelector("form");
 
 form.addEventListener("submit", function (event) {
 	event.preventDefault();
-	let eType = document.getElementById("entry");
-	let Entry = eType.options[eType.selectedIndex].text;
+	// let eType = document.getElementById("entry");
+	// let Entry = eType.options[eType.selectedIndex].text;
 
 	if (isvalid()) {
 		let data = new FormData(form);
 		let paymentData = {
+			id: data.get("id"),
 			date: formattedDate(data.get("payment_date")),
-			entryType: Entry,
+			entryType: data.get("entryType"),
 			creditAccount: data.get("fromAccount"),
 			creditAmount: data.get("amount"),
 			debitAccount: data.get("agent"),
@@ -79,7 +129,7 @@ form.addEventListener("submit", function (event) {
 		};
 
 		axios
-			.post(`http://localhost:3000/api/payment`, paymentData, {
+			.put(`http://localhost:3000/api/payment`, paymentData, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -103,7 +153,6 @@ form.addEventListener("submit", function (event) {
 function getAccountBalance() {
 	let accountId = document.getElementById("agent").value;
 	let balanceField = document.getElementById("showBalance");
-	// console.log(accountId);
 
 	axios
 		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
@@ -112,8 +161,7 @@ function getAccountBalance() {
 			let CreditAmount = Credit[0].credit;
 			let Debit = response.data.data[1];
 			let DebitAmount = Debit[0].debit;
-			console.log(CreditAmount);
-			console.log(DebitAmount);
+
 			let Balance = (CreditAmount - DebitAmount).toFixed(2);
 			console.log(Balance);
 
@@ -185,29 +233,12 @@ ipcRenderer.on("fetchAccounts", (event, data) => {
 
 ipcRenderer.on("sendPaymentDataForEdit", (event, data) => {
 	document.getElementById("id").value = data.id;
-	document.getElementById("first_name").value = data.first_name;
-	document.getElementById("last_name").value = data.last_name;
-	document.getElementById("address_one").value = data.address_line_one;
-	document.getElementById("address_two").value = data.address_line_two;
-	document.getElementById("city").value = data.city;
-	document.getElementById("pincode").value = data.pincode;
-	document.getElementById("mobile").value = data.mobile;
-	document.getElementById("phone").value = data.phone;
-	document.getElementById("email").value = data.email;
-	document.getElementById("gstin").value = data.gstin;
-	document.getElementById("state").value = data.state;
+	document.getElementById("payment_date").value = dateddmmmyyyy(data.EntryDate);
+	document.getElementById("entry").value = data.EntryType;
+	document.getElementById("fromAccount").value = data.Credit_Account;
+	document.getElementById("agent").value = data.Debit_Account;
+	document.getElementById("bank_name").value = data.BankName;
+	document.getElementById("cheque").value = data.ChequeNumber;
+	document.getElementById("comment").value = data.Comments;
+	document.getElementById("amount").value = data.Debit_Amount;
 });
-
-// document.getElementById("ledger").addEventListener("click", (event) => {
-// 	event.preventDefault();
-// 	let accountId = document.getElementById("agent").value;
-
-// 	axios
-// 		.get(`http://localhost:3000/api/ledgerpdf/${accountId}`)
-// 		.then((response) => {
-// 			console.log(response.data);
-// 		})
-// 		.catch((error) => {
-// 			if (error) throw new Error(error);
-// 		});
-// });

@@ -333,7 +333,7 @@ form.addEventListener("submit", function (event) {
 			GST: gstSwitchStatus,
 			PAX: total_passenger,
 			EntryDate: formattedDate(data.get("invoice_date")),
-			Credit_Account: 1,
+			Credit_Account: "ACC1",
 			Credit_Amount: gross_amount_inr,
 			Debit_Account: data.get("agent"),
 			Debit_Amount: gross_amount_inr,
@@ -370,9 +370,16 @@ ipcRenderer.on("fetchCustomers", (event, data) => {
 });
 
 ipcRenderer.on("sendInvoiceNumber", (event, args) => {
+	let date = new Date();
+	console.log(`CC${date.getFullYear()}${date.getMonth() + 1}-00001`);
+
 	let extractInvoice = args[0];
-	document.getElementById("invoice_no").value =
-		extractInvoice["@Invoice_Number"];
+
+	let generatedInvoice = extractInvoice["@Invoice_Number"]
+		? extractInvoice["@Invoice_Number"]
+		: `CC${date.getFullYear()}${date.getMonth() + 1}-00001`;
+
+	document.getElementById("invoice_no").value = generatedInvoice;
 });
 
 var switchStatus = false;

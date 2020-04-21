@@ -54,6 +54,7 @@ form.addEventListener("submit", function (event) {
 		var data = new FormData(form);
 		accountData = {
 			date: formattedDate(data.get("payment_date")),
+			prefix: "ACC",
 			account_name: data.get("account").toUpperCase(),
 			remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
 			credit_opening: data.get("entry") === "1" ? data.get("amount") : 0,

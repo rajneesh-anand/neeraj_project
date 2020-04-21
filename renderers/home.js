@@ -7,10 +7,10 @@ const axios = require("axios");
 const app = remote.app;
 const handlebars = require("handlebars");
 
-let data = [];
-let cusdata = [];
-let leddata = [];
-let paydata = [];
+let dataTableRecords = [];
+// let cusdata = [];
+// let leddata = [];
+// let paydata = [];
 
 handlebars.registerHelper("ifEqual", function (a, b, options) {
 	if (a === b) {
@@ -75,8 +75,10 @@ function getInvoiceListAPICall(callback) {
 	axios
 		.get(`http://localhost:3000/api/getinvoices`)
 		.then((response) => {
+			dataTableRecords.splice(0, dataTableRecords.length);
+
 			const invData = response.data.data;
-			data = [...invData];
+			dataTableRecords = [...invData];
 			return callback(response.data.message);
 		})
 		.catch((error) => {
@@ -88,8 +90,13 @@ function getCustomerListAPICall(callback) {
 	axios
 		.get(`http://localhost:3000/api/customers`)
 		.then((response) => {
+			dataTableRecords.splice(0, dataTableRecords.length);
+
 			const custData = response.data.data;
-			cusdata = [...custData];
+			dataTableRecords = [...custData];
+
+			// const custData = response.data.data;
+			// cusdata = [...custData];
 			return callback(response.data.message);
 		})
 		.catch((error) => {
@@ -101,16 +108,15 @@ function getLedgerListAPICall(callback) {
 	axios
 		.get(`http://localhost:3000/api/ledgerlist`)
 		.then((response) => {
+			dataTableRecords.splice(0, dataTableRecords.length);
+
 			const ledgerData = response.data.data;
-			console.log(ledgerData);
+			dataTableRecords = [...ledgerData];
 
-			// ledgerData.map((Element, index) => {
-			// 	let credit = Element.Credit ? Element.Credit : 0;
-			// 	let debit = Element.Debit ? Element.Debit : 0;
-			// 	console.log(`Credit - ${credit}  and Debit - ${debit}`);
-			// });
+			// const ledgerData = response.data.data;
+			// console.log(ledgerData);
 
-			leddata = [...ledgerData];
+			// leddata = [...ledgerData];
 			return callback(response.data.message);
 		})
 		.catch((error) => {
@@ -122,10 +128,15 @@ function getPaymentListAPICall(callback) {
 	axios
 		.get(`http://localhost:3000/api/paymentlist`)
 		.then((response) => {
-			const paymmentData = response.data.data;
-			console.log(paymmentData);
+			dataTableRecords.splice(0, dataTableRecords.length);
 
-			paydata = [...ledgerData];
+			const paymmentData = response.data.data;
+			dataTableRecords = [...paymmentData];
+
+			// const paymmentData = response.data.data;
+			// console.log(paymmentData);
+
+			// paydata = [...paymmentData];
 			return callback(response.data.message);
 		})
 		.catch((error) => {
@@ -135,7 +146,6 @@ function getPaymentListAPICall(callback) {
 
 $(document).ready(function () {
 	getInvoiceListAPICall((response) => {
-		// console.log(response);
 		if (response === "success") {
 			generateInvoiceDataTable();
 		}
@@ -220,7 +230,12 @@ cusListButton.addEventListener("click", (event) => {
 
 const invListButton = document.getElementById("invList");
 invListButton.addEventListener("click", (event) => {
-	generateInvoiceDataTable();
+	$("#invTable_wrapper").remove();
+	getInvoiceListAPICall((response) => {
+		if (response === "success") {
+			generateInvoiceDataTable();
+		}
+	});
 });
 
 // Invoice DataTable
@@ -252,7 +267,7 @@ function generateInvoiceDataTable() {
 			sSearch: "",
 		},
 		pageLength: 100,
-		data: data,
+		data: dataTableRecords,
 		columnDefs: [
 			{
 				render: function (data, type, row) {
@@ -351,7 +366,7 @@ function generateLedgerDataTable() {
 			sSearch: "",
 		},
 		pageLength: 100,
-		data: leddata,
+		data: dataTableRecords,
 		columns: [
 			{ data: "Acc" },
 			{ data: "first_name" },
@@ -425,7 +440,7 @@ function generateCustomerDataTable() {
 			sSearch: "",
 		},
 		pageLength: 100,
-		data: cusdata,
+		data: dataTableRecords,
 
 		columns: [
 			{ data: "id" },
@@ -469,6 +484,102 @@ function generateCustomerDataTable() {
 
 		var selectedRows = $("tr.selected").length;
 		$("#cusTable")
+			.DataTable()
+			.button(0)
+			.enable(selectedRows === 1);
+	});
+}
+
+// Generate Payment DataTable
+
+function generatePaymentDataTable() {
+	let rowIndex;
+	let paymentId;
+	let htmlTemplate = `<table id="payTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+	<thead>
+		<tr>
+		<th>ID</th>
+			<th>ENTRY DATE</th>
+			<th>ENTRY TYPE</th>
+			<th>ACCOUNT NAME</th>
+			<th>CHEQUE NO.</th>
+			<th>AMOUNT</th>
+		 
+		</tr>
+	</thead> 
+	</table>
+`;
+	document.getElementById("createTable").innerHTML = htmlTemplate;
+
+	$("#payTable").dataTable({
+		paging: true,
+		sort: true,
+		searching: true,
+		responsive: true,
+		language: {
+			searchPlaceholder: "Search records",
+			sSearch: "",
+		},
+		pageLength: 100,
+		data: dataTableRecords,
+		columnDefs: [
+			{
+				render: function (data, type, row) {
+					return new Date(data).toLocaleDateString();
+				},
+				targets: 1,
+			},
+		],
+		columns: [
+			{ data: "id" },
+			{ data: "EntryDate" },
+			{ data: "EntryType" },
+			{
+				data: function (row, type, val, meta) {
+					if (row.Account_Name === null) {
+						return row.first_name;
+					} else {
+						return row.Account_Name;
+					}
+				},
+			},
+			{ data: "ChequeNumber" },
+			{ data: "Debit_Amount" },
+		],
+		dom: "Bfrtip",
+		select: true,
+
+		buttons: [
+			{
+				text: "Edit Selected Entry",
+				action: function (e, dt, node, config) {
+					ipcRenderer.send("payment:edit", {
+						paymentId: paymentId,
+					});
+				},
+
+				enabled: false,
+			},
+		],
+	});
+
+	//Table row selection condition ------
+
+	$("#payTable tbody").on("click", "tr", function () {
+		if ($(this).hasClass("selected")) {
+			$(this).removeClass("selected");
+		} else {
+			$("#payTable").dataTable().$("tr.selected").removeClass("selected");
+			$(this).addClass("selected");
+		}
+	});
+
+	$("#payTable tbody").on("click", "tr", function () {
+		rowIndex = $("#payTable").DataTable().row(this).index();
+
+		paymentId = $("#payTable").DataTable().cell(".selected", 0).data();
+		var selectedRows = $("tr.selected").length;
+		$("#payTable")
 			.DataTable()
 			.button(0)
 			.enable(selectedRows === 1);

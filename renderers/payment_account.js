@@ -103,7 +103,6 @@ form.addEventListener("submit", function (event) {
 function getAccountBalance() {
 	let accountId = document.getElementById("agent").value;
 	let balanceField = document.getElementById("showBalance");
-	// console.log(accountId);
 
 	axios
 		.get(`http://localhost:3000/api/customerbalance/${accountId}`)

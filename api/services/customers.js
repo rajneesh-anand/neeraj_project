@@ -3,9 +3,10 @@ const pool = require("../config/database");
 module.exports = {
 	create: (data, callBack) => {
 		pool.query(
-			`insert into customers(first_name, last_name,address_line_one, address_line_two,city,state,pincode,mobile,phone,gstin,email) 
-                values(?,?,?,?,?,?,?,?,?,?,?)`,
+			`insert into customers(Prefix,first_name, last_name,address_line_one, address_line_two,city,state,pincode,mobile,phone,gstin,email) 
+                values(?,?,?,?,?,?,?,?,?,?,?,?)`,
 			[
+				data.prefix,
 				data.first_name,
 				data.last_name,
 				data.address_line_one,
@@ -52,7 +53,7 @@ module.exports = {
 	},
 	fetchCustomers: (callBack) => {
 		pool.query(
-			`SELECT c.id,c.first_name,c.last_name,c.address_line_one,c.address_line_two,c.city,c.pincode,c.mobile,c.email,c.phone,c.gstin,s.State_Name FROM customers c, states s where c.state =s.id`,
+			`SELECT concat(c.Prefix,c.id) as id,c.first_name,c.last_name,c.address_line_one,c.address_line_two,c.city,c.pincode,c.mobile,c.email,c.phone,c.gstin,s.State_Name FROM customers c, states s where c.state =s.id`,
 			[],
 			(error, results, fields) => {
 				if (error) {

@@ -56,18 +56,20 @@ form.addEventListener("submit", function (event) {
 		var data = new FormData(form);
 		let customerData = {
 			id: data.get("id"),
-			first_name: data.get("first_name"),
-			last_name: data.get("last_name"),
-			address_line_one: data.get("address_one"),
-			address_line_two: data.get("address_two"),
-			city: data.get("city"),
+			first_name: data.get("first_name").toUpperCase(),
+			last_name: data.get("last_name").toUpperCase(),
+			address_line_one: data.get("address_one").toUpperCase(),
+			address_line_two: data.get("address_two").toUpperCase(),
+			city: data.get("city").toUpperCase(),
 			pincode: data.get("pincode"),
 			state: data.get("state"),
 			phone: data.get("phone"),
 			mobile: data.get("mobile"),
-			gstin: data.get("gstin"),
+			gstin: data.get("gstin").toUpperCase(),
 			email: data.get("email"),
 		};
+
+		console.log(customerData);
 
 		axios
 			.put(

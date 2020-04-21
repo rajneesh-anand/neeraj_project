@@ -59,6 +59,7 @@ form.addEventListener("click", (event) => {
 	if (isvalid()) {
 		let data = new FormData(form);
 		let customerData = {
+			prefix: "CUS",
 			first_name: data.get("first_name").toUpperCase(),
 			last_name: data.get("last_name").toUpperCase(),
 			address_line_one: data.get("address_one").toUpperCase(),

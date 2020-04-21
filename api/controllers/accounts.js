@@ -9,7 +9,7 @@ module.exports = {
 		};
 
 		pool.query(
-			"SELECT COUNT(*) AS cnt FROM create_accounts WHERE Account_Name = ? ",
+			"SELECT COUNT(*) AS cnt FROM accounts WHERE Account_Name = ? ",
 			[reg.account_name],
 			(err, data) => {
 				if (err) {
@@ -41,7 +41,7 @@ module.exports = {
 
 	fetchAccounts: (req, res) => {
 		pool.query(
-			"SELECT id,Account_Name from create_accounts",
+			"SELECT concat(Prefix,id) as id ,Account_Name from accounts",
 			[],
 			(err, results) => {
 				if (err) {
@@ -92,7 +92,7 @@ module.exports = {
 	createJournal: (req, res) => {
 		const data = req.body;
 		pool.query(
-			`insert into journal(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,ChequeNumber,BankName,Comments) 
+			`insert into payments(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,ChequeNumber,BankName,Comments) 
             values(?,?,?,?,?,?,?,?,?)`,
 			[
 				data.date,
@@ -144,6 +144,33 @@ module.exports = {
 			}
 		);
 	},
+
+	getPaymentList: (req, res) => {
+		pool.query(
+			`SELECT payments.id,payments.EntryDate,payments.Debit_Account,payments.Debit_Amount,payments.EntryType,payments.ChequeNumber,customers.first_name,accounts.Account_Name FROM payments 
+			LEFT JOIN customers
+			ON concat(customers.Prefix,customers.id) = payments.Debit_Account
+			LEFT JOIN accounts
+			ON concat(accounts.Prefix,accounts.id) = payments.Debit_Account
+			where payments.EntryType <>'INVOICE'
+			ORDER BY payments.EntryDate`,
+			[],
+			(error, results) => {
+				if (error) {
+					return res.status(403).json({
+						error: error,
+						message: `Error : ${error}`,
+					});
+				} else {
+					return res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	getledgerlist: (req, res) => {
 		pool.query(
 			// 	`SELECT ot.Credit_Account, op.Debit_Account,	ot.Credit,op.Debit,	ot.custName,ot.city
@@ -169,7 +196,7 @@ module.exports = {
 			`select t.Acc,SUM(IFNULL( t.Credit, 0 )) AS Credit,SUM(IFNULL( t.Debit, 0 )) AS Debit, c.first_name,c.city from (
 				select Credit_Account AS Acc,  Credit_Amount AS Credit, NULL as Debit from receive
 				union
-				select Debit_Account AS Acc , NULL as Credit, Debit_Amount AS Debit from payments ) as t, customers c where t.Acc = c.id Group by t.Acc`,
+				select Debit_Account AS Acc , NULL as Credit, Debit_Amount AS Debit from payments ) as t, customers c where t.Acc = concat(c.Prefix,c.id) Group by t.Acc`,
 			[],
 			(error, results) => {
 				if (error) {
@@ -180,6 +207,62 @@ module.exports = {
 				} else {
 					return res.status(200).json({
 						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
+	getPaymentByID: (req, res) => {
+		const id = req.params.id;
+		console.log(id);
+		pool.query(
+			`select id,EntryDate, EntryType, Debit_Account,Debit_Amount,Credit_Account,Credit_Amount, ChequeNumber,BankName,Comments from payments where id=?`,
+			[id],
+			(error, results, fields) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
+	updatePayment: (req, res) => {
+		const data = req.body;
+		console.log(data);
+		pool.query(
+			`update payments set EntryDate =?, EntryType=?, Debit_Account=?,Debit_Amount=?,Credit_Account=?,Credit_Amount=?, ChequeNumber=?,BankName=?,Comments=? where id=?`,
+			[
+				data.date,
+				data.entryType,
+				data.debitAccount,
+				data.debitAmount,
+				data.creditAccount,
+				data.creditAmount,
+				data.chequeNumber,
+				data.bankName,
+				data.remarks,
+				data.id,
+			],
+
+			(error, results, fields) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "Transaction Updated Successfully",
 						data: results,
 					});
 				}
