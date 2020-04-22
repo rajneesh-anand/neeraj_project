@@ -56,6 +56,7 @@ form.addEventListener("submit", function (event) {
 			date: formattedDate(data.get("payment_date")),
 			prefix: "ACC",
 			account_name: data.get("account").toUpperCase(),
+			account_type: data.get("entryType").toUpperCase(),
 			remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
 			credit_opening: data.get("entry") === "1" ? data.get("amount") : 0,
 			debit_opening: data.get("entry") === "2" ? data.get("amount") : 0,
@@ -88,3 +89,18 @@ function formattedDate(dateValue) {
 	const getdate = event.getDate();
 	return `${year}-${month}-${getdate}`;
 }
+
+ipcRenderer.on("accountCategory", (event, data) => {
+	// console.log(data);
+	// states = [...data];
+
+	var Options = "";
+	data.map(function (element, i) {
+		Options =
+			Options +
+			`<option value='${element.Cat_Name}'>${element.Cat_Name}</option>`;
+	});
+
+	$("#entryType").append(Options);
+	$("#entryType").formSelect();
+});

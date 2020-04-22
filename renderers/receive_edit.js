@@ -19,6 +19,55 @@ function thFormat(num) {
 	return num_parts.join(".");
 }
 
+function dateddmmmyyyy(args) {
+	let event = new Date(`${args}`);
+	let month = event.getMonth();
+	let date = event.getDate();
+	let year = event.getFullYear();
+
+	switch (month) {
+		case 0:
+			month = "Jan";
+			break;
+		case 1:
+			month = "Feb";
+			break;
+		case 2:
+			month = "Mar";
+			break;
+		case 3:
+			month = "Apr";
+			break;
+		case 4:
+			month = "May";
+			break;
+		case 5:
+			month = "Jun";
+			break;
+		case 6:
+			month = "Jul";
+			break;
+
+		case 7:
+			month = "Aug";
+			break;
+		case 8:
+			month = "Sep";
+			break;
+		case 9:
+			month = "Oct";
+			break;
+		case 10:
+			month = "Nov";
+			break;
+		case 11:
+			month = "Dec";
+			break;
+	}
+
+	return `${date} ${month} ${year}`;
+}
+
 $(document).ready(function () {
 	//-- closing form
 
@@ -59,17 +108,18 @@ let form = document.querySelector("form");
 
 form.addEventListener("submit", function (event) {
 	event.preventDefault();
-	let eType = document.getElementById("entry");
-	let Entry = eType.options[eType.selectedIndex].text;
+	// let eType = document.getElementById("entry");
+	// let Entry = eType.options[eType.selectedIndex].text;
 
 	if (isvalid()) {
 		let data = new FormData(form);
 		let paymentData = {
+			id: data.get("id"),
 			date: formattedDate(data.get("payment_date")),
-			entryType: Entry,
-			creditAccount: data.get("fromAccount"),
+			entryType: data.get("entryType"),
+			creditAccount: data.get("agent"),
 			creditAmount: data.get("amount"),
-			debitAccount: data.get("agent"),
+			debitAccount: data.get("fromAccount"),
 			debitAmount: data.get("amount"),
 			chequeNumber: data.get("cheque") ? data.get("cheque").toUpperCase() : "",
 			remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
@@ -79,7 +129,7 @@ form.addEventListener("submit", function (event) {
 		};
 
 		axios
-			.post(`http://localhost:3000/api/payment`, paymentData, {
+			.put(`http://localhost:3000/api/receive`, paymentData, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -95,8 +145,6 @@ form.addEventListener("submit", function (event) {
 			.catch((error) => {
 				alert(error.response.data.message);
 			});
-
-		// $(":input").prop("disabled", true);
 	}
 });
 
@@ -111,8 +159,7 @@ function getAccountBalance() {
 			let CreditAmount = Credit[0].credit;
 			let Debit = response.data.data[1];
 			let DebitAmount = Debit[0].debit;
-			console.log(CreditAmount);
-			console.log(DebitAmount);
+
 			let Balance = (CreditAmount - DebitAmount).toFixed(2);
 			console.log(Balance);
 
@@ -136,7 +183,7 @@ function getAccountBalance() {
 function checkPaymentType(paymentTag) {
 	var x = paymentTag.options[paymentTag.selectedIndex].text;
 
-	if (x === "BANK-PAYMENT") {
+	if (x === "BANK-RECEIVE") {
 		$("#bank_name").prop("disabled", false);
 		$("#cheque").prop("disabled", false);
 	} else {
@@ -169,7 +216,6 @@ ipcRenderer.on("fetchCustomers", (event, data) => {
 });
 
 ipcRenderer.on("fetchAccounts", (event, data) => {
-	console.log(data);
 	accounts = [...data];
 
 	var Options = "";
@@ -183,16 +229,15 @@ ipcRenderer.on("fetchAccounts", (event, data) => {
 	$(".fromAccount").formSelect();
 });
 
-// document.getElementById("ledger").addEventListener("click", (event) => {
-// 	event.preventDefault();
-// 	let accountId = document.getElementById("agent").value;
-
-// 	axios
-// 		.get(`http://localhost:3000/api/ledgerpdf/${accountId}`)
-// 		.then((response) => {
-// 			console.log(response.data);
-// 		})
-// 		.catch((error) => {
-// 			if (error) throw new Error(error);
-// 		});
-// });
+ipcRenderer.on("sendReceiveDataForEdit", (event, data) => {
+	console.log(data);
+	document.getElementById("id").value = data.id;
+	document.getElementById("payment_date").value = dateddmmmyyyy(data.EntryDate);
+	document.getElementById("entry").value = data.EntryType;
+	document.getElementById("fromAccount").value = data.Debit_Account;
+	document.getElementById("agent").value = data.Credit_Account;
+	document.getElementById("bank_name").value = data.BankName;
+	document.getElementById("cheque").value = data.ChequeNumber;
+	document.getElementById("comment").value = data.Comments;
+	document.getElementById("amount").value = data.Debit_Amount;
+});

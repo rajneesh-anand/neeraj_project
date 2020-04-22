@@ -142,6 +142,19 @@ customerData().then((data) => {
 	});
 });
 
+// Fetch account category
+
+const accountCategory = async () => {
+	return await axios
+		.get(`http://localhost:3000/api/categories`)
+		.then((response) => {
+			return response.data.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
 //Fetch Accounts Data
 
 const accountData = async () => {
@@ -525,6 +538,62 @@ ipcMain.on("payment:edit", function (event, args) {
 	});
 });
 
+//Receive Edit Window
+
+const fetchReceiveDataByID = async (id) => {
+	return await axios
+		.get(`http://localhost:3000/api/receive/${id}`)
+		.then((response) => {
+			return response.data.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
+ipcMain.on("receive:edit", function (event, args) {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/receive_edit.html`
+	);
+
+	let payeditWin = new BrowserWindow({
+		resizable: false,
+		height: 500,
+		width: 900,
+		frame: false,
+		title: "Receive",
+		parent: mainWindow,
+		modal: true,
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	console.log(args.paymentId);
+	payeditWin.webContents.openDevTools();
+
+	payeditWin.loadURL(modalPath);
+
+	payeditWin.webContents.on("did-finish-load", (event) => {
+		customerData().then((data) => {
+			payeditWin.webContents.send("fetchCustomers", data);
+		});
+
+		accountData().then((args) => {
+			payeditWin.webContents.send("fetchAccounts", args);
+		});
+
+		fetchReceiveDataByID(args.paymentId).then((payData) => {
+			payeditWin.webContents.send("sendReceiveDataForEdit", payData[0]);
+		});
+	});
+
+	payeditWin.on("closed", () => {
+		payeditWin = null;
+	});
+});
+
 // Journal Window
 
 ipcMain.on("create:journalWindow", (event, fileName) => {
@@ -608,7 +677,7 @@ ipcMain.on("create:accountWindow", (event, fileName) => {
 
 	let aWin = new BrowserWindow({
 		resizable: false,
-		height: 450,
+		height: 530,
 		width: 700,
 		frame: false,
 		title: "Account",
@@ -622,6 +691,12 @@ ipcMain.on("create:accountWindow", (event, fileName) => {
 	aWin.webContents.openDevTools();
 
 	aWin.loadURL(modalPath);
+
+	aWin.webContents.on("did-finish-load", (event) => {
+		accountCategory().then((data) => {
+			aWin.webContents.send("accountCategory", data);
+		});
+	});
 
 	aWin.on("closed", () => {
 		aWin = null;

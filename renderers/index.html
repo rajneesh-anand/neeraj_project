@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=fpm, initial-scale=1.0" />
+		<!-- <meta name="viewport" content="width=fpm, initial-scale=1.0" /> -->
 		<title>CRUISE CARROT</title>
 		<link
 			href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -103,15 +103,15 @@
 							<ul>
 								<li id="account"><a href="#">Add Account</a></li>
 
-								<li id="receipt"><a href="#">Receivable</a></li>
 								<li id="journal"><a href="#">Journal Entry</a></li>
-								<li id="ledger"><a href="#">General Ledger</a></li>
+								<li id="ledger"><a href="#">AGENT LEDGER</a></li>
+								<li id="generalledger"><a href="#">GENERAL LEDGER</a></li>
 							</ul>
 						</div>
 					</li>
 					<li class="no-padding">
 						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>PAYMENTS<i
+							><i class="large material-icons">apps</i>PAYABLE<i
 								class="nav-drop-icon material-icons"
 								>keyboard_arrow_right</i
 							></a
@@ -120,6 +120,20 @@
 							<ul>
 								<li id="payment"><a href="#">New Payment</a></li>
 								<li id="listPayments"><a href="#">Payments List</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="no-padding">
+						<a class="collapsible-header waves-effect waves-grey"
+							><i class="large material-icons">apps</i>RECEIVABLE<i
+								class="nav-drop-icon material-icons"
+								>keyboard_arrow_right</i
+							></a
+						>
+						<div class="collapsible-body">
+							<ul>
+								<li id="receipt"><a href="#">New Receipt</a></li>
+								<li id="listReceive"><a href="#">Receipt List</a></li>
 							</ul>
 						</div>
 					</li>
@@ -162,6 +176,21 @@
 		</ul>
 
 		<main id="test2" class="testPad">
+			<div
+				id="datePanel"
+				class="row"	
+				hidden	
+				style="margin-bottom: 0rem !important;"			
+			>
+						<div class="col s2" style="float:right;">
+						<input id="from_date" type="text" class="datepicker inline" />
+						</div>
+						<div class=" col s3" style="float:right;">	
+								
+						<input id="from_date" type="text" class="datepicker" />
+						</div>
+				</div>
+			</div>
 			<div class="col s12">
 				<div class="card" style="margin: 0 0 1rem 0 !important;">
 					<div id="createTable" class="card-content"></div>

@@ -57,6 +57,26 @@ module.exports = {
 			}
 		);
 	},
+
+	getCategories: (req, res) => {
+		pool.query(
+			"SELECT DISTINCT(Cat_Name)FROM accounts_category;",
+			[],
+			(err, results) => {
+				if (err) {
+					return res.status(403).json({
+						error: err,
+					});
+				} else {
+					return res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	createPayment: (req, res) => {
 		const data = req.body;
 		pool.query(
@@ -171,6 +191,32 @@ module.exports = {
 		);
 	},
 
+	getReceiveList: (req, res) => {
+		pool.query(
+			`SELECT receive.id,receive.EntryDate,receive.Credit_Account,receive.Credit_Amount,receive.EntryType,receive.ChequeNumber,customers.first_name,accounts.Account_Name FROM receive 
+			LEFT JOIN customers
+			ON concat(customers.Prefix,customers.id) = receive.Credit_Account
+			LEFT JOIN accounts
+			ON concat(accounts.Prefix,accounts.id) = receive.Credit_Account
+			where receive.EntryType <>'INVOICE'
+			ORDER BY receive.EntryDate`,
+			[],
+			(error, results) => {
+				if (error) {
+					return res.status(403).json({
+						error: error,
+						message: `Error : ${error}`,
+					});
+				} else {
+					return res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	getledgerlist: (req, res) => {
 		pool.query(
 			// 	`SELECT ot.Credit_Account, op.Debit_Account,	ot.Credit,op.Debit,	ot.custName,ot.city
@@ -214,6 +260,37 @@ module.exports = {
 		);
 	},
 
+	getgeneralledgerlist: (req, res) => {
+		pool.query(
+			`SELECT t.Acc, SUM(IFNULL(t.Credit, 0 )) AS Credit, SUM(IFNULL( t.Debit, 0 )) AS Debit, accounts.Account_Name from (
+				SELECT concat(accounts.Prefix,accounts.id) as Acc, accounts.Credit_Amount AS Credit, accounts.Debit_Amount AS Debit FROM shipping.accounts  
+				union
+				SELECT receive.Credit_Account as Acc, receive.Credit_Amount AS Credit, NULL as Debit FROM shipping.receive  
+				union
+				SELECT payments.Credit_Account as Acc, payments.Credit_Amount  AS Credit, NULL as Debit FROM shipping.payments  
+				union
+				SELECT receive.Debit_Account as Acc, NULL as Credit, receive.Debit_Amount AS Debit FROM shipping.receive  
+				union
+				SELECT payments.Debit_Account as Acc, NULL as Credit, payments.Debit_Amount AS Debit FROM shipping.payments  
+				) AS t, accounts where t.Acc = concat(accounts.Prefix,accounts.id) AND  t.Acc NOT LIKE 'CUS%' Group by t.Acc
+				`,
+			[],
+			(error, results) => {
+				if (error) {
+					return res.status(403).json({
+						error: error,
+						message: `Error : ${error}`,
+					});
+				} else {
+					return res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	getPaymentByID: (req, res) => {
 		const id = req.params.id;
 		console.log(id);
@@ -236,11 +313,67 @@ module.exports = {
 		);
 	},
 
+	getReceiveByID: (req, res) => {
+		const id = req.params.id;
+		console.log(id);
+		pool.query(
+			`select id,EntryDate, EntryType, Debit_Account,Debit_Amount,Credit_Account,Credit_Amount, ChequeNumber,BankName,Comments from receive where id=?`,
+			[id],
+			(error, results, fields) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	updatePayment: (req, res) => {
 		const data = req.body;
 		console.log(data);
 		pool.query(
 			`update payments set EntryDate =?, EntryType=?, Debit_Account=?,Debit_Amount=?,Credit_Account=?,Credit_Amount=?, ChequeNumber=?,BankName=?,Comments=? where id=?`,
+			[
+				data.date,
+				data.entryType,
+				data.debitAccount,
+				data.debitAmount,
+				data.creditAccount,
+				data.creditAmount,
+				data.chequeNumber,
+				data.bankName,
+				data.remarks,
+				data.id,
+			],
+
+			(error, results, fields) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "Transaction Updated Successfully",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
+	updateReceive: (req, res) => {
+		const data = req.body;
+		console.log(data);
+		pool.query(
+			`update receive set EntryDate =?, EntryType=?, Debit_Account=?,Debit_Amount=?,Credit_Account=?,Credit_Amount=?, ChequeNumber=?,BankName=?,Comments=? where id=?`,
 			[
 				data.date,
 				data.entryType,

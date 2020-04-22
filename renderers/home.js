@@ -12,6 +12,15 @@ let dataTableRecords = [];
 // let leddata = [];
 // let paydata = [];
 
+$(document).ready(function () {
+	$(".datepicker").datepicker({
+		defaultDate: new Date(),
+		autoClose: true,
+		format: "dd mmm yyyy",
+		setDefaultDate: true,
+	});
+});
+
 handlebars.registerHelper("ifEqual", function (a, b, options) {
 	if (a === b) {
 		return options.fn(this);
@@ -124,9 +133,45 @@ function getLedgerListAPICall(callback) {
 		});
 }
 
+function getGeneralLedgerListAPICall(callback) {
+	axios
+		.get(`http://localhost:3000/api/generalledgerlist`)
+		.then((response) => {
+			dataTableRecords.splice(0, dataTableRecords.length);
+
+			const ledgerData = response.data.data;
+			dataTableRecords = [...ledgerData];
+
+			return callback(response.data.message);
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+}
+
 function getPaymentListAPICall(callback) {
 	axios
 		.get(`http://localhost:3000/api/paymentlist`)
+		.then((response) => {
+			dataTableRecords.splice(0, dataTableRecords.length);
+
+			const paymmentData = response.data.data;
+			dataTableRecords = [...paymmentData];
+
+			// const paymmentData = response.data.data;
+			// console.log(paymmentData);
+
+			// paydata = [...paymmentData];
+			return callback(response.data.message);
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+}
+
+function getReceiveListAPICall(callback) {
+	axios
+		.get(`http://localhost:3000/api/receivelist`)
 		.then((response) => {
 			dataTableRecords.splice(0, dataTableRecords.length);
 
@@ -172,6 +217,11 @@ payButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:paymentWindow", "payment_account");
 });
 
+// const salButton = document.getElementById("salary");
+// salButton.addEventListener("click", (event) => {
+// 	ipcRenderer.send("create:salaryWindow", "salary_account");
+// });
+
 const jouButton = document.getElementById("journal");
 jouButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:journalWindow", "journal");
@@ -200,6 +250,19 @@ ledgerButton.addEventListener("click", (event) => {
 	getLedgerListAPICall((response) => {
 		if (response === "success") {
 			generateLedgerDataTable();
+			$("#datePanel").show();
+		}
+	});
+});
+
+const generalledgerButton = document.getElementById("generalledger");
+generalledgerButton.addEventListener("click", (event) => {
+	$("#invTable_wrapper").remove();
+	$("#cusTable_wrapper").remove();
+
+	getGeneralLedgerListAPICall((response) => {
+		if (response === "success") {
+			generateGeneralLedgerDataTable();
 		}
 	});
 });
@@ -209,10 +272,25 @@ listPaymentButton.addEventListener("click", (event) => {
 	$("#invTable_wrapper").remove();
 	$("#cusTable_wrapper").remove();
 	$("#ledTable_wrapper").remove();
+	$("#recTable_wrapper").remove();
 
 	getPaymentListAPICall((response) => {
 		if (response === "success") {
 			generatePaymentDataTable();
+		}
+	});
+});
+
+const listReceiveButton = document.getElementById("listReceive");
+listReceiveButton.addEventListener("click", (event) => {
+	$("#invTable_wrapper").remove();
+	$("#cusTable_wrapper").remove();
+	$("#ledTable_wrapper").remove();
+	$("#payTable_wrapper").remove();
+
+	getReceiveListAPICall((response) => {
+		if (response === "success") {
+			generateReceiveDataTable();
 		}
 	});
 });
@@ -238,6 +316,13 @@ invListButton.addEventListener("click", (event) => {
 	});
 });
 
+// function HtmlDateRangeElement() {
+// 	var para = document.createElement("input");
+// 	console.log(`object`);
+// 	let parentDiv = document.querySelector(".dt-buttons");
+// 	let html = `<div><input type="text" value="hello"> </div>`;
+// 	parentDiv.appendChild(para);
+// }
 // Invoice DataTable
 
 function generateInvoiceDataTable() {
@@ -364,6 +449,7 @@ function generateLedgerDataTable() {
 		language: {
 			searchPlaceholder: "Search records",
 			sSearch: "",
+			textPlaceholder: "Date range",
 		},
 		pageLength: 100,
 		data: dataTableRecords,
@@ -389,6 +475,12 @@ function generateLedgerDataTable() {
 		],
 	});
 
+	$("#ledTable").one("preInit.dt", function () {
+		$button = $("<a>go</a>");
+		$("#ledTable_filter label").append($button);
+		$button.button();
+	});
+
 	//Table row selection condition ------
 
 	$("#ledTable tbody").on("click", "tr", function () {
@@ -406,6 +498,79 @@ function generateLedgerDataTable() {
 		invoiceId = $("#ledTable").DataTable().cell(".selected", 0).data();
 		var selectedRows = $("tr.selected").length;
 		$("#ledTable")
+			.DataTable()
+			.button(0)
+			.enable(selectedRows === 1);
+	});
+}
+// General Ledger
+
+function generateGeneralLedgerDataTable() {
+	let rowIndex;
+	let invoiceId;
+	let htmlTemplate = `<table id="genTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+	<thead>
+		<tr>
+		<th>ID</th>
+			<th>ACCOUNT NAME</th>		
+			<th>CREDIT AMT..</th>
+			<th>DEBIT AMT ..</th>
+		 
+		</tr>
+	</thead> 
+	</table>
+`;
+	document.getElementById("createTable").innerHTML = htmlTemplate;
+
+	$("#genTable").dataTable({
+		paging: true,
+		sort: true,
+		searching: true,
+		responsive: true,
+		language: {
+			searchPlaceholder: "Search records",
+			sSearch: "",
+		},
+		pageLength: 100,
+		data: dataTableRecords,
+		columns: [
+			{ data: "Acc" },
+			{ data: "Account_Name" },
+			{ data: "Credit" },
+			{ data: "Debit" },
+		],
+		dom: "Bfrtip",
+		select: true,
+
+		buttons: [
+			{
+				text: "Print Selected Ledger",
+				action: function (e, dt, node, config) {
+					printLedger(invoiceId);
+				},
+
+				enabled: false,
+			},
+		],
+	});
+
+	//Table row selection condition ------
+
+	$("#genTable tbody").on("click", "tr", function () {
+		if ($(this).hasClass("selected")) {
+			$(this).removeClass("selected");
+		} else {
+			$("#genTable").dataTable().$("tr.selected").removeClass("selected");
+			$(this).addClass("selected");
+		}
+	});
+
+	$("#genTable tbody").on("click", "tr", function () {
+		rowIndex = $("#genTable").DataTable().row(this).index();
+
+		invoiceId = $("#genTable").DataTable().cell(".selected", 0).data();
+		var selectedRows = $("tr.selected").length;
+		$("#genTable")
 			.DataTable()
 			.button(0)
 			.enable(selectedRows === 1);
@@ -580,6 +745,102 @@ function generatePaymentDataTable() {
 		paymentId = $("#payTable").DataTable().cell(".selected", 0).data();
 		var selectedRows = $("tr.selected").length;
 		$("#payTable")
+			.DataTable()
+			.button(0)
+			.enable(selectedRows === 1);
+	});
+}
+
+// Receive table List
+
+function generateReceiveDataTable() {
+	let rowIndex;
+	let paymentId;
+	let htmlTemplate = `<table id="recTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+	<thead>
+		<tr>
+		<th>ID</th>
+			<th>ENTRY DATE</th>
+			<th>ENTRY TYPE</th>
+			<th>ACCOUNT NAME</th>
+			<th>CHEQUE NO.</th>
+			<th>AMOUNT</th>
+		 
+		</tr>
+	</thead> 
+	</table>
+`;
+	document.getElementById("createTable").innerHTML = htmlTemplate;
+
+	$("#recTable").dataTable({
+		paging: true,
+		sort: true,
+		searching: true,
+		responsive: true,
+		language: {
+			searchPlaceholder: "Search records",
+			sSearch: "",
+		},
+		pageLength: 100,
+		data: dataTableRecords,
+		columnDefs: [
+			{
+				render: function (data, type, row) {
+					return new Date(data).toLocaleDateString();
+				},
+				targets: 1,
+			},
+		],
+		columns: [
+			{ data: "id" },
+			{ data: "EntryDate" },
+			{ data: "EntryType" },
+			{
+				data: function (row, type, val, meta) {
+					if (row.Account_Name === null) {
+						return row.first_name;
+					} else {
+						return row.Account_Name;
+					}
+				},
+			},
+			{ data: "ChequeNumber" },
+			{ data: "Credit_Amount" },
+		],
+		dom: "Bfrtip",
+		select: true,
+
+		buttons: [
+			{
+				text: "Edit Selected Entry",
+				action: function (e, dt, node, config) {
+					ipcRenderer.send("receive:edit", {
+						paymentId: paymentId,
+					});
+				},
+
+				enabled: false,
+			},
+		],
+	});
+
+	//Table row selection condition ------
+
+	$("#recTable tbody").on("click", "tr", function () {
+		if ($(this).hasClass("selected")) {
+			$(this).removeClass("selected");
+		} else {
+			$("#recTable").dataTable().$("tr.selected").removeClass("selected");
+			$(this).addClass("selected");
+		}
+	});
+
+	$("#recTable tbody").on("click", "tr", function () {
+		rowIndex = $("#recTable").DataTable().row(this).index();
+
+		paymentId = $("#recTable").DataTable().cell(".selected", 0).data();
+		var selectedRows = $("tr.selected").length;
+		$("#recTable")
 			.DataTable()
 			.button(0)
 			.enable(selectedRows === 1);

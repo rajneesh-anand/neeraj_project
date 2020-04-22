@@ -100,38 +100,38 @@ form.addEventListener("submit", function (event) {
 	}
 });
 
-function getAccountBalance() {
-	let accountId = document.getElementById("agent").value;
-	let balanceField = document.getElementById("showBalance");
+// function getAccountBalance() {
+// 	let accountId = document.getElementById("agent").value;
+// 	let balanceField = document.getElementById("showBalance");
 
-	axios
-		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
-		.then((response) => {
-			let Credit = response.data.data[0];
-			let CreditAmount = Credit[0].credit;
-			let Debit = response.data.data[1];
-			let DebitAmount = Debit[0].debit;
-			console.log(CreditAmount);
-			console.log(DebitAmount);
-			let Balance = (CreditAmount - DebitAmount).toFixed(2);
-			console.log(Balance);
+// 	axios
+// 		.get(`http://localhost:3000/api/customerbalance/${accountId}`)
+// 		.then((response) => {
+// 			let Credit = response.data.data[0];
+// 			let CreditAmount = Credit[0].credit;
+// 			let Debit = response.data.data[1];
+// 			let DebitAmount = Debit[0].debit;
+// 			console.log(CreditAmount);
+// 			console.log(DebitAmount);
+// 			let Balance = (CreditAmount - DebitAmount).toFixed(2);
+// 			console.log(Balance);
 
-			if (Balance > 0) {
-				balanceField.innerText = `Balance : INR { ${thFormat(
-					Balance
-				)} } Credit `;
-			} else if (Balance < 0) {
-				balanceField.innerText = `Balance : INR { ${thFormat(
-					Math.abs(Balance)
-				)} } Debit `;
-			} else {
-				balanceField.innerText = `Balance : INR { 0.00 }`;
-			}
-		})
-		.catch((error) => {
-			if (error) throw new Error(error);
-		});
-}
+// 			if (Balance > 0) {
+// 				balanceField.innerText = `Balance : INR { ${thFormat(
+// 					Balance
+// 				)} } Credit `;
+// 			} else if (Balance < 0) {
+// 				balanceField.innerText = `Balance : INR { ${thFormat(
+// 					Math.abs(Balance)
+// 				)} } Debit `;
+// 			} else {
+// 				balanceField.innerText = `Balance : INR { 0.00 }`;
+// 			}
+// 		})
+// 		.catch((error) => {
+// 			if (error) throw new Error(error);
+// 		});
+// }
 
 function checkPaymentType(paymentTag) {
 	var x = paymentTag.options[paymentTag.selectedIndex].text;
@@ -155,7 +155,7 @@ function formattedDate(dateValue) {
 	return `${year}-${month}-${getdate}`;
 }
 
-ipcRenderer.on("fetchCustomers", (event, data) => {
+ipcRenderer.on("fetchEmployees", (event, data) => {
 	customers = [...data];
 	console.log(customers);
 	var Options = "";
@@ -169,7 +169,6 @@ ipcRenderer.on("fetchCustomers", (event, data) => {
 });
 
 ipcRenderer.on("fetchAccounts", (event, data) => {
-	console.log(data);
 	accounts = [...data];
 
 	var Options = "";
