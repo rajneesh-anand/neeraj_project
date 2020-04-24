@@ -8,18 +8,6 @@ const app = remote.app;
 const handlebars = require("handlebars");
 
 let dataTableRecords = [];
-// let cusdata = [];
-// let leddata = [];
-// let paydata = [];
-
-$(document).ready(function () {
-	$(".datepicker").datepicker({
-		defaultDate: new Date(),
-		autoClose: true,
-		format: "dd mmm yyyy",
-		setDefaultDate: true,
-	});
-});
 
 handlebars.registerHelper("ifEqual", function (a, b, options) {
 	if (a === b) {
@@ -217,10 +205,10 @@ payButton.addEventListener("click", (event) => {
 	ipcRenderer.send("create:paymentWindow", "payment_account");
 });
 
-// const salButton = document.getElementById("salary");
-// salButton.addEventListener("click", (event) => {
-// 	ipcRenderer.send("create:salaryWindow", "salary_account");
-// });
+const repButton = document.getElementById("pdfReport");
+repButton.addEventListener("click", (event) => {
+	ipcRenderer.send("create:reportWindow", "ledger_reports");
+});
 
 const jouButton = document.getElementById("journal");
 jouButton.addEventListener("click", (event) => {
@@ -316,13 +304,6 @@ invListButton.addEventListener("click", (event) => {
 	});
 });
 
-// function HtmlDateRangeElement() {
-// 	var para = document.createElement("input");
-// 	console.log(`object`);
-// 	let parentDiv = document.querySelector(".dt-buttons");
-// 	let html = `<div><input type="text" value="hello"> </div>`;
-// 	parentDiv.appendChild(para);
-// }
 // Invoice DataTable
 
 function generateInvoiceDataTable() {
@@ -386,7 +367,6 @@ function generateInvoiceDataTable() {
 				text: "Print Selected Invoice",
 				action: function (e, dt, node, config) {
 					printInvoicePdf(invoiceId);
-					// generateInvoicePDF();
 				},
 
 				enabled: false,
@@ -408,7 +388,7 @@ function generateInvoiceDataTable() {
 	$("#invTable tbody").on("click", "tr", function () {
 		rowIndex = $("#invTable").DataTable().row(this).index();
 
-		invoiceId = $("#invTable").DataTable().cell(".selected", 0).data();
+		invoiceId = $("#invTable").DataTable().cell(".selected", 1).data();
 		var selectedRows = $("tr.selected").length;
 		$("#invTable")
 			.DataTable()

@@ -9,6 +9,7 @@ const {
 	deleteUser,
 	getStates,
 	getCustomerBalanceById,
+	getCustomerslist,
 } = require("../controllers/customers");
 router.get("/customers", getCustomers);
 router.post("/customer", createCustomer);
@@ -18,5 +19,6 @@ router.post("/login", login);
 router.put("/customer", updateCustomer);
 router.delete("/", checkToken, deleteUser);
 router.get("/states", getStates);
+router.get("/fetchcustomeraccount", getCustomerslist);
 
 module.exports = router;

@@ -290,7 +290,25 @@ module.exports = {
 			}
 		);
 	},
-
+	getAccounts: (req, res) => {
+		pool.query(
+			`SELECT concat(Prefix,id) as accID, Account_Name FROM accounts`,
+			[],
+			(error, results) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
 	getPaymentByID: (req, res) => {
 		const id = req.params.id;
 		console.log(id);
@@ -319,6 +337,43 @@ module.exports = {
 		pool.query(
 			`select id,EntryDate, EntryType, Debit_Account,Debit_Amount,Credit_Account,Credit_Amount, ChequeNumber,BankName,Comments from receive where id=?`,
 			[id],
+			(error, results, fields) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
+	getGeneralLedgerByID: (req, res) => {
+		const id = req.params.id;
+		const args = req.body;
+
+		pool.query(
+			`
+		SELECT t.EntryDate, t.Credit,t.Debit,t.Comments from (
+						SELECT accounts.Date as EntryDate, accounts.Credit_Amount AS Credit, accounts.Debit_Amount AS Debit, accounts.Remarks AS Comments from shipping.accounts where id =? 
+						union
+						SELECT receive.EntryDate,receive.Credit_Amount AS Credit, NULL as Debit, Comments FROM shipping.receive where receive.Credit_Account =?
+						union
+						SELECT payments.EntryDate,payments.Credit_Amount AS Credit, NULL as Debit, Comments FROM shipping.payments where payments.Credit_Account =?
+					
+						union
+						SELECT receive.EntryDate, NULL as Credit, receive.Debit_Amount AS Debit,Comments FROM shipping.receive where receive.Debit_Account =?
+						union
+						SELECT payments.EntryDate, NULL as Credit, payments.Debit_Amount AS Debit,Comments FROM shipping.payments where payments.Debit_Account =? 
+						) AS t where t.EntryDate between ? and ? order by t.EntryDate
+						
+						`,
+			[id.slice(-1), id, id, id, id, args.from, args.to],
 			(error, results, fields) => {
 				if (error) {
 					res.status(403).json({

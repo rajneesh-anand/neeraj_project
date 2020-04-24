@@ -19,11 +19,7 @@ const printInvoiceAPICall = (id) => {
 function printInvoicePdf(invoice_id) {
 	printInvoiceAPICall(invoice_id).then(async (message) => {
 		if (message === "success") {
-			let gst_rate = (
-				invResults.CGST +
-				invResults.IGST +
-				invResults.SGST
-			).toFixed(2);
+			let gst_rate = invResults.CGST + invResults.IGST + invResults.SGST;
 			let currencyCode = invResults.Currency;
 			switch (currencyCode) {
 				case 1:
@@ -90,7 +86,7 @@ function printInvoicePdf(invoice_id) {
 					invResults.GST_Amt === 0 ? false : invResults.GST_Amt.toFixed(2),
 				Comm_Amt:
 					invResults.Comm_Amt === 0 ? false : invResults.Comm_Amt.toFixed(2),
-				GSTRate: gst_rate === 0 ? false : gst_rate,
+				GSTRate: gst_rate === 0 ? false : gst_rate.toFixed(2),
 				CGST: invResults.CGST === 0 ? false : invResults.CGST,
 				SGST: invResults.SGST === 0 ? false : invResults.SGST,
 				CGSTAmt: CGST_AMT,

@@ -514,9 +514,16 @@
 				>
 					SAVE<i class="material-icons right">save</i>
 				</button>
-					<button
+				<button
+				class="btn-small waves-effect waves-light"		
+				id="btnNew"
+				disabled
+			>
+				ADD NEW<i class="material-icons right">add</i>
+			</button>
+			<button
 						class="btn-small waves-effect waves-light"					
-						id="download"					
+						id="download"	disabled		
 					>
 						DOWNLOAD<i class="material-icons right">cloud_download</i>
 					</button>
@@ -524,11 +531,11 @@
 				</div>
 
 			</form>
-			<!-- <button id="download">Download</button> -->
-		</div>
-
-		<table id="invoice" style="display: none;"></table>
 		
+		</div>
+<!-- 
+		<table id="invoice" style="display: none;"></table>
+		 -->
 
 		<script>
 			if (typeof module === "object") {
@@ -544,16 +551,8 @@
 		></script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
-	<script src="https://unpkg.com/jspdf-autotable"></script>
-	<script src="../assets/js/jsPdf_Plugins.js"></script>
-	<script src="../assets/js/Roboto-Bold-bold.js"></script>
-	<script src="../assets/js/customFonts.js"></script>
 		<script src="./invoice.js"></script>
-		<!-- <script src="./pdf-generator.js"></script> -->
-	
+		<script src="./invoicepdf.js"></script>	
 
 		<script>
 			if (window.module) module = window.module;

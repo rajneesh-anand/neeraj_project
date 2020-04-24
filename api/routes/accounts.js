@@ -16,6 +16,8 @@ const {
 	updateReceive,
 	getCategories,
 	getgeneralledgerlist,
+	getAccounts,
+	getGeneralLedgerByID,
 } = require("../controllers/accounts");
 
 router.post("/account", createAccount);
@@ -34,5 +36,7 @@ router.post("/journal", createJournal);
 router.get("/paymentlist", getPaymentList);
 router.get("/receivelist", getReceiveList);
 router.get("/generalledgerlist", getgeneralledgerlist);
+router.get("/fetchaccounts", getAccounts);
+router.post("/generalledger/:id", getGeneralLedgerByID);
 
 module.exports = router;

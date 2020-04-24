@@ -46,6 +46,26 @@ module.exports = {
 			}
 		);
 	},
+	getCustomerslist: (req, res) => {
+		pool.query(
+			`SELECT concat(Prefix,id) as cusID, first_name FROM customers`,
+			[],
+			(error, results) => {
+				if (error) {
+					res.status(403).json({
+						message: "Database connection error !",
+						error: `Error :${error}`,
+					});
+				} else {
+					res.status(200).json({
+						message: "success",
+						data: results,
+					});
+				}
+			}
+		);
+	},
+
 	getCustomers: (req, res) => {
 		fetchCustomers((err, results) => {
 			if (err) {

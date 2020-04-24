@@ -113,7 +113,7 @@ module.exports = {
 		const invoiceId = req.params.id;
 
 		pool.query(
-			`SELECT * from invoices where Invoice_Id=?`,
+			`SELECT * from invoices where Invoice_Number=?`,
 			[invoiceId],
 			(error, results, fields) => {
 				if (error) {

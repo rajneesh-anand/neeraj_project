@@ -2,6 +2,10 @@ const electron = require("electron");
 const remote = electron.remote;
 const { ipcRenderer } = electron;
 const axios = require("axios");
+const path = require("path");
+const fs = require("fs");
+const puppeteer = require("puppeteer");
+const handlebars = require("handlebars");
 
 var val1,
 	val2,
@@ -41,6 +45,61 @@ var val1,
 	gross_amount_inr;
 
 var customers = [];
+
+handlebars.registerHelper("ifEqual", function (a, b, options) {
+	if (a === b) {
+		return options.fn(this);
+	}
+	return options.inverse(this);
+});
+
+handlebars.registerHelper("formatDate", function (dateString) {
+	let event = new Date(`${dateString}`);
+	let month = event.getMonth();
+	let date = event.getDate();
+	let year = event.getFullYear();
+
+	switch (month) {
+		case 0:
+			month = "Jan";
+			break;
+		case 1:
+			month = "Feb";
+			break;
+		case 2:
+			month = "Mar";
+			break;
+		case 3:
+			month = "Apr";
+			break;
+		case 4:
+			month = "May";
+			break;
+		case 5:
+			month = "Jun";
+			break;
+		case 6:
+			month = "Jul";
+			break;
+
+		case 7:
+			month = "Aug";
+			break;
+		case 8:
+			month = "Sep";
+			break;
+		case 9:
+			month = "Oct";
+			break;
+		case 10:
+			month = "Nov";
+			break;
+		case 11:
+			month = "Dec";
+			break;
+	}
+	return `${date} ${month} ${year}`;
+});
 
 function ValidateNumbers(e) {
 	document.oncontextmenu = function () {
@@ -350,6 +409,9 @@ form.addEventListener("submit", function (event) {
 			})
 			.then((response) => {
 				alert(response.data.message);
+				$("#btnSave").prop("disabled", true);
+				$("#download").prop("disabled", false);
+				$("#btnNew").prop("disabled", false);
 			})
 			.catch((error) => {
 				alert(error.response.data.message);
@@ -371,7 +433,7 @@ ipcRenderer.on("fetchCustomers", (event, data) => {
 
 ipcRenderer.on("sendInvoiceNumber", (event, args) => {
 	let date = new Date();
-	console.log(`CC${date.getFullYear()}${date.getMonth() + 1}-00001`);
+	// console.log(`CC${date.getFullYear()}${date.getMonth() + 1}-00001`);
 
 	let extractInvoice = args[0];
 
@@ -904,6 +966,98 @@ function generateInvoice() {
 	doc.save(`${InvoiceNumber}.pdf`);
 }
 
-document.getElementById("download").addEventListener("click", () => {
-	generateInvoice();
+document.getElementById("download").addEventListener("click", (event) => {
+	event.preventDefault();
+	const InvoiceNumber = document.getElementById("invoice_no").value;
+	printInvoicePdf(InvoiceNumber);
 });
+
+document.getElementById("btnNew").addEventListener("click", (event) => {
+	event.preventDefault();
+	clearInputs();
+	getInvoiceNumber().then((data) => {
+		let inv = data[0];
+		document.getElementById("invoice_no").value = inv["@Invoice_Number"];
+	});
+});
+
+function clearInputs() {
+	document.getElementById("invoice_no").value = "";
+	document.getElementById("name").value = "";
+	document.getElementById("adults").value = "";
+	document.getElementById("children").value = "";
+	document.getElementById("bookings").value = "";
+	document.getElementById("cabin").value = "";
+	document.getElementById("cat_bkg").value = "";
+	document.getElementById("nationality").value = "";
+	document.getElementById("infants").value = "";
+	document.getElementById("price_adults").value = "";
+	document.getElementById("price_children").value = "";
+	document.getElementById("price_infants").value = "";
+	document.getElementById("ship_name").value = "";
+	document.getElementById("cruise").value = "";
+	document.getElementById("comm").value = "";
+	document.getElementById("ncf").value = "";
+	document.getElementById("tax").value = "";
+	document.getElementById("gratuity").value = "";
+	document.getElementById("holiday").value = "";
+	document.getElementById("misc").value = "";
+	document.getElementById("tds").value = "";
+	document.getElementById("roe").value = "";
+	document.getElementById("cgst").value = "";
+	document.getElementById("sgst").value = "";
+	document.getElementById("igst").value = "";
+	document.getElementById("download").disabled = true;
+	document.getElementById("btnSave").disabled = false;
+}
+
+const getInvoiceNumber = async () => {
+	return await axios
+		.get(`http://localhost:3000/api/getinvoice`)
+		.then((response) => {
+			return response.data.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
+// async function generatepdfInvoice() {
+// 	const ledResults = {
+// 		Invoice_Number: "sadghjsgd676",
+// 		CompanyGSTIN: "37B76C238B7E1Z5",
+// 	};
+
+// 	let templateHtml = fs.readFileSync(
+// 		path.join(__dirname, "../build/invoicetemplate.html"),
+// 		"utf8"
+// 	);
+
+// 	let template = handlebars.compile(templateHtml);
+// 	let html = template(ledResults);
+
+// 	const pdfPath = `C://pdfreports//Ledger.pdf`;
+
+// 	let options = {
+// 		printBackground: true,
+// 		path: pdfPath,
+// 		format: "A4",
+// 	};
+
+// 	const browser = await puppeteer.launch({
+// 		headless: true,
+// 		// executablePath: path.join(
+// 		// 	app.getAppPath(),
+// 		// 	"../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+// 		// ),
+// 		args: ["--no-sandbox", "--disable-setuid-sandbox"],
+// 	});
+
+// 	let page = await browser.newPage();
+// 	await page.setContent(html);
+
+// 	await page.pdf(options);
+// 	await browser.close();
+
+// 	alert("LEDGER GENERATED");
+// }
