@@ -57,6 +57,10 @@
 			padding-left: 30px;
 			padding-right: 60px;
 		}
+		.zebra{
+			font-family: "Roboto", sans-serif;
+			font-size: 12px;
+		}
 	</style>
 </head>
 
@@ -64,7 +68,7 @@
 	<div class="container">
 		<div class="company_details">
 			<div><img src="http://localhost:3000/logo.png" alt="logo" /></div>
-			<div>CARROT CRUISE SHIPPING PVT.LTD</div>
+			<div>CRUISE CARROT SHIPPING PVT.LTD</div>
 			<div>357, 3rd Floor , Vardhman City Center 2</div>
 			<div>Shakti Nagar Under Bridge – Delhi 110007</div>
 			<div>Call Us @ +918189457845 / 98978789787</div>
@@ -90,11 +94,11 @@
 	<hr />
 	<table class="zebra">
 		<thead>
-			<th>Entry Date</th>
-			<th>Entry Type</th>
-			<th>Description</th>
-			<th>Debit</th>
-			<th>Credit</th>
+			<th>ENTRY DATE</th>
+			<th>ENTRY TYPE</th>
+			<th>DESCRIPTION</th>
+			<th>CREDIT</th>
+			<th>DEBIT</th>
 		</thead>
 
 		<tbody>
@@ -104,8 +108,8 @@
 				<td>{{formatDate EntryDate}}</td>
 				<td>{{EntryType}} {{Invoice_Number}}</td>
 				<td>{{Comments}}</td>
-				<td>{{Debit}}</td>
 				<td>{{Credit}}</td>
+				<td>{{Debit}}</td>
 			</tr>
 			{{/each}} {{/ifEqual}} {{/each}}
 		</tbody>
