@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const expValidator = require("express-validator");
-
 require("dotenv").config();
 
 const app = express();

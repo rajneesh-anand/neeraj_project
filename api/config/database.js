@@ -1,5 +1,4 @@
 const { createPool } = require("mysql");
-// require("dotenv").config();
 
 const pool = createPool({
 	host: process.env.DB_SERVER_HOST,
@@ -12,3 +11,10 @@ const pool = createPool({
 });
 
 module.exports = pool;
+
+
+// user grant comand 
+
+// CREATE USER 'root'@'203.0.113.2' IDENTIFIED BY 'root_password';
+// GRANT ALL PRIVILEGES ON *.* TO 'root'@'203.0.113.2' WITH GRANT OPTION;
+// FLUSH PRIVILEGES;

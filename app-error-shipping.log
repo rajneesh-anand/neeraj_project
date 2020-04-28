@@ -14,3 +14,14 @@ Uncaught error: ReferenceError: arg is not defined
     at IpcMainImpl.emit (events.js:210:5)
     at WebContents.<anonymous> (electron/js2c/browser_init.js:3851:15)
     at WebContents.emit (events.js:210:5)
+Uncaught error: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (_http_outgoing.js:485:11)
+    at ServerResponse.header (E:\NodeJS\shipping\node_modules\express\lib\response.js:771:10)
+    at ServerResponse.send (E:\NodeJS\shipping\node_modules\express\lib\response.js:170:12)
+    at ServerResponse.json (E:\NodeJS\shipping\node_modules\express\lib\response.js:267:15)
+    at E:\NodeJS\shipping\api\controllers\customers.js:41:29
+    at Query.<anonymous> (E:\NodeJS\shipping\api\services\customers.js:26:12)
+    at Query.<anonymous> (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:526:10)
+    at Query._callback (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:488:16)
+    at Query.Sequence.end (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Sequence.js:83:24)
+    at Query.ErrorPacket (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Query.js:92:8)
