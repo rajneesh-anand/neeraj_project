@@ -11,6 +11,7 @@ const { exec } = require("child_process");
 let CWD = process.cwd();
 
 let mainWindow = null;
+let loginWindow = null;
 
 global.sharedObject = {
 	someProperty: "",
@@ -75,11 +76,56 @@ async function getWeatherData() {
 		});
 }
 
+
+
+ipcMain.on("login:request", (event, fileName) => {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/` + fileName + `.html`
+	);
+
+		event.reply("login:response", "OK")
+});
+
+
+// HOME WINDOW
+
+ipcMain.on("home:window", (event, fileName) => {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/` + fileName + `.html`
+	);
+
+	mainWindow = new BrowserWindow({
+		resizable: false,
+		height:height ,
+		width: width,			
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	//mainWindow.webContents.openDevTools();
+
+	mainWindow.loadURL(modalPath);
+
+	mainWindow.on("closed", () => {
+		mainWindow = null;
+	});
+
+	getWeatherData();
+	
+});
+
+// LOGIN WINDOW
+
 function createWindow() {
 	const display = screen.getPrimaryDisplay();
 	const maxiSize = display.workAreaSize;
 
-	mainWindow = new BrowserWindow({
+	loginWindow = new BrowserWindow({
 		resizable: false,
 		height: maxiSize.height,
 		width: maxiSize.width,
@@ -89,20 +135,20 @@ function createWindow() {
 		},
 	});
 
-	mainWindow.loadURL(
+	loginWindow.loadURL(
 		url.format({
-			pathname: path.join(__dirname, "renderers/index.html"),
+			pathname: path.join(__dirname, "renderers/login.html"),
 			protocol: "file:",
 			slashes: true,
 		})
 	);
 	//	Open DevTools - Remove for PRODUCTION!
-	mainWindow.webContents.openDevTools();
+	loginWindow.webContents.openDevTools();
 	// Listen for window being closed
-	mainWindow.on("closed", () => {
+	loginWindow.on("closed", () => {
 		mainWindow = null;
 	});
-	getWeatherData();
+
 }
 // Fetching Users records --
 const userData = async () => {
