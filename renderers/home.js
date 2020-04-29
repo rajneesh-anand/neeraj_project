@@ -6,8 +6,10 @@ const puppeteer = require("puppeteer");
 const axios = require("axios");
 const app = remote.app;
 const handlebars = require("handlebars");
+const storage = require('electron-json-storage'); 
 
 let dataTableRecords = [];
+let dataPath =null;
 
 handlebars.registerHelper("ifEqual", function (a, b, options) {
 	if (a === b) {
@@ -178,11 +180,35 @@ function getReceiveListAPICall(callback) {
 }
 
 $(document).ready(function () {
+	
+	dataPath = path.join(storage.getDataPath(),"../storage");
+	storage.setDataPath(dataPath)
+
+	storage.get('userlogin', function(error, data) {
+		if (error) throw error;
+		
+		document.getElementById('userName').innerText = data.name;
+		document.getElementById('userEmail').innerText = data.email;
+
+
+	  });
+
 	getInvoiceListAPICall((response) => {
 		if (response === "success") {
 			generateInvoiceDataTable();
 		}
 	});
+
+});
+
+
+const btnlogOut = document.getElementById("btnLogout");
+btnLogout.addEventListener("click", (event) => {
+	storage.remove('userlogin', function(error) {
+		if (error) throw error;
+		const window = remote.getCurrentWindow();
+		window.close();
+	  });
 });
 
 const button = document.getElementById("newUser");

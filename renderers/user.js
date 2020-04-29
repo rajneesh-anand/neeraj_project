@@ -37,6 +37,7 @@ form.addEventListener("submit", function (event) {
 			mobile: data.get("mobile") ? data.get("mobile") : 0,
 			password: data.get("password") ? data.get("password") : "",
 			email: data.get("email") ? data.get("email") : "",
+			role: "guest"
 		};
 
 		axios

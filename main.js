@@ -6,10 +6,11 @@ const axios = require("axios");
 const path = require("path");
 const EOL = require("os").EOL;
 const fs = require("fs");
+const storage = require('electron-json-storage'); 
 const { exec } = require("child_process");
 
 let CWD = process.cwd();
-
+let dataPath = null;
 let mainWindow = null;
 let loginWindow = null;
 
@@ -76,26 +77,46 @@ async function getWeatherData() {
 		});
 }
 
+const loginAPICall = async (loginData) => {
+	return await axios.post(`http://localhost:3000/api/signin`, loginData, {
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		}
+	})
+		.then((response) => {		
+			return response.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
 
+ipcMain.on("login:request", (event, args) => {
+	
+	const dataPath = path.join(storage.getDataPath(),"../storage");
+	storage.setDataPath(dataPath)
 
-ipcMain.on("login:request", (event, fileName) => {
-	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+	loginAPICall(args).then((data) =>{
 
-	const modalPath = path.join(
-		`file://${__dirname}/renderers/` + fileName + `.html`
-	);
+	storage.set('userlogin',{name : data.name ,email :data.email,token:data.token}, function(error) {
+		if (error) throw error;
+	  });
 
-		event.reply("login:response", "OK")
+		event.reply("login:response", data.message)
+	})	
 });
 
 
 // HOME WINDOW
 
-ipcMain.on("home:window", (event, fileName) => {
+
+function createHomeWindow(){
+
 	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
 	const modalPath = path.join(
-		`file://${__dirname}/renderers/` + fileName + `.html`
+		`file://${__dirname}/renderers/index.html`
 	);
 
 	mainWindow = new BrowserWindow({
@@ -107,7 +128,7 @@ ipcMain.on("home:window", (event, fileName) => {
 		},
 	});
 
-	//mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 
 	mainWindow.loadURL(modalPath);
 
@@ -115,13 +136,41 @@ ipcMain.on("home:window", (event, fileName) => {
 		mainWindow = null;
 	});
 
-	getWeatherData();
+}
+
+ipcMain.on("home:window", (event) => {
+
+	createHomeWindow()
+	// const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+	// const modalPath = path.join(
+	// 	`file://${__dirname}/renderers/` + fileName + `.html`
+	// );
+
+	// mainWindow = new BrowserWindow({
+	// 	resizable: false,
+	// 	height:height ,
+	// 	width: width,			
+	// 	webPreferences: {
+	// 		nodeIntegration: true,
+	// 	},
+	// });
+
+	// mainWindow.webContents.openDevTools();
+
+	// mainWindow.loadURL(modalPath);
+
+	// mainWindow.on("closed", () => {
+	// 	mainWindow = null;
+	// });
+
+	// getWeatherData();
 	
 });
 
 // LOGIN WINDOW
 
-function createWindow() {
+function createLoginWindow() {
 	const display = screen.getPrimaryDisplay();
 	const maxiSize = display.workAreaSize;
 
@@ -163,11 +212,11 @@ const userData = async () => {
 		});
 };
 
-userData().then((data) => {
-	mainWindow.webContents.on("did-finish-load", (event) => {
-		mainWindow.webContents.send("fetchUsers", data);
-	});
-});
+// userData().then((data) => {
+// 	mainWindow.webContents.on("did-finish-load", (event) => {
+// 		mainWindow.webContents.send("fetchUsers", data);
+// 	});
+// });
 
 // Fetching Customers records --
 
@@ -182,11 +231,11 @@ const customerData = async () => {
 		});
 };
 
-customerData().then((data) => {
-	mainWindow.webContents.on("did-finish-load", (event) => {
-		mainWindow.webContents.send("fetchCustomers", data);
-	});
-});
+// customerData().then((data) => {
+// 	mainWindow.webContents.on("did-finish-load", (event) => {
+// 		mainWindow.webContents.send("fetchCustomers", data);
+// 	});
+// });
 
 // Fetch account category
 
@@ -837,7 +886,21 @@ ipcMain.on("data:backup", (event, args) => {
 });
 
 // Electron `app` is ready
-app.on("ready", createWindow);
+app.on("ready", () =>{	
+
+	dataPath = path.join(storage.getDataPath(),"../storage");
+	storage.setDataPath(dataPath)
+
+	storage.get('userlogin', function(error, data) {
+		if (error) throw error;
+	   
+		if (Object.keys(data).length === 0){
+			createLoginWindow();
+		}else{
+			createHomeWindow();
+		}
+	  });
+});
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on("window-all-closed", () => {
@@ -850,7 +913,19 @@ app.on("before-quit", (event) => {
 
 // When app icon is clicked and app is running, (macOS) recreate the BrowserWindow
 app.on("activate", () => {
-	if (mainWindow === null) createWindow();
+
+	
+	const dataPath = path.join(storage.getDataPath(),"../Local Storage/leveldb");
+	storage.setDataPath(dataPath)
+
+	storage.get('userlogin', function(error, data) {
+		if (error) throw error;
+	   
+		console.log(data);
+	  });
+
+
+	// if (mainWindow === null) createWindow();
 });
 
 process.on("uncaughtException", (err) => {

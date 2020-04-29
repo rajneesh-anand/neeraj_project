@@ -47,6 +47,7 @@ module.exports = {
 	},
 	login: (req, res) => {
 		const body = req.body;
+		console.log(body)
 		getUserByUserEmail(body.email, (err, results) => {
 			if (err) {
 				console.log(err);
@@ -63,10 +64,12 @@ module.exports = {
 				const jsontoken = sign({ result: results }, "neosoft@1234", {
 					expiresIn: "1h",
 				});
-				return res.json({
-					success: 1,
-					message: "login successfully",
+				return res.json({					
+					message: "login success",
 					token: jsontoken,
+					name: results.first_name,
+					email: results.email,
+					role: results.role
 				});
 			} else {
 				return res.json({
