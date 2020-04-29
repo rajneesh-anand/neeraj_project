@@ -25,3 +25,7 @@ Uncaught error: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are
     at Query._callback (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:488:16)
     at Query.Sequence.end (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Sequence.js:83:24)
     at Query.ErrorPacket (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Query.js:92:8)
+Uncaught error: TypeError: Cannot read property 'loadURL' of null
+    at click (E:\NodeJS\shipping\main.js:28:22)
+    at MenuItem.click (electron/js2c/browser_init.js:1501:9)
+    at Function.executeCommand (electron/js2c/browser_init.js:1762:13)
