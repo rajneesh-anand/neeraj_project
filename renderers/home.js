@@ -667,6 +667,7 @@ function generateCustomerDataTable() {
 function generatePaymentDataTable() {
   let rowIndex;
   let paymentId;
+  let entryType;
   let htmlTemplate = `<table id="payTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 	<thead>
 		<tr>
@@ -725,9 +726,18 @@ function generatePaymentDataTable() {
       {
         text: "Edit Selected Entry",
         action: function (e, dt, node, config) {
-          ipcRenderer.send("payment:edit", {
-            paymentId: paymentId,
-          });
+          if (
+            entryType === "CASH-TRANSACTION" ||
+            entryType === "BANK-TRANSACTION"
+          ) {
+            ipcRenderer.send("journal:edit", {
+              paymentId: paymentId,
+            });
+          } else {
+            ipcRenderer.send("payment:edit", {
+              paymentId: paymentId,
+            });
+          }
         },
 
         enabled: false,
@@ -750,6 +760,7 @@ function generatePaymentDataTable() {
     rowIndex = $("#payTable").DataTable().row(this).index();
 
     paymentId = $("#payTable").DataTable().cell(".selected", 0).data();
+    entryType = $("#payTable").DataTable().cell(".selected", 2).data();
     var selectedRows = $("tr.selected").length;
     $("#payTable")
       .DataTable()

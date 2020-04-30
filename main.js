@@ -442,8 +442,8 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 800,
-    width: 800,
+    height: 500,
+    width: 600,
     frame: false,
     title: "Reports",
     parent: mainWindow,
@@ -456,12 +456,6 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
   win.webContents.openDevTools();
 
   win.loadURL(modalPath);
-
-  // win.webContents.on("did-finish-load", (event) => {
-  // 	statesData().then((data) => {
-  // 		win.webContents.send("fetchStates", data);
-  // 	});
-  // });
 
   win.on("closed", () => {
     win = null;
@@ -724,6 +718,60 @@ ipcMain.on("receive:edit", function (event, args) {
 
   payeditWin.on("closed", () => {
     payeditWin = null;
+  });
+});
+
+// Journal edit window
+
+const fetchJournalDataByID = async (id) => {
+  return await axios
+    .get(`http://localhost:3000/api/journal/${id}`)
+    .then((response) => {
+      console.log(response.data);
+      return response.data.data;
+    })
+    .catch((error) => {
+      if (error) throw new Error(error);
+    });
+};
+
+ipcMain.on("journal:edit", function (event, args) {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/journal_edit.html`,
+  );
+
+  let jeditWin = new BrowserWindow({
+    resizable: false,
+    height: 500,
+    width: 900,
+    frame: false,
+    title: "Journal",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  console.log(args.paymentId);
+  jeditWin.webContents.openDevTools();
+
+  jeditWin.loadURL(modalPath);
+
+  jeditWin.webContents.on("did-finish-load", (event) => {
+    accountData().then((args) => {
+      jeditWin.webContents.send("fetchAccounts", args);
+    });
+
+    fetchJournalDataByID(args.paymentId).then((payData) => {
+      console.log(payData);
+      jeditWin.webContents.send("sendJournalDataForEdit", payData[0]);
+    });
+  });
+
+  jeditWin.on("closed", () => {
+    jeditWin = null;
   });
 });
 

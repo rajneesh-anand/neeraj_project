@@ -1,257 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<!-- <meta name="viewport" content="width=fpm, initial-scale=1.0" /> -->
-		<title>CRUISE CARROT</title>
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-		/>
-		<link href="../assets/css/jquery.dataTables.min.css" rel="stylesheet" />
-		<link
-			rel="stylesheet"
-			href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdn.datatables.net/select/1.2.5/css/select.dataTables.min.css"
-		/>
-		<link rel="stylesheet" href="../assets/css/style.css" />
-	</head>
-	<body>
-		<header class="navbar-fixed">
-			<nav class="light-blue lighten-4">
-				<div class="nav-wrapper">
-					<a
-						href="#"
-						data-target="sidenav-1"
-						class="left sidenav-trigger show-on-medium-and-up"
-						id="test"
-						><i class="large material-icons">menu</i></a
-					>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta name="viewport" content="width=fpm, initial-scale=1.0" /> -->
+    <title>CRUISE CARROT</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link href="../assets/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/select/1.2.5/css/select.dataTables.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <header class="navbar-fixed">
+      <nav class="light-blue lighten-4">
+        <div class="nav-wrapper">
+          <a
+            href="#"
+            data-target="sidenav-1"
+            class="left sidenav-trigger show-on-medium-and-up"
+            id="test"
+            ><i class="large material-icons">menu</i></a
+          >
 
-					<a href="#" class="brand-logo"
-						><img src="http://localhost:3000/logo.png" alt="logo"
-					/></a>
-				</div>
-			</nav>
-		</header>
+          <a href="#" class="brand-logo"
+            ><img src="http://localhost:3000/logo.png" alt="logo"
+          /></a>
+        </div>
+      </nav>
+    </header>
 
-		<aside id="sidenav-1" class="sidenav white sidenav-fixed">
-			<div class="sidenav-wrapper">
-				<div class="sidebar-profile">
-					<div class="sidebar-profile-image">
-						<span>
-							<img
-								src="../assets/images/profile.png"
-								class="circle"
-								alt="logo"
-							/>
-							<div class="right" id="currentTime"></div>
-						</span>
-					</div>
-					<div class="sidebar-profile-info">
-						<a href="javascript:void(0);" class="account-settings-link">
-							<p id="userName"></p>
-							<span id="userEmail"></span>
-						</a>
-						<a href="#" id="btnLogout">Log Out</a>
-					</div>
-				</div>
+    <aside id="sidenav-1" class="sidenav white sidenav-fixed">
+      <div class="sidenav-wrapper">
+        <div class="sidebar-profile">
+          <div class="sidebar-profile-image">
+            <span>
+              <img
+                src="../assets/images/profile.png"
+                class="circle"
+                alt="logo"
+              />
+              <div class="right" id="currentTime"></div>
+            </span>
+          </div>
+          <div class="sidebar-profile-info">
+            <a href="javascript:void(0);" class="account-settings-link">
+              <p id="userName"></p>
+              <span id="userEmail"></span>
+            </a>
+            <a href="#" id="btnLogout">Log Out</a>
+          </div>
+        </div>
 
-				<ul class="sidebar-menu collapsible">
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>CUSTOMER<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="newCustomer"><a href="#">Add Customer</a></li>
-								<li id="cusList"><a href="#">Customer List</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>INVOICE<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="newInvoice"><a href="#">New Invoice</a></li>
-								<li id="invList"><a href="#">Invoice List</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>ACCOUNT<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="account"><a href="#">Add Account</a></li>
-								<li id="journal"><a href="#">Journal Entry</a></li>
-								<li id="ledger"><a href="#">Agents Ledger</a></li>
-								<li id="generalledger"><a href="#">General Ledger</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>PAYABLE<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="payment"><a href="#">New Payment</a></li>
-								<li id="listPayments"><a href="#">Payments List</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>RECEIVABLE<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="receipt"><a href="#">New Receipt</a></li>
-								<li id="listReceive"><a href="#">Receipt List</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>REPORTS<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="pdfReport"><a href="#">LEDGER</a></li>
-							</ul>
-						</div>
-					</li>
+        <ul class="sidebar-menu collapsible">
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>CUSTOMER<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newCustomer"><a href="#">Add Customer</a></li>
+                <li id="cusList"><a href="#">Customer List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>INVOICE<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newInvoice"><a href="#">New Invoice</a></li>
+                <li id="invList"><a href="#">Invoice List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>ACCOUNT<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="account"><a href="#">Add Account</a></li>
+                <li id="journal"><a href="#">Journal Entry</a></li>
+                <li id="ledger"><a href="#">Agents Ledger</a></li>
+                <li id="generalledger"><a href="#">General Ledger</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>PAYABLE<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="payment"><a href="#">New Payment</a></li>
+                <li id="listPayments"><a href="#">Payments List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>RECEIVABLE<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="receipt"><a href="#">New Receipt</a></li>
+                <li id="listReceive"><a href="#">Receipt List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>REPORTS<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="pdfReport"><a href="#">Ledger Report</a></li>
+              </ul>
+            </div>
+          </li>
 
-					<li class="no-padding">
-						<a class="collapsible-header waves-effect waves-grey"
-							><i class="large material-icons">apps</i>USERS<i
-								class="nav-drop-icon material-icons"
-								>keyboard_arrow_right</i
-							></a
-						>
-						<div class="collapsible-body">
-							<ul>
-								<li id="newUser"><a href="#">New User</a></li>
-								<li id="dbbackup"><a href="#">Data Backup</a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</aside>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>USERS<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newUser"><a href="#">New User</a></li>
+                <li id="dbbackup"><a href="#">Data Backup</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
 
-		<!-- RIGHT SIDEBAR	 -->
-		<ul id="sidenav-2" class="sidenav">
-			<li><a class="subheader">Subheader</a></li>
-			<li>
-				<a href="https://github.com/dogfalo/materialize/" target="_blank"
-					>Github</a
-				>
-			</li>
-			<li>
-				<a href="https://twitter.com/MaterializeCSS" target="_blank">Twitter</a>
-			</li>
-			<li>
-				<a
-					href="http://next.materializecss.com/getting-started.html"
-					target="_blank"
-					>Docs</a
-				>
-			</li>
-		</ul>
+    <!-- RIGHT SIDEBAR	 -->
+    <ul id="sidenav-2" class="sidenav">
+      <li><a class="subheader">Subheader</a></li>
+      <li>
+        <a href="https://github.com/dogfalo/materialize/" target="_blank"
+          >Github</a
+        >
+      </li>
+      <li>
+        <a href="https://twitter.com/MaterializeCSS" target="_blank">Twitter</a>
+      </li>
+      <li>
+        <a
+          href="http://next.materializecss.com/getting-started.html"
+          target="_blank"
+          >Docs</a
+        >
+      </li>
+    </ul>
 
-		<main id="test2" class="testPad">
-			<div class="col s12">
-				<div class="card" style="margin: 0 0 1rem 0 !important;">
-					<div id="createTable" class="card-content"></div>
-				</div>
-			</div>
-		</main>
+    <main id="test2" class="testPad">
+      <div class="col s12">
+        <div class="card" style="margin: 0 0 1rem 0 !important;">
+          <div id="createTable" class="card-content"></div>
+        </div>
+      </div>
+    </main>
 
-		<script>
-			if (typeof module === "object") {
-				window.module = module;
-				module = undefined;
-			}
-		</script>
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
 
-		<script
-			src="https://code.jquery.com/jquery-3.4.1.min.js"
-			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-			crossorigin="anonymous"
-		></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-		<script src="../assets/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
 
-		<script
-			type="text/javascript"
-			src="https://cdn.datatables.net/select/1.2.5/js/dataTables.select.min.js"
-		></script>
-		<script
-			type="text/javascript"
-			src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"
-		></script>
-		<script
-			type="text/javascript"
-			src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"
-		></script>
-		<script src="./home.js"></script>
-		<script src="../assets/js/custom.js"></script>
-		<script src="./invoicepdf.js"></script>
-		<script src="./ledgerpdf.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/select/1.2.5/js/dataTables.select.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"
+    ></script>
+    <script src="./home.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script src="./invoicepdf.js"></script>
+    <script src="./ledgerpdf.js"></script>
 
-		<script>
-			(function () {
-				function checkTime(i) {
-					return i < 10 ? "0" + i : i;
-				}
+    <script>
+      (function () {
+        function checkTime(i) {
+          return i < 10 ? "0" + i : i;
+        }
 
-				function startTime() {
-					var today = new Date(),
-						h = checkTime(today.getHours()),
-						m = checkTime(today.getMinutes()),
-						s = checkTime(today.getSeconds());
-					document.getElementById("currentTime").innerHTML =
-						h + ":" + m + ":" + s;
-					t = setTimeout(function () {
-						startTime();
-					}, 500);
-				}
-				startTime();
-			})();
-		</script>
-		<script>
-			if (window.module) module = window.module;
-		</script>
-	</body>
+        function startTime() {
+          var today = new Date(),
+            h = checkTime(today.getHours()),
+            m = checkTime(today.getMinutes()),
+            s = checkTime(today.getSeconds());
+          document.getElementById("currentTime").innerHTML =
+            h + ":" + m + ":" + s;
+          t = setTimeout(function () {
+            startTime();
+          }, 500);
+        }
+        startTime();
+      })();
+    </script>
+    <script>
+      if (window.module) module = window.module;
+    </script>
+  </body>
 </html>
