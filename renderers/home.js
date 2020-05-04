@@ -190,11 +190,12 @@ $(document).ready(function () {
     document.getElementById("userEmail").innerText = data.email;
   });
 
-  getInvoiceListAPICall((response) => {
-    if (response === "success") {
-      generateInvoiceDataTable();
-    }
-  });
+  // getInvoiceListAPICall((response) => {
+  //   if (response === "success") {
+  //     generateInvoiceDataTable();
+  //   }
+  // });
+  generateInvoiceDataTable();
 });
 
 const btnlogOut = document.getElementById("btnLogout");
@@ -324,11 +325,14 @@ cusListButton.addEventListener("click", (event) => {
 const invListButton = document.getElementById("invList");
 invListButton.addEventListener("click", (event) => {
   $("#invTable_wrapper").remove();
-  getInvoiceListAPICall((response) => {
-    if (response === "success") {
-      generateInvoiceDataTable();
-    }
-  });
+
+  generateInvoiceDataTable();
+
+  // getInvoiceListAPICall((response) => {
+  //   if (response === "success") {
+  //     generateInvoiceDataTable();
+  //   }
+  // });
 });
 
 // Invoice DataTable
@@ -336,6 +340,7 @@ invListButton.addEventListener("click", (event) => {
 function generateInvoiceDataTable() {
   let rowIndex;
   let invoiceId;
+
   let htmlTemplate = `<table id="invTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 	<thead>
 		<tr>
@@ -355,12 +360,14 @@ function generateInvoiceDataTable() {
     sort: true,
     searching: true,
     responsive: true,
+    processing: true,
+    serverSide: true,
+    ajax: "http://localhost:3000/api/invoicelist",
     language: {
       searchPlaceholder: "Search records",
       sSearch: "",
     },
     pageLength: 100,
-    data: dataTableRecords,
     columnDefs: [
       {
         render: function (data, type, row) {
@@ -369,13 +376,13 @@ function generateInvoiceDataTable() {
         targets: 2,
       },
     ],
-    columns: [
-      { data: "Invoice_Id" },
-      { data: "Invoice_Number" },
-      { data: "Invoice_Date" },
-      { data: "Agent_Name" },
-      { data: "Total_Payable_Amt" },
-    ],
+    // columns: [
+    //   { data: "Invoice_Id" },
+    //   { data: "Invoice_Number" },
+    //   { data: "Invoice_Date" },
+    //   { data: "Agent_Name" },
+    //   { data: "Total_Payable_Amt" },
+    // ],
     dom: "Bfrtip",
     select: true,
 
