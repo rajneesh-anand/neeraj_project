@@ -1,8 +1,8 @@
 const { createPool } = require("mysql");
-// require("dotenv").config();
+require("dotenv").config();
 
 const pool = createPool({
-	host: process.env.DB_SERVER_HOST,
+	host: process.env.DB_HOST_SERVER,
 	port: 3306,
 	user: "root",
 	password: "raj2neo",

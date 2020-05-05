@@ -1,4 +1,5 @@
 const { ipcRenderer, remote } = require("electron");
+const app = remote.app;
 const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
