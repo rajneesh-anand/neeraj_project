@@ -106,8 +106,8 @@ function printInvoicePdf(invoice_id) {
 			);
 
 			// let templateHtml = fs.readFileSync(
-			// 	path.join(__dirname, "../build/invoicetemplate.html"),
-			// 	"utf8"
+			//   path.join(__dirname, "../build/invoicetemplate.html"),
+			//   "utf8",
 			// );
 
 			let template = handlebars.compile(templateHtml);
@@ -136,7 +136,7 @@ function printInvoicePdf(invoice_id) {
 			await page.pdf(options);
 			await browser.close();
 
-			alert("INVOICE GENERATED");
+			alert("INVOICE GENERATED SUCCESSFULLY");
 		}
 	});
 }

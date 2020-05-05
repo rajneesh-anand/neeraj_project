@@ -1,7 +1,56 @@
 const { ipcRenderer, remote } = require("electron");
 const axios = require("axios");
-var customers = [];
+
 var accounts = [];
+
+function dateddmmmyyyy(args) {
+  let event = new Date(`${args}`);
+  let month = event.getMonth();
+  let date = event.getDate();
+  let year = event.getFullYear();
+
+  switch (month) {
+    case 0:
+      month = "Jan";
+      break;
+    case 1:
+      month = "Feb";
+      break;
+    case 2:
+      month = "Mar";
+      break;
+    case 3:
+      month = "Apr";
+      break;
+    case 4:
+      month = "May";
+      break;
+    case 5:
+      month = "Jun";
+      break;
+    case 6:
+      month = "Jul";
+      break;
+
+    case 7:
+      month = "Aug";
+      break;
+    case 8:
+      month = "Sep";
+      break;
+    case 9:
+      month = "Oct";
+      break;
+    case 10:
+      month = "Nov";
+      break;
+    case 11:
+      month = "Dec";
+      break;
+  }
+
+  return `${date} ${month} ${year}`;
+}
 
 function isNumberKey(evt, obj) {
   var charCode = evt.which ? evt.which : event.keyCode;
@@ -38,16 +87,16 @@ $(document).ready(function () {
 
 const isvalid = () => {
   let aName = document.querySelector(".fromAccount");
-  let bName = document.querySelector(".agentName");
+  let bName = document.querySelector(".toAccount");
   let amount = document.getElementById("amount").value;
   let fromname = aName.options[aName.selectedIndex].text;
-  let agentname = bName.options[bName.selectedIndex].text;
+  let toname = bName.options[bName.selectedIndex].text;
 
   if (
     amount === "" ||
     amount === 0 ||
     fromname === "Select Account" ||
-    agentname === "Select Agent"
+    toname === "Select Account"
   ) {
     return false;
   } else {
@@ -65,11 +114,12 @@ form.addEventListener("submit", function (event) {
   if (isvalid()) {
     let data = new FormData(form);
     let paymentData = {
+      id: data.get("id"),
       date: formattedDate(data.get("payment_date")),
       entryType: Entry,
       creditAccount: data.get("fromAccount"),
       creditAmount: data.get("amount"),
-      debitAccount: data.get("agent"),
+      debitAccount: data.get("toAccount"),
       debitAmount: data.get("amount"),
       chequeNumber: data.get("cheque") ? data.get("cheque").toUpperCase() : "",
       remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
@@ -79,7 +129,7 @@ form.addEventListener("submit", function (event) {
     };
 
     axios
-      .post(`http://localhost:3000/api/payment`, paymentData, {
+      .put(`http://localhost:3000/api/journal`, paymentData, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -90,53 +140,18 @@ form.addEventListener("submit", function (event) {
         $("#bank_name").val("");
         $("#cheque").val("");
         $("#comment").val("");
-        $("#showBalance").text("");
+        $("#amount").val("");
       })
       .catch((error) => {
         alert(error.response.data.message);
       });
-
-    // $(":input").prop("disabled", true);
   }
 });
-
-function getAccountBalance() {
-  let accountId = document.getElementById("agent").value;
-  let balanceField = document.getElementById("showBalance");
-
-  axios
-    .get(`http://localhost:3000/api/customerbalance/${accountId}`)
-    .then((response) => {
-      let Credit = response.data.data[0];
-      let CreditAmount = Credit[0].credit;
-      let Debit = response.data.data[1];
-      let DebitAmount = Debit[0].debit;
-      console.log(CreditAmount);
-      console.log(DebitAmount);
-      let Balance = (CreditAmount - DebitAmount).toFixed(2);
-      console.log(Balance);
-
-      if (Balance > 0) {
-        balanceField.innerText = `Balance : INR { ${thFormat(
-          Balance,
-        )} } Credit `;
-      } else if (Balance < 0) {
-        balanceField.innerText = `Balance : INR { ${thFormat(
-          Math.abs(Balance),
-        )} } Debit `;
-      } else {
-        balanceField.innerText = `Balance : INR { 0.00 }`;
-      }
-    })
-    .catch((error) => {
-      if (error) throw new Error(error);
-    });
-}
 
 function checkPaymentType(paymentTag) {
   var x = paymentTag.options[paymentTag.selectedIndex].text;
 
-  if (x === "BANK-PAYMENT") {
+  if (x === "BANK-TRANSACTION") {
     $("#bank_name").prop("disabled", false);
     $("#cheque").prop("disabled", false);
   } else {
@@ -155,21 +170,7 @@ function formattedDate(dateValue) {
   return `${year}-${month}-${getdate}`;
 }
 
-ipcRenderer.on("fetchCustomers", (event, data) => {
-  customers = [...data];
-  // console.log(customers);
-  var Options = "";
-  data.map(function (element, i) {
-    Options =
-      Options + `<option value='${element.id}'>${element.first_name}</option>`;
-  });
-
-  $(".agentName").append(Options);
-  $(".agentName").formSelect();
-});
-
 ipcRenderer.on("fetchAccounts", (event, data) => {
-  // console.log(data);
   accounts = [...data];
 
   var Options = "";
@@ -181,18 +182,19 @@ ipcRenderer.on("fetchAccounts", (event, data) => {
 
   $(".fromAccount").append(Options);
   $(".fromAccount").formSelect();
+  $(".toAccount").append(Options);
+  $(".toAccount").formSelect();
 });
 
-// document.getElementById("ledger").addEventListener("click", (event) => {
-// 	event.preventDefault();
-// 	let accountId = document.getElementById("agent").value;
-
-// 	axios
-// 		.get(`http://localhost:3000/api/ledgerpdf/${accountId}`)
-// 		.then((response) => {
-// 			console.log(response.data);
-// 		})
-// 		.catch((error) => {
-// 			if (error) throw new Error(error);
-// 		});
-// });
+ipcRenderer.on("sendJournalDataForEdit", (event, data) => {
+  console.log(data);
+  document.getElementById("id").value = data.id;
+  document.getElementById("payment_date").value = dateddmmmyyyy(data.EntryDate);
+  document.getElementById("entry").value = data.EntryType;
+  document.getElementById("fromAccount").value = data.Credit_Account;
+  document.getElementById("toAccount").value = data.Debit_Account;
+  document.getElementById("bank_name").value = data.BankName;
+  document.getElementById("cheque").value = data.ChequeNumber;
+  document.getElementById("comment").value = data.Comments;
+  document.getElementById("amount").value = data.Debit_Amount;
+});

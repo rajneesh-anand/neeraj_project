@@ -1,132 +1,130 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<!--Import Google Icon Font-->
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet"
-		/>
-		<!--Import materialize.css-->
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-		/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<style>
-			input {
-				text-transform: uppercase;
-			}
-		</style>
-	</head>
+  <head>
+    <!--Import Google Icon Font-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Import materialize.css-->
 
-	<body onkeydown="return (event.keyCode!=13)" style="width: 100%;">
-		<div
-			class="row"
-			style="display: flex; padding-left: 1rem; padding-right: 1rem;"
-		>
-			<h6 class="flow-text">CREATE ACCOUNT</h6>
+    <link rel="stylesheet" href="../assets/css/materialize.min.css" />
 
-			<a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
-				<i class="material-icons right">close</i></a
-			>
-		</div>
-		<div class="row" style="margin-top: 15px;">
-			<form method="post" class="col s12">
-				<div class="row">
-					<div class="input-field col s4">
-						<i class="material-icons prefix">date_range</i>
-						<input
-							id="payment_date"
-							type="text"
-							name="payment_date"
-							class="datepicker"
-							required
-						/>
-						<label for="payment_date"> DATE</label>
-					</div>
-					<div class="col s6">
-						<label>ACCOUNT TYPE</label>
-						<select id="entryType" name="entryType" class="browser-default">
-							<option value="" disabled selected>SELECT CATEGORY --</option>
-						</select>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">create</i>
-						<input
-							id="account"
-							type="text"
-							class="validate"
-							name="account"
-							required
-						/>
-						<label for="account">ACCOUNT NAME</label>
-					</div>
-				</div>
+    <style>
+      input {
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
 
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">create</i>
-						<input id="comment" type="text" name="comment" class="validate" />
-						<label for="comment">REMARKS / COMMENTS</label>
-					</div>
-				</div>
+  <body onkeydown="return (event.keyCode!=13)" style="width: 100%;">
+    <div
+      class="row"
+      style="display: flex; padding-left: 1rem; padding-right: 1rem;"
+    >
+      <h6 class="flow-text">CREATE ACCOUNT</h6>
 
-				<div class="row">
-					<div class="input-field col s6">
-						<i class="material-icons prefix">create</i>
-						<input
-							id="amount"
-							name="amount"
-							type="text"
-							class="validate"
-							required
-							onkeypress="return isNumberKey(event,this);"
-						/>
-						<label for="amount">OPENING BALANCE</label>
-					</div>
-					<div class="col s6">
-						<label>BALANCE TYPE</label>
-						<select id="entry" name="entry" class="browser-default">
-							<option value="1">CREDIT OPENING BALANCE</option>
-							<option value="2">DEBIT OPENING BALANCE</option>
-						</select>
-					</div>
-				</div>
+      <a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
+        <i class="material-icons right">close</i></a
+      >
+    </div>
+    <div class="row" style="margin-top: 15px;">
+      <form method="post" class="col s12">
+        <div class="row">
+          <div class="input-field col s4">
+            <i class="material-icons prefix">date_range</i>
+            <input
+              id="payment_date"
+              type="text"
+              name="payment_date"
+              class="datepicker"
+              required
+            />
+            <label for="payment_date"> DATE</label>
+          </div>
+          <div class="col s6">
+            <label>ACCOUNT TYPE</label>
+            <select id="entryType" name="entryType" class="browser-default">
+              <option value="" disabled selected>SELECT CATEGORY --</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">create</i>
+            <input
+              id="account"
+              type="text"
+              class="validate"
+              name="account"
+              required
+            />
+            <label for="account">ACCOUNT NAME</label>
+          </div>
+        </div>
 
-				<div class="right-align">
-					<button
-						class="btn waves-effect waves-light"
-						type="submit"
-						id="btnSave"
-						name="action"
-					>
-						CREATE<i class="material-icons right">save</i>
-					</button>
-				</div>
-			</form>
-		</div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">create</i>
+            <input id="comment" type="text" name="comment" class="validate" />
+            <label for="comment">REMARKS / COMMENTS</label>
+          </div>
+        </div>
 
-		<script>
-			if (typeof module === "object") {
-				window.module = module;
-				module = undefined;
-			}
-		</script>
+        <div class="row">
+          <div class="input-field col s6">
+            <i class="material-icons prefix">create</i>
+            <input
+              id="amount"
+              name="amount"
+              type="text"
+              class="validate"
+              required
+              onkeypress="return isNumberKey(event,this);"
+            />
+            <label for="amount">OPENING BALANCE</label>
+          </div>
+          <div class="col s6">
+            <label>BALANCE TYPE</label>
+            <select id="entry" name="entry" class="browser-default">
+              <option value="1">CREDIT OPENING BALANCE</option>
+              <option value="2">DEBIT OPENING BALANCE</option>
+            </select>
+          </div>
+        </div>
 
-		<script
-			src="https://code.jquery.com/jquery-3.4.1.min.js"
-			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-			crossorigin="anonymous"
-		></script>
+        <div class="right-align">
+          <button
+            class="btn waves-effect waves-light"
+            type="submit"
+            id="btnSave"
+            name="action"
+          >
+            CREATE<i class="material-icons right">save</i>
+          </button>
+        </div>
+      </form>
+    </div>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="../assets/js/jquery-3.4.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/materialize.min.js"
+    ></script>
 
-		<script src="./account.js"></script>
+    <script src="./account.js"></script>
 
-		<script>
-			if (window.module) module = window.module;
-		</script>
-	</body>
+    <script>
+      if (window.module) module = window.module;
+    </script>
+  </body>
 </html>

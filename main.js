@@ -6,11 +6,13 @@ const axios = require("axios");
 const path = require("path");
 const EOL = require("os").EOL;
 const fs = require("fs");
+const storage = require("electron-json-storage");
 const { exec } = require("child_process");
 
 let CWD = process.cwd();
-
+let dataPath = null;
 let mainWindow = null;
+let loginWindow = null;
 
 global.sharedObject = {
 	someProperty: "",
@@ -40,9 +42,11 @@ var menu = Menu.buildFromTemplate([
 				},
 			},
 			{
-				label: "CoinMarketCap",
+				label: "Currency Exchange",
 				click() {
-					shell.openExternal("http://coinmarketcap.com");
+					shell.openExternal(
+						"https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=INR"
+					);
 				},
 				accelerator: "CmdOrCtrl+Shift+C",
 			},
@@ -50,7 +54,7 @@ var menu = Menu.buildFromTemplate([
 			{
 				label: "Exit",
 				click() {
-					process.kill(process.pid, "SIGTERM");
+					// process.kill(process.pid, "SIGTERM");
 					app.quit();
 				},
 			},
@@ -73,6 +77,72 @@ async function getWeatherData() {
 
 			global.sharedObject.someProperty = `${response.data.main.temp}`;
 		});
+}
+
+const loginAPICall = async (loginData) => {
+	return await axios
+		.post(`http://localhost:3000/api/signin`, loginData, {
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		})
+		.then((response) => {
+			return response.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
+ipcMain.on("login:request", (event, args) => {
+	const dataPath = path.join(storage.getDataPath(), "../storage");
+	storage.setDataPath(dataPath);
+
+	loginAPICall(args).then((data) => {
+		if (data.message === "User does not exists, Contact Admin !") {
+			event.reply("login:response", data.message);
+		} else {
+			storage.set(
+				"userlogin",
+				{ name: data.name, email: data.email, token: data.token },
+				function (error) {
+					if (error) throw error;
+				}
+			);
+
+			event.reply("login:response", data.message);
+		}
+	});
+});
+
+ipcMain.on("logout:request", (event) => {
+	createLoginWindow();
+});
+
+// HOME WINDOW
+
+function createHomeWindow() {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+	const modalPath = path.join(`file://${__dirname}/renderers/index.html`);
+
+	mainWindow = new BrowserWindow({
+		resizable: false,
+		height: height,
+		width: width,
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	// mainWindow.webContents.openDevTools();
+
+	mainWindow.loadURL(modalPath);
+
+	mainWindow.on("closed", () => {
+		mainWindow = null;
+	});
 }
 
 function createWindow() {
@@ -104,6 +174,7 @@ function createWindow() {
 	});
 	getWeatherData();
 }
+
 // Fetching Users records --
 const userData = async () => {
 	return await axios
@@ -117,11 +188,11 @@ const userData = async () => {
 		});
 };
 
-userData().then((data) => {
-	mainWindow.webContents.on("did-finish-load", (event) => {
-		mainWindow.webContents.send("fetchUsers", data);
-	});
-});
+// userData().then((data) => {
+// 	mainWindow.webContents.on("did-finish-load", (event) => {
+// 		mainWindow.webContents.send("fetchUsers", data);
+// 	});
+// });
 
 // Fetching Customers records --
 
@@ -136,11 +207,11 @@ const customerData = async () => {
 		});
 };
 
-customerData().then((data) => {
-	mainWindow.webContents.on("did-finish-load", (event) => {
-		mainWindow.webContents.send("fetchCustomers", data);
-	});
-});
+// customerData().then((data) => {
+// 	mainWindow.webContents.on("did-finish-load", (event) => {
+// 		mainWindow.webContents.send("fetchCustomers", data);
+// 	});
+// });
 
 // Fetch account category
 
@@ -343,8 +414,8 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 
 	let win = new BrowserWindow({
 		resizable: false,
-		height: 800,
-		width: 800,
+		height: 500,
+		width: 600,
 		frame: false,
 		title: "Reports",
 		parent: mainWindow,
@@ -357,12 +428,6 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 	win.webContents.openDevTools();
 
 	win.loadURL(modalPath);
-
-	// win.webContents.on("did-finish-load", (event) => {
-	// 	statesData().then((data) => {
-	// 		win.webContents.send("fetchStates", data);
-	// 	});
-	// });
 
 	win.on("closed", () => {
 		win = null;
@@ -628,6 +693,60 @@ ipcMain.on("receive:edit", function (event, args) {
 	});
 });
 
+// Journal edit window
+
+const fetchJournalDataByID = async (id) => {
+	return await axios
+		.get(`http://localhost:3000/api/journal/${id}`)
+		.then((response) => {
+			console.log(response.data);
+			return response.data.data;
+		})
+		.catch((error) => {
+			if (error) throw new Error(error);
+		});
+};
+
+ipcMain.on("journal:edit", function (event, args) {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+	const modalPath = path.join(
+		`file://${__dirname}/renderers/journal_edit.html`
+	);
+
+	let jeditWin = new BrowserWindow({
+		resizable: false,
+		height: 500,
+		width: 900,
+		frame: false,
+		title: "Journal",
+		parent: mainWindow,
+		modal: true,
+		webPreferences: {
+			nodeIntegration: true,
+		},
+	});
+
+	console.log(args.paymentId);
+	jeditWin.webContents.openDevTools();
+
+	jeditWin.loadURL(modalPath);
+
+	jeditWin.webContents.on("did-finish-load", (event) => {
+		accountData().then((args) => {
+			jeditWin.webContents.send("fetchAccounts", args);
+		});
+
+		fetchJournalDataByID(args.paymentId).then((payData) => {
+			console.log(payData);
+			jeditWin.webContents.send("sendJournalDataForEdit", payData[0]);
+		});
+	});
+
+	jeditWin.on("closed", () => {
+		jeditWin = null;
+	});
+});
+
 // Journal Window
 
 ipcMain.on("create:journalWindow", (event, fileName) => {
@@ -791,20 +910,42 @@ ipcMain.on("data:backup", (event, args) => {
 });
 
 // Electron `app` is ready
-app.on("ready", createWindow);
+app.on("ready", () => {
+	dataPath = path.join(storage.getDataPath(), "../storage");
+	storage.setDataPath(dataPath);
+
+	storage.get("userlogin", function (error, data) {
+		if (error) throw error;
+
+		if (Object.keys(data).length === 0) {
+			createLoginWindow();
+		} else {
+			createHomeWindow();
+		}
+	});
+});
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on("window-all-closed", () => {
 	if (process.platform !== "darwin") app.quit();
 });
 
-app.on("before-quit", (event) => {
-	process.kill(process.pid, "SIGTERM");
-});
+// app.on("before-quit", (event) => {
+//   process.kill(process.pid, "SIGTERM");
+// });
 
 // When app icon is clicked and app is running, (macOS) recreate the BrowserWindow
 app.on("activate", () => {
-	if (mainWindow === null) createWindow();
+	const dataPath = path.join(storage.getDataPath(), "../Local Storage/leveldb");
+	storage.setDataPath(dataPath);
+
+	storage.get("userlogin", function (error, data) {
+		if (error) throw error;
+
+		console.log(data);
+	});
+
+	// if (mainWindow === null) createWindow();
 });
 
 process.on("uncaughtException", (err) => {

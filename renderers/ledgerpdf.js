@@ -147,9 +147,8 @@ const printGeneralLedgerAPICall = (id) => {
 			}
 		)
 		.then((response) => {
-			// console.log(response.data);
 			results = response.data.data;
-			// console.log(results);
+
 			return response.data.message;
 		})
 		.catch((error) => {

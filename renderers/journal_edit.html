@@ -8,7 +8,6 @@
     />
     <!--Import materialize.css-->
     <link rel="stylesheet" href="../assets/css/materialize.min.css" />
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
   </head>
 
   <body onkeydown="return (event.keyCode!=13)" style="width: 100%;">
@@ -16,7 +15,7 @@
       class="row"
       style="display: flex; padding-left: 1rem; padding-right: 1rem;"
     >
-      <h6 class="flow-text">RECEIVE TRANSACTION FORM</h6>
+      <h6 class="flow-text">JOURNAL TRANSACTION FORM</h6>
 
       <a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
         <i class="material-icons right">close</i></a
@@ -28,7 +27,6 @@
           <div class="input-field col s3">
             <i class="material-icons prefix">date_range</i>
             <input
-              placeholder=""
               id="payment_date"
               type="text"
               name="payment_date"
@@ -45,34 +43,33 @@
               class="browser-default"
               onchange="checkPaymentType(this)"
             >
-              <option value="CASH-RECEIVE">CASH-RECEIVE</option>
-              <option value="BANK-RECEIVE">BANK-RECEIVE</option>
+              <option value="CASH-TRANSACTION">CASH-TRANSACTION</option>
+              <option value="BANK-TRANSACTION">BANK-TRANSACTION</option>
             </select>
           </div>
           <div class="col s5 right-align">
-            <h5 id="showBalance"></h5>
+            <h4 id="showBalance"></h4>
           </div>
         </div>
         <div class="row">
           <div class="col s6">
-            <label>TO ACCOUNT</label>
+            <label>FROM ACCOUNT</label>
             <select
-              name="fromAccount"
               id="fromAccount"
+              name="fromAccount"
               class="browser-default fromAccount"
             >
               <option value="" disabled selected>Select Account</option>
             </select>
           </div>
           <div class="col s6">
-            <label>AGENT NAME</label>
+            <label>TO ACCOUNT</label>
             <select
-              name="agent"
-              id="agent"
-              class="browser-default agentName"
-              onchange="getAccountBalance()"
+              id="toAccount"
+              name="toAccount"
+              class="browser-default toAccount"
             >
-              <option value="" disabled selected>Select Agent</option>
+              <option value="" disabled selected>Select Account</option>
             </select>
           </div>
         </div>
@@ -85,6 +82,7 @@
               type="text"
               class="validate"
               name="bank_name"
+              disabled
             />
             <label for="bank_name">BANK DETAILS</label>
           </div>
@@ -96,13 +94,14 @@
               type="text"
               name="cheque"
               class="validate"
+              disabled
             />
             <label for="cheque">CHEQUE/NEFT/RTGS DETAILS</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s8">
-            <i class="material-icons prefix">create</i>
+            <i class="material-icons prefix">person</i>
             <input
               placeholder=""
               id="comment"
@@ -125,8 +124,8 @@
             />
             <label for="amount">AMOUNT</label>
           </div>
-          <input type="text" id="id" name="id" hidden />
         </div>
+        <input type="text" id="id" name="id" hidden />
 
         <div class="right-align">
           <button
@@ -135,7 +134,7 @@
             id="btnSave"
             name="action"
           >
-            UPDATE<i class="material-icons right">save</i>
+            UPDATE <i class="material-icons right">save</i>
           </button>
         </div>
       </form>
@@ -156,7 +155,7 @@
       src="../assets/js/materialize.min.js"
     ></script>
 
-    <script src="./receive_edit.js"></script>
+    <script src="./journal_edit.js"></script>
 
     <script>
       if (window.module) module = window.module;
