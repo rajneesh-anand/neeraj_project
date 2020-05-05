@@ -42,9 +42,11 @@ var menu = Menu.buildFromTemplate([
         },
       },
       {
-        label: "CoinMarketCap",
+        label: "Currency Exchange",
         click() {
-          shell.openExternal("http://coinmarketcap.com");
+          shell.openExternal(
+            "https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=INR",
+          );
         },
         accelerator: "CmdOrCtrl+Shift+C",
       },
@@ -52,7 +54,7 @@ var menu = Menu.buildFromTemplate([
       {
         label: "Exit",
         click() {
-          process.kill(process.pid, "SIGTERM");
+          // process.kill(process.pid, "SIGTERM");
           app.quit();
         },
       },
@@ -134,7 +136,7 @@ function createHomeWindow() {
     },
   });
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -195,7 +197,7 @@ function createLoginWindow() {
     }),
   );
   //	Open DevTools - Remove for PRODUCTION!
-  loginWindow.webContents.openDevTools();
+  // loginWindow.webContents.openDevTools();
   // Listen for window being closed
 
   loginWindow.on("closed", () => {
@@ -958,9 +960,9 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-app.on("before-quit", (event) => {
-  process.kill(process.pid, "SIGTERM");
-});
+// app.on("before-quit", (event) => {
+//   process.kill(process.pid, "SIGTERM");
+// });
 
 // When app icon is clicked and app is running, (macOS) recreate the BrowserWindow
 app.on("activate", () => {

@@ -18,9 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
-	express.urlencoded({
-		extended: false,
-	})
+  express.urlencoded({
+    extended: false,
+  }),
 );
 app.use(express.json());
 app.use(expValidator());
@@ -42,12 +42,13 @@ app.use("/api", pdfRouter);
 // });
 
 process.on("SIGTERM", () => {
-	app.close(() => {
-		console.log("Server Closed");
-	});
+  app.close(() => {
+    console.log("Server Closed");
+  });
 });
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(` Server is running on port ${port}`));
+app.listen(port, () => console.log(` API SERVER RUNNING ON PORT ${port}`));
+
 module.exports = app;
