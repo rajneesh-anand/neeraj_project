@@ -1,0 +1,22 @@
+Uncaught error: TypeError: Cannot read property '0' of undefined
+    at Query._callback (E:\NodeJS\shipping\api\services\users.js:33:34)
+    at Query.Sequence.end (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Sequence.js:83:24)
+    at E:\NodeJS\shipping\node_modules\mysql\lib\Pool.js:205:13
+    at Handshake.onConnect (E:\NodeJS\shipping\node_modules\mysql\lib\Pool.js:58:9)
+    at Handshake.<anonymous> (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:526:10)
+    at Handshake._callback (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:488:16)
+    at Handshake.Sequence.end (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Sequence.js:83:24)
+    at Protocol.handleNetworkError (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\Protocol.js:369:14)
+    at PoolConnection.Connection._handleNetworkError (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:418:18)
+    at PoolConnection.Connection._handleConnectTimeout (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:414:8)
+Uncaught error: TypeError: Cannot read property '0' of undefined
+    at Query._callback (E:\NodeJS\shipping\api\services\users.js:33:34)
+    at Query.Sequence.end (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Sequence.js:83:24)
+    at E:\NodeJS\shipping\node_modules\mysql\lib\Pool.js:205:13
+    at Handshake.onConnect (E:\NodeJS\shipping\node_modules\mysql\lib\Pool.js:58:9)
+    at Handshake.<anonymous> (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:526:10)
+    at Handshake._callback (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:488:16)
+    at Handshake.Sequence.end (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\sequences\Sequence.js:83:24)
+    at Protocol.handleNetworkError (E:\NodeJS\shipping\node_modules\mysql\lib\protocol\Protocol.js:369:14)
+    at PoolConnection.Connection._handleNetworkError (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:418:18)
+    at PoolConnection.Connection._handleConnectTimeout (E:\NodeJS\shipping\node_modules\mysql\lib\Connection.js:414:8)

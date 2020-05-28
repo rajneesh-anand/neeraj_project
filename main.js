@@ -318,7 +318,7 @@ const getInvoiceNumber = async () => {
 // });
 
 ipcMain.on("update:customer", async function (event, args) {
-  console.log(args);
+  // console.log(args);
   await axios
     .put(
       `http://localhost:3000/api/customer`,
@@ -371,7 +371,7 @@ ipcMain.on("customer:edit", function (event, args) {
     },
   });
 
-  console.log(args.cusID);
+  // console.log(args.cusID);
   cuseditWindow.webContents.openDevTools();
 
   cuseditWindow.loadURL(modalPath);
@@ -466,7 +466,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 
 ipcMain.on("create:invoiceWindow", (event, fileName) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  console.log(height);
+  // console.log(height);
   const modalPath = path.join(
     `file://${__dirname}/renderers/` + fileName + `.html`,
   );
@@ -517,7 +517,7 @@ const fetchInvoiceDataByID = async (id) => {
 };
 
 ipcMain.on("invoice:edit", (event, args) => {
-  console.log(args);
+  // console.log(args);
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const modalPath = path.join(
     `file://${__dirname}/renderers/invoice_edit.html`,
@@ -546,7 +546,7 @@ ipcMain.on("invoice:edit", (event, args) => {
     });
 
     fetchInvoiceDataByID(args.invoiceId).then((invData) => {
-      console.log(invData);
+      // console.log(invData);
       inveditWin.webContents.send("sendInvoiceDataForEdit", invData);
     });
   });
@@ -605,7 +605,7 @@ ipcMain.on("create:paymentWindow", (event, fileName) => {
     });
 
     accountData().then((args) => {
-      console.log(args);
+      // console.log(args);
       pWin.webContents.send("fetchAccounts", args);
     });
   });
@@ -643,7 +643,7 @@ ipcMain.on("payment:edit", function (event, args) {
     },
   });
 
-  console.log(args.paymentId);
+  // console.log(args.paymentId);
   payeditWin.webContents.openDevTools();
 
   payeditWin.loadURL(modalPath);
@@ -699,7 +699,7 @@ ipcMain.on("receive:edit", function (event, args) {
     },
   });
 
-  console.log(args.paymentId);
+  // console.log(args.paymentId);
   payeditWin.webContents.openDevTools();
 
   payeditWin.loadURL(modalPath);
@@ -729,7 +729,7 @@ const fetchJournalDataByID = async (id) => {
   return await axios
     .get(`http://localhost:3000/api/journal/${id}`)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       return response.data.data;
     })
     .catch((error) => {
@@ -756,7 +756,7 @@ ipcMain.on("journal:edit", function (event, args) {
     },
   });
 
-  console.log(args.paymentId);
+  // console.log(args.paymentId);
   jeditWin.webContents.openDevTools();
 
   jeditWin.loadURL(modalPath);
@@ -767,7 +767,7 @@ ipcMain.on("journal:edit", function (event, args) {
     });
 
     fetchJournalDataByID(args.paymentId).then((payData) => {
-      console.log(payData);
+      // console.log(payData);
       jeditWin.webContents.send("sendJournalDataForEdit", payData[0]);
     });
   });
@@ -803,7 +803,7 @@ ipcMain.on("create:journalWindow", (event, fileName) => {
 
   jWin.webContents.on("did-finish-load", (event) => {
     accountData().then((args) => {
-      console.log(args);
+      // console.log(args);
       jWin.webContents.send("fetchAccounts", args);
     });
   });
@@ -843,7 +843,7 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
     });
 
     accountData().then((args) => {
-      console.log(args);
+      // console.log(args);
       rWin.webContents.send("fetchAccounts", args);
     });
   });
@@ -972,7 +972,7 @@ app.on("activate", () => {
   storage.get("userlogin", function (error, data) {
     if (error) throw error;
 
-    console.log(data);
+    // console.log(data);
   });
 
   // if (mainWindow === null) createWindow();
