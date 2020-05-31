@@ -136,7 +136,7 @@ function createHomeWindow() {
     },
   });
 
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -318,7 +318,7 @@ const getInvoiceNumber = async () => {
 // });
 
 ipcMain.on("update:customer", async function (event, args) {
-  // console.log(args);
+  console.log(args);
   await axios
     .put(
       `http://localhost:3000/api/customer`,
@@ -372,7 +372,7 @@ ipcMain.on("customer:edit", function (event, args) {
   });
 
   // console.log(args.cusID);
-  cuseditWindow.webContents.openDevTools();
+  // cuseditWindow.webContents.openDevTools();
 
   cuseditWindow.loadURL(modalPath);
 
@@ -421,7 +421,7 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -430,6 +430,35 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
       win.webContents.send("fetchStates", data);
     });
   });
+
+  win.on("closed", () => {
+    win = null;
+  });
+});
+
+// Messenger Window
+
+ipcMain.on("create:messengerWindow", (event, fileName) => {
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/` + fileName + `.html`,
+  );
+
+  let win = new BrowserWindow({
+    resizable: false,
+    height: 350,
+    width: 600,
+    frame: false,
+    title: "messenger",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  // win.webContents.openDevTools();
+
+  win.loadURL(modalPath);
 
   win.on("closed", () => {
     win = null;
@@ -455,7 +484,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -466,7 +495,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 
 ipcMain.on("create:invoiceWindow", (event, fileName) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  // console.log(height);
+  //  console.log(height);
   const modalPath = path.join(
     `file://${__dirname}/renderers/` + fileName + `.html`,
   );
@@ -484,7 +513,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -536,7 +565,7 @@ ipcMain.on("invoice:edit", (event, args) => {
     },
   });
 
-  inveditWin.webContents.openDevTools();
+  // inveditWin.webContents.openDevTools();
 
   inveditWin.loadURL(modalPath);
 
@@ -595,7 +624,7 @@ ipcMain.on("create:paymentWindow", (event, fileName) => {
     },
   });
 
-  pWin.webContents.openDevTools();
+  // pWin.webContents.openDevTools();
 
   pWin.loadURL(modalPath);
 
@@ -644,7 +673,7 @@ ipcMain.on("payment:edit", function (event, args) {
   });
 
   // console.log(args.paymentId);
-  payeditWin.webContents.openDevTools();
+  // payeditWin.webContents.openDevTools();
 
   payeditWin.loadURL(modalPath);
 
@@ -700,7 +729,7 @@ ipcMain.on("receive:edit", function (event, args) {
   });
 
   // console.log(args.paymentId);
-  payeditWin.webContents.openDevTools();
+  // payeditWin.webContents.openDevTools();
 
   payeditWin.loadURL(modalPath);
 
@@ -729,7 +758,7 @@ const fetchJournalDataByID = async (id) => {
   return await axios
     .get(`http://localhost:3000/api/journal/${id}`)
     .then((response) => {
-      // console.log(response.data);
+      //  console.log(response.data);
       return response.data.data;
     })
     .catch((error) => {
@@ -757,7 +786,7 @@ ipcMain.on("journal:edit", function (event, args) {
   });
 
   // console.log(args.paymentId);
-  jeditWin.webContents.openDevTools();
+  // jeditWin.webContents.openDevTools();
 
   jeditWin.loadURL(modalPath);
 
@@ -767,7 +796,7 @@ ipcMain.on("journal:edit", function (event, args) {
     });
 
     fetchJournalDataByID(args.paymentId).then((payData) => {
-      // console.log(payData);
+      //   console.log(payData);
       jeditWin.webContents.send("sendJournalDataForEdit", payData[0]);
     });
   });
@@ -797,13 +826,13 @@ ipcMain.on("create:journalWindow", (event, fileName) => {
     },
   });
 
-  jWin.webContents.openDevTools();
+  // jWin.webContents.openDevTools();
 
   jWin.loadURL(modalPath);
 
   jWin.webContents.on("did-finish-load", (event) => {
     accountData().then((args) => {
-      // console.log(args);
+      //  console.log(args);
       jWin.webContents.send("fetchAccounts", args);
     });
   });
@@ -833,7 +862,7 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
     },
   });
 
-  rWin.webContents.openDevTools();
+  // rWin.webContents.openDevTools();
 
   rWin.loadURL(modalPath);
 
@@ -843,7 +872,7 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
     });
 
     accountData().then((args) => {
-      // console.log(args);
+      //  console.log(args);
       rWin.webContents.send("fetchAccounts", args);
     });
   });
@@ -871,7 +900,7 @@ ipcMain.on("create:accountWindow", (event, fileName) => {
     },
   });
 
-  aWin.webContents.openDevTools();
+  // aWin.webContents.openDevTools();
 
   aWin.loadURL(modalPath);
 
@@ -906,7 +935,7 @@ ipcMain.on("create:user", (event, fileName) => {
     },
   });
 
-  aWin.webContents.openDevTools();
+  // aWin.webContents.openDevTools();
 
   aWin.loadURL(modalPath);
 
@@ -972,7 +1001,7 @@ app.on("activate", () => {
   storage.get("userlogin", function (error, data) {
     if (error) throw error;
 
-    // console.log(data);
+    console.log(data);
   });
 
   // if (mainWindow === null) createWindow();

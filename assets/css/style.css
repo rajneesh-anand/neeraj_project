@@ -21,9 +21,13 @@ footer {
 }
 
 .sidebar-profile {
-	padding: 25px 24px;
+	padding: 25px 16px;
 	background: url("../images/profile_bg.png");
 	background-size: cover;
+}
+.sidebar-profile .sidebar-profile-image {
+	/* display: inline-flex; */
+	justify-content: space-between;
 }
 
 .sidebar-profile .sidebar-profile-image img {

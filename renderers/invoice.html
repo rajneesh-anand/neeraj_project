@@ -37,15 +37,19 @@
 
 	<body onkeydown="return (event.keyCode!=13)" style="width:100%">
 		<div
-			class="row"
-			style="display: flex; padding-left: 1rem;padding-right: 1rem;"
+		class="row"
+		style="display: flex; padding-left: 1rem; padding-right: 1rem;"
+	  >
+		<h6 class="flow-text teal-text text-darken-3">NEW INVOICE</h6>
+  
+		<a
+		  class="btn-flat"
+		  id="btnClose"
+		  style="margin-left: auto; padding-top: 1rem;"
 		>
-			<h6 class="flow-text" style="color: rgb(5, 26, 14);">NEW INVOICE</h6>
-
-			<a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
-				<i class="material-icons right">close</i></a
-			>
-		</div>
+		  <i class="material-icons right">close</i></a
+		>
+	  </div>
 		<div class="row" style="margin-top: 15px;">
 			<form method="post" class="col s12">
 				<div class="row" style="margin-bottom: 0px !important;">
@@ -508,7 +512,7 @@
 					id="btnSave"
 					name="action"
 				>
-					SAVE<i class="material-icons right">save</i>
+					SAVE
 				</button>
 				<button
 				class="btn-small waves-effect waves-light"		

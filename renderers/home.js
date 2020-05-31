@@ -258,6 +258,11 @@ recButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:receiptWindow", "receive_account");
 });
 
+const msgButton = document.getElementById("messenger");
+msgButton.addEventListener("click", (event) => {
+  ipcRenderer.send("create:messengerWindow", "messenger");
+});
+
 const ledgerButton = document.getElementById("ledger");
 ledgerButton.addEventListener("click", (event) => {
   $("#invTable_wrapper").remove();

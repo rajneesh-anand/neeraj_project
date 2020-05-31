@@ -16,9 +16,13 @@
       class="row"
       style="display: flex; padding-left: 1rem; padding-right: 1rem;"
     >
-      <h6 class="flow-text">RECEIVE TRANSACTION FORM</h6>
+      <h6 class="flow-text teal-text text-darken-3">RECEIPT ENTRY</h6>
 
-      <a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
+      <a
+        class="btn-flat"
+        id="btnClose"
+        style="margin-left: auto; padding-top: 1rem;"
+      >
         <i class="material-icons right">close</i></a
       >
     </div>
@@ -45,8 +49,8 @@
               class="browser-default"
               onchange="checkPaymentType(this)"
             >
-              <option value="CASH-RECEIVE">CASH-RECEIVE</option>
               <option value="BANK-RECEIVE">BANK-RECEIVE</option>
+              <option value="CASH-RECEIVE">CASH-RECEIVE</option>
             </select>
           </div>
           <div class="col s5 right-align">
@@ -54,16 +58,6 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s6">
-            <label>TO ACCOUNT</label>
-            <select
-              name="fromAccount"
-              id="fromAccount"
-              class="browser-default fromAccount"
-            >
-              <option value="" disabled selected>Select Account</option>
-            </select>
-          </div>
           <div class="col s6">
             <label>AGENT NAME</label>
             <select
@@ -73,6 +67,16 @@
               onchange="getAccountBalance()"
             >
               <option value="" disabled selected>Select Agent</option>
+            </select>
+          </div>
+          <div class="col s6">
+            <label>TO ACCOUNT</label>
+            <select
+              name="fromAccount"
+              id="fromAccount"
+              class="browser-default fromAccount"
+            >
+              <option value="" disabled selected>Select Account</option>
             </select>
           </div>
         </div>

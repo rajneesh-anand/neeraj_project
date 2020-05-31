@@ -30,12 +30,14 @@ const userRouter = require(__dirname + "/routes/users");
 const invoiceRouter = require(__dirname + "/routes/invoice");
 const accountRouter = require(__dirname + "/routes/accounts");
 const pdfRouter = require(__dirname + "/routes/pdfgenerator");
+const messageRouter = require(__dirname + "/routes/message");
 
 app.use("/api", customerRouter);
 app.use("/api", userRouter);
 app.use("/api", invoiceRouter);
 app.use("/api", accountRouter);
 app.use("/api", pdfRouter);
+app.use("/api", messageRouter);
 
 // app.get("/", (req, res) => {
 // 	res.sendFile(path.join(__dirname, "../renderers/index.html"));
@@ -51,7 +53,7 @@ const port = process.env.PORT || 3000;
 
 app.listen(port, () =>
   console.log(
-    ` API SERVER RUNNING ON PORT ${port}${process.env.DB_SERVER_HOST}`,
+    ` API SERVER RUNNING ON PORT ${process.env.DB_SERVER_HOST}:${port}`,
   ),
 );
 

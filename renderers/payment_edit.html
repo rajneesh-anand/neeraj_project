@@ -16,9 +16,13 @@
       class="row"
       style="display: flex; padding-left: 1rem; padding-right: 1rem;"
     >
-      <h6 class="flow-text">PAYMENT TRANSACTION FORM</h6>
+      <h6 class="flow-text teal-text text-darken-3">PAYMENT ENTRY</h6>
 
-      <a id="btnClose" style="margin-left: auto; padding-top: 1rem;">
+      <a
+        class="btn-flat"
+        id="btnClose"
+        style="margin-left: auto; padding-top: 1rem;"
+      >
         <i class="material-icons right">close</i></a
       >
     </div>
@@ -45,8 +49,8 @@
               class="browser-default"
               onchange="checkPaymentType(this)"
             >
-              <option value="CASH-PAYMENT">CASH-PAYMENT</option>
               <option value="BANK-PAYMENT">BANK-PAYMENT</option>
+              <option value="CASH-PAYMENT">CASH-PAYMENT</option>
             </select>
           </div>
           <div class="col s5 right-align">
