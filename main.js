@@ -136,7 +136,7 @@ function createHomeWindow() {
     },
   });
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -228,7 +228,7 @@ const userData = async () => {
 
 const customerData = async () => {
   return await axios
-    .get(`http://localhost:3000/api/customers`)
+    .get(`http://localhost:3000/api/fetchcustomeraccount`)
     .then((response) => {
       return response.data.data;
     })
@@ -360,7 +360,7 @@ ipcMain.on("customer:edit", function (event, args) {
 
   let cuseditWindow = new BrowserWindow({
     resizable: false,
-    height: 650,
+    height: 630,
     width: width - 350,
     frame: false,
     title: "Edit Customer",
@@ -410,7 +410,7 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 650,
+    height: 630,
     width: width - 350,
     frame: false,
     title: "Add Customer",
@@ -445,7 +445,7 @@ ipcMain.on("create:messengerWindow", (event, fileName) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 350,
+    height: 320,
     width: 600,
     frame: false,
     title: "messenger",
@@ -456,7 +456,7 @@ ipcMain.on("create:messengerWindow", (event, fileName) => {
     },
   });
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 

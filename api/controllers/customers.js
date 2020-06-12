@@ -1,3 +1,4 @@
+const NodeTable = require("../services/nodetable");
 const {
   create,
   fetchCustomers,
@@ -48,7 +49,7 @@ module.exports = {
   },
   getCustomerslist: (req, res) => {
     pool.query(
-      `SELECT concat(Prefix,id) as cusID, first_name,mobile FROM customers`,
+      `SELECT concat(Prefix,id) as id, first_name,mobile FROM customers`,
       [],
       (error, results) => {
         if (error) {
@@ -67,16 +68,64 @@ module.exports = {
   },
 
   getCustomers: (req, res) => {
-    fetchCustomers((err, results) => {
+    // Get the query string paramters sent by Datatable
+    const requestQuery = req.query;
+
+    let columnsMap = [
+      {
+        db: "id",
+        dt: 0,
+      },
+      {
+        db: "first_name",
+        dt: 1,
+      },
+      {
+        db: "city",
+        dt: 2,
+      },
+      {
+        db: "state",
+        dt: 3,
+      },
+      {
+        db: "gstin",
+        dt: 4,
+      },
+    ];
+
+    // Custome SQL query
+    const query =
+      "SELECT concat(c.Prefix,c.id) as id,c.first_name,c.last_name,c.address_line_one,c.address_line_two,c.city,c.pincode,c.mobile,c.email,c.phone,c.gstin,c.pan,s.State_Name as state FROM customers c, states s where c.state =s.id";
+    // NodeTable requires table's primary key to work properly
+    const primaryKey = "id";
+
+    const nodeTable = new NodeTable(
+      requestQuery,
+      query,
+      primaryKey,
+      columnsMap,
+    );
+
+    nodeTable.output((err, data) => {
       if (err) {
         console.log(err);
         return;
       }
-      return res.json({
-        message: "success",
-        data: results,
-      });
+      // Directly send this data as output to Datatable
+      res.send(data);
     });
+
+    // fetchCustomers((err, results) => {
+    //   if (err) {
+    //     console.log(err);
+    //     return;
+    //   }
+    //   return res.json({
+    //     message: "success",
+    //     data: results,
+    //   });
+    // });
   },
 
   getCustomerById: (req, res) => {

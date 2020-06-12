@@ -1,0 +1,5 @@
+Uncaught error: ReferenceError: customerData is not defined
+    at WebContents.<anonymous> (E:\NodeJS\shipping\main.js:632:5)
+    at WebContents.emit (events.js:215:7)
+    at WebContents.EventEmitter.emit (domain.js:476:20)
+    at WebContents.topLevelDomainCallback (domain.js:131:23)
