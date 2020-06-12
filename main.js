@@ -36,9 +36,9 @@ var menu = Menu.buildFromTemplate([
       },
 
       {
-        label: "Adjust Notification Value",
+        label: "Website",
         click() {
-          mainWindow.loadURL("https://electron.atom.io");
+          mainWindow.loadURL("http://cruisecarrot.com/");
         },
       },
       {

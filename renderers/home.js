@@ -187,7 +187,7 @@ $(document).ready(function () {
     if (error) throw error;
 
     document.getElementById("userName").innerText = data.name;
-    document.getElementById("userEmail").innerText = data.email;
+    // document.getElementById("userEmail").innerText = data.email;
   });
 
   // getInvoiceListAPICall((response) => {

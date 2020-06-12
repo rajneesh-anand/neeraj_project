@@ -8,6 +8,11 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="../assets/css/materialize.min.css" />
     <link rel="stylesheet" href="../assets/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="../assets/css/buttons.dataTables.min.css" />
@@ -42,20 +47,26 @@
               class="right"
               id="currentTime"
               style="
-                font-family: 'Trebuchet MS', 'Lucida Sans Unicode',
-                  'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                font-family: 'Roboto Condensed', sans-serif;
                 font-size: 16px;
-                font-weight: 400;
               "
             ></div>
           </div>
           <div class="sidebar-profile-info">
-            <a href="javascript:void(0);" class="account-settings-link">
+            <h6
+              id="userName"
+              style="
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
+                  serif;
+              "
+            ></h6>
+            <!-- <a href="javascript:void(0);" class="account-settings-link">
               <p id="userName"></p>
               <span id="userEmail"></span>
-            </a>
-            <a href="#" id="btnLogout"
-              >Logout <i class="small material-icons">exit_to_app</i></a
+            </a> -->
+
+            <a href="javascript:void(0);" id="btnLogout"
+              >LOGOUT <i class="small material-icons">exit_to_app</i></a
             >
           </div>
         </div>
