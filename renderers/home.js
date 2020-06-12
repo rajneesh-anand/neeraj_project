@@ -321,11 +321,13 @@ const cusListButton = document.getElementById("cusList");
 cusListButton.addEventListener("click", (event) => {
 	$("#invTable_wrapper").remove();
 
-	getCustomerListAPICall((response) => {
-		if (response === "success") {
-			generateCustomerDataTable();
-		}
-	});
+	generateCustomerDataTable();
+
+	// getCustomerListAPICall((response) => {
+	// 	if (response === "success") {
+	// 		generateCustomerDataTable();
+	// 	}
+	// });
 });
 
 const invListButton = document.getElementById("invList");
@@ -370,7 +372,7 @@ function generateInvoiceDataTable() {
 		serverSide: true,
 		ajax: "http://localhost:3000/api/invoicelist",
 		language: {
-			searchPlaceholder: "Search records",
+			searchPlaceholder: "Search Invoice",
 			sSearch: "",
 		},
 		pageLength: 100,
@@ -620,20 +622,25 @@ function generateCustomerDataTable() {
 		paging: true,
 		sort: true,
 		searching: true,
+		responsive: true,
+		processing: true,
+		serverSide: true,
+		ajax: "http://localhost:3000/api/customers",
 		language: {
-			searchPlaceholder: "Search records",
+			searchPlaceholder: "Search Customer",
 			sSearch: "",
 		},
 		pageLength: 100,
-		data: dataTableRecords,
 
-		columns: [
-			{ data: "id" },
-			{ data: "first_name" },
-			{ data: "city" },
-			{ data: "State_Name" },
-			{ data: "gstin" },
-		],
+		// data: dataTableRecords,
+
+		// columns: [
+		// 	{ data: "id" },
+		// 	{ data: "first_name" },
+		// 	{ data: "city" },
+		// 	{ data: "State_Name" },
+		// 	{ data: "gstin" },
+		// ],
 		dom: "Bfrtip",
 		select: true,
 

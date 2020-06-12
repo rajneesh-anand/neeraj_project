@@ -136,7 +136,7 @@ function createHomeWindow() {
 		},
 	});
 
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	mainWindow.loadURL(modalPath);
 
@@ -445,7 +445,7 @@ ipcMain.on("create:messengerWindow", (event, fileName) => {
 
 	let win = new BrowserWindow({
 		resizable: false,
-		height: 350,
+		height: 320,
 		width: 600,
 		frame: false,
 		title: "messenger",
