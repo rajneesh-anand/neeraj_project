@@ -78,6 +78,47 @@ module.exports = {
       }
     });
   },
+  updateUser: (req, res) => {
+    const data = req.body;
+    const args = {
+      email: req.body.email,
+    };
+    const salt = genSaltSync(10);
+    data.password = hashSync(data.password, salt);
+
+    pool.query(
+      "SELECT COUNT(*) AS cnt FROM users WHERE email= ?",
+      [args.email],
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({
+            message: err.message,
+          });
+        }
+        if (results[0].cnt == 0) {
+          return res.status(403).json({
+            message: "User does not exists, Contact Admin !",
+          });
+        } else {
+          pool.query(
+            `update users set password=? where email=?`,
+            [data.password, data.email],
+            (error, results, fields) => {
+              if (error) {
+                return res.status(500).json({
+                  message: error.message,
+                });
+              } else {
+                return res.status(200).json({
+                  message: "Password updated successfully",
+                });
+              }
+            },
+          );
+        }
+      },
+    );
+  },
   getUserByUserId: (req, res) => {
     const id = req.params.id;
     getUserByUserId(id, (err, results) => {
