@@ -188,6 +188,36 @@ $(document).ready(function () {
     if (error) throw error;
 
     document.getElementById("userName").innerText = data.name;
+
+    if (data.role === "guest") {
+      $("#setAccount ").hover(function () {
+        $(this)
+          .children("a")
+          .click(function () {
+            return false;
+          });
+      });
+
+      $("#setPayment ").hover(function () {
+        $(this)
+          .children("a")
+          .click(function () {
+            return false;
+          });
+      });
+
+      $("#setReceive ").hover(function () {
+        $(this)
+          .children("a")
+          .click(function () {
+            return false;
+          });
+      });
+
+      $("#newUser a").click(function () {
+        return false;
+      });
+    }
     // document.getElementById("userEmail").innerText = data.email;
   });
 

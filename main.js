@@ -97,6 +97,7 @@ const loginAPICall = async (loginData) => {
 
 ipcMain.on("login:request", (event, args) => {
   const dataPath = path.join(storage.getDataPath(), "../storage");
+
   storage.setDataPath(dataPath);
 
   loginAPICall(args).then((data) => {
@@ -105,7 +106,12 @@ ipcMain.on("login:request", (event, args) => {
     } else {
       storage.set(
         "userlogin",
-        { name: data.name, email: data.email, token: data.token },
+        {
+          name: data.name,
+          email: data.email,
+          token: data.token,
+          role: data.role,
+        },
         function (error) {
           if (error) throw error;
         },
@@ -456,7 +462,7 @@ ipcMain.on("create:messengerWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -924,7 +930,7 @@ ipcMain.on("create:user", (event, fileName) => {
 
   let aWin = new BrowserWindow({
     resizable: false,
-    height: 500,
+    height: 480,
     width: 700,
     frame: false,
     title: "User",
