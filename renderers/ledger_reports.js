@@ -121,7 +121,7 @@ function APICallToFetchCustomersAccount() {
       data.splice(0, data.length);
       const custData = response.data.data;
       data = [...custData];
-
+      console.log(data);
       return response.data.message;
     })
     .catch((error) => {
@@ -151,7 +151,7 @@ function populateAccountsList() {
       data.map(function (element, i) {
         Options =
           Options +
-          `<option value='${element.cusID}'>${element.first_name}</option>`;
+          `<option value='${element.id}'>${element.first_name}</option>`;
       });
 
       $("#accountList").append(Options);
@@ -191,7 +191,7 @@ $("#agentRadio").on("click", () => {
         data.map(function (element, i) {
           Options =
             Options +
-            `<option value='${element.cusID}'>${element.first_name}</option>`;
+            `<option value='${element.id}'>${element.first_name}</option>`;
         });
 
         $("#accountList").append(Options);

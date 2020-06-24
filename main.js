@@ -479,7 +479,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 500,
+    height: 400,
     width: 600,
     frame: false,
     title: "Reports",
