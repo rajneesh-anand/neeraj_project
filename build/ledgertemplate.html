@@ -1,119 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
 
-<head>
-	<meta charset="UTF-8" />
-	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    <style type="text/css">
+      table {
+        border-collapse: collapse;
+        width: 95%;
+        font: normal medium/1.4 "Roboto", sans-serif;
+        margin-top: 8px;
+        margin-left: 20px;
+      }
 
-	<style type="text/css">
-		table {
-			border-collapse: collapse;
-			width: 95%;
-			font: normal medium/1.4 "Roboto", sans-serif;
-			margin-top: 8px;
-			margin-left: 20px;
-		}
+      th,
+      td {
+        padding: 0.25rem;
+        text-align: left;
+        border: 1px solid #ccc;
+      }
 
-		th,
-		td {
-			padding: 0.25rem;
-			text-align: left;
-			border: 1px solid #ccc;
-		}
+      tbody tr:nth-child(odd) {
+        background: #eee;
+      }
 
-		tbody tr:nth-child(odd) {
-			background: #eee;
-		}
+      .container {
+        display: flex;
+        justify-content: space-between;
+        font-family: "Roboto", sans-serif;
+      }
 
-		.container {
-			display: flex;
-			justify-content: space-between;
-			font-family: "Roboto", sans-serif;
-		}
+      .company_details {
+        padding-left: 30px;
+        padding-top: 30px;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        font-size: 14px;
+      }
 
-		.company_details {
-			padding-left: 30px;
-			padding-top: 30px;
-			font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-			font-size: 14px;
-		}
+      .agent_details {
+        padding-left: 30px;
+        padding-top: 20px;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        font-size: 14px;
+        text-align: right;
+        margin-right: 30px;
+      }
 
-		.agent_details {
-			padding-left: 30px;
-			padding-top: 20px;
-			font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-			font-size: 14px;
-			text-align: right;
-			margin-right: 30px;
-		}
+      .tophead {
+        padding: 5px 0px;
+      }
 
+      .row {
+        padding-top: 8px;
+        padding-left: 30px;
+        padding-right: 60px;
+      }
+      .zebra {
+        font-family: "Roboto", sans-serif;
+        font-size: 12px;
+      }
+    </style>
+  </head>
 
-		.tophead {
-			padding: 5px 0px;
-		}
+  <body>
+    <div class="container">
+      <div class="company_details">
+        <div><img src="http://localhost:3000/logo.png" alt="logo" /></div>
+        <div>CRUISE CARROT SHIPPING PVT.LTD</div>
+        <div>357, 3rd Floor , Vardhman City Center 2</div>
+        <div>Shakti Nagar Under Bridge – Delhi 110007</div>
+        <div>Call Us @ +918189457845 / 98978789787</div>
+        <div>GSTIN :</div>
+      </div>
+      {{#each this}} {{#ifEqual @index 0}} {{#each this}}
+      <div class="agent_details">
+        <div
+          style="
+            text-align: center;
+            border-radius: 10px;
+            background: #bada55;
+            padding: 5px 5px;
+          "
+          class="tophead"
+        >
+          General Ledger : {{first_name}}
+        </div>
+        <div class="tophead">{{address_line_one}}</div>
+        <div class="tophead">{{city}}</div>
+        <div class="tophead">{{State_Name}} {{pincode}}</div>
+        <div class="tophead">GSTIN : {{gstin}} {{pincode}}</div>
+      </div>
+      {{/each}} {{/ifEqual}} {{/each}}
+    </div>
+    <hr />
+    <table class="zebra">
+      <thead>
+        <th>ENTRY DATE</th>
+        <th>ENTRY TYPE</th>
+        <th>DESCRIPTION</th>
+        <th>CREDIT</th>
+        <th>DEBIT</th>
+      </thead>
 
-		.row {
-			padding-top: 8px;
-			padding-left: 30px;
-			padding-right: 60px;
-		}
-		.zebra{
-			font-family: "Roboto", sans-serif;
-			font-size: 12px;
-		}
-	</style>
-</head>
+      <tbody>
+        {{#each this}} {{#ifEqual @index 1}} {{#each this}}
 
-<body>
-	<div class="container">
-		<div class="company_details">
-			<div><img src="http://localhost:3000/logo.png" alt="logo" /></div>
-			<div>CRUISE CARROT SHIPPING PVT.LTD</div>
-			<div>357, 3rd Floor , Vardhman City Center 2</div>
-			<div>Shakti Nagar Under Bridge – Delhi 110007</div>
-			<div>Call Us @ +918189457845 / 98978789787</div>
-			<div>GSTIN :</div>
-		</div>
-		{{#each this}} {{#ifEqual @index 0}} {{#each this}}
-		<div class="agent_details">
-			<div style="
-						text-align: center;
-						border-radius: 10px;
-						background: #bada55;
-						padding: 5px 5px;
-					" class="tophead">
-				General Ledger : {{first_name}}
-			</div>
-			<div class="tophead">{{address_line_one}}</div>
-			<div class="tophead">{{city}}</div>
-			<div class="tophead">{{State_Name}} {{pincode}}</div>
-			<div class="tophead">GSTIN : {{gstin}} {{pincode}}</div>
-		</div>
-		{{/each}} {{/ifEqual}} {{/each}}
-	</div>
-	<hr />
-	<table class="zebra">
-		<thead>
-			<th>ENTRY DATE</th>
-			<th>ENTRY TYPE</th>
-			<th>DESCRIPTION</th>
-			<th>CREDIT</th>
-			<th>DEBIT</th>
-		</thead>
-
-		<tbody>
-			{{#each this}} {{#ifEqual @index 1}} {{#each this}}
-
-			<tr>
-				<td>{{formatDate EntryDate}}</td>
-				<td>{{EntryType}} {{Invoice_Number}}</td>
-				<td>{{Comments}}</td>
-				<td>{{Credit}}</td>
-				<td>{{Debit}}</td>
-			</tr>
-			{{/each}} {{/ifEqual}} {{/each}}
-		</tbody>
-	</table>
-</body>
-
+        <tr>
+          <td>{{formatDate EntryDate}}</td>
+          <td>{{EntryType}} {{Invoice_Number}}</td>
+          <td>{{Comments}}</td>
+          <td>{{Credit}}</td>
+          <td>{{Debit}}</td>
+        </tr>
+        {{/each}} {{/ifEqual}} {{/each}}
+      </tbody>
+    </table>
+    <div>
+      {{#each this}} {{#ifEqual @index 1}}
+      <h4>Total Debit : {{sumDebit this}}</h4>
+      {{/ifEqual}} {{/each}} {{#each this}} {{#ifEqual @index 1}}
+      <h4>Total Credit : {{sumCredit this}}</h4>
+      {{/ifEqual}} {{/each}}
+    </div>
+  </body>
 </html>

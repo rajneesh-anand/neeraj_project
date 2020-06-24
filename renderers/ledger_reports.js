@@ -27,6 +27,24 @@ handlebars.registerHelper("accInfo", (args) => {
   }
 });
 
+handlebars.registerHelper("sumDebit", function (arr) {
+  let s = 0;
+  for (let i = 0; i < arr.length; i++) {
+    s = s + arr[i].Debit;
+  }
+
+  return s.toFixed(2);
+});
+
+handlebars.registerHelper("sumCredit", function (arr) {
+  let s = 0;
+  for (let i = 0; i < arr.length; i++) {
+    s = s + arr[i].Credit;
+  }
+
+  return s;
+});
+
 handlebars.registerHelper("formatDate", function (dateString) {
   let event = new Date(`${dateString}`);
   let month = event.getMonth();

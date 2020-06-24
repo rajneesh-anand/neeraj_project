@@ -20,6 +20,7 @@ const printLedgerAPICallDateWise = (id) => {
     )
     .then((response) => {
       results = response.data.data;
+      console.log(results);
 
       return response.data.message;
     })
@@ -53,7 +54,7 @@ function printAgentLedgerPdf(id) {
         path.join(__dirname, "../build/ledgertemplate.html"),
         "utf8",
       );
-
+      console.log(results);
       let template = handlebars.compile(templateHtml);
       let html = template(results);
       const pdfPath = `C://pdfreports//Ledger.pdf`;

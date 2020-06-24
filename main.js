@@ -142,7 +142,7 @@ function createHomeWindow() {
     },
   });
 
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -479,7 +479,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 400,
+    height: 550,
     width: 600,
     frame: false,
     title: "Reports",
@@ -490,7 +490,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
     },
   });
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
