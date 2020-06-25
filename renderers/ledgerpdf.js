@@ -20,7 +20,7 @@ const printLedgerAPICallDateWise = (id) => {
     )
     .then((response) => {
       results = response.data.data;
-      console.log(results);
+      // console.log(results);
 
       return response.data.message;
     })
@@ -100,6 +100,8 @@ const printGeneralLedgerAPICall = (id) => {
     )
     .then((response) => {
       results = response.data.data;
+
+      // console.log(results);
 
       return response.data.message;
     })

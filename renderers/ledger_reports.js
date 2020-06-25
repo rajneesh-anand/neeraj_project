@@ -21,13 +21,32 @@ handlebars.registerHelper("accInfo", (args) => {
   if (args === "acc") {
     return accName;
   } else if (args === "fromDate") {
-    return fromDate;
+    let current_datetime = new Date(`${fromDate}`);
+    let formatted_date =
+      current_datetime.getDate() +
+      "-" +
+      (current_datetime.getMonth() + 1) +
+      "-" +
+      current_datetime.getFullYear();
+    // console.log(formatted_date)
+
+    return formatted_date;
   } else {
-    return toDate;
+    let current_datetime = new Date(`${toDate}`);
+    let formatted_todate =
+      current_datetime.getDate() +
+      "-" +
+      (current_datetime.getMonth() + 1) +
+      "-" +
+      current_datetime.getFullYear();
+    // console.log(formatted_date)
+
+    return formatted_todate;
   }
 });
 
 handlebars.registerHelper("sumDebit", function (arr) {
+  // console.log(arr);
   let s = 0;
   for (let i = 0; i < arr.length; i++) {
     s = s + arr[i].Debit;
@@ -139,7 +158,7 @@ function APICallToFetchCustomersAccount() {
       data.splice(0, data.length);
       const custData = response.data.data;
       data = [...custData];
-      console.log(data);
+      // console.log(data);
       return response.data.message;
     })
     .catch((error) => {

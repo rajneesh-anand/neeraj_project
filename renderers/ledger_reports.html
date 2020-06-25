@@ -6,11 +6,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/materialize.min.css" />
-    <style>
+    <!-- <style>
       .datepicker-modal {
         transform: scale(0.8) !important;
       }
-    </style>
+    </style> -->
   </head>
 
   <body onkeydown="return (event.keyCode!=13)" onunload="">
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s6">
+          <div class="col s12">
             CHOOSE ACCOUNT #
             <div class="inline">
               <select
@@ -94,6 +94,7 @@
             type="submit"
             id="generate"
             name="action"
+            style="margin-top: 8rem;"
           >
             GENERATE REPORT
           </button>
