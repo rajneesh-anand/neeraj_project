@@ -519,7 +519,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
     },
   });
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 

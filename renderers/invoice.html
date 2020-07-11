@@ -65,6 +65,14 @@
 						/>
 						<label for="invoice_no">Invoice No.</label>
 					</div>
+					<div class="col s2">
+						<label>Invoice Type</label>
+								<select id="invoiceType" name="invoiceType" class="browser-default"   onchange="checkInvoiceType(this)">
+									<option value="TOKEN">TOKEN</option>   
+									<option value="REGULAR">REGULAR</option>
+									
+								</select>
+					</div>
 					<div class="input-field col s2">
 						<i class="material-icons prefix">date_range</i>
 						<input
@@ -97,7 +105,7 @@
 									<option value="5">USD</option>
 								</select>
 					</div>
-					<div class=" col s5">
+					<div class=" col s3">
 						<label>AGENT NAME</label>
 						<select name="agent" class="browser-default agentName">		
 							<option value="" disabled selected>Select Agent</option>					
@@ -357,31 +365,30 @@
 							/>
 							<label for="tds">TDS</label>
 						</div>
-						<div class="input-field col s3">
+						<!-- <div class="input-field col s3">
 						<div class="switch ">
 							<label>
 								ADVANCE/TOKEN
-								<input id="my-switch"  type="checkbox" />
+								<input id="tokenSwitch"  type="checkbox" />
 								<span class="lever"></span>
 							</label>
 						</div>
-						</div>
+						</div> -->
 					
-                        <div class="input-field col s3">							
+                        <div class="input-field col s4">							
 							<!-- <i class="material-icons prefix">phone</i> -->
-                            <input
-                            disabled
+                            <input                            
 								id="token"
 								type="text"
 								name="token"
 								class="validate"
 								onkeypress="return isNumberKey(event,this);"
-								onkeyup="GetTotal(this);"
+								
 							/>
 							<label for="token">Token Amount </label>
 						</div>
 						
-                        <div class="input-field col s2">							
+                        <div class="input-field col s4">							
 							<!-- <i class="material-icons prefix">phone</i> -->
                             <input
                             

@@ -8,6 +8,8 @@ const pool = createPool({
   database: "shipping",
   connectionLimit: 10,
   multipleStatements: true,
+  connectTimeout: 60 * 60 * 1000,
+  acquireTimeout: 60 * 60 * 1000,
 });
 
 module.exports = pool;

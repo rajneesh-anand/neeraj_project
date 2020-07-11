@@ -58,6 +58,7 @@ function printInvoicePdf(invoice_id) {
       const data = {
         Invoice_Number: invResults.Invoice_Number,
         Invoice_Date: invResults.Invoice_Date,
+        Invoice_Type: invResults.Invoice_Type,
         Departure_Date: invResults.Departure_Date,
         TotalINR: invResults.Total_Payable_Amt_INR,
         Pass_Name: invResults.Pass_Name,
@@ -82,6 +83,10 @@ function printInvoicePdf(invoice_id) {
         Misc: invResults.Misc === 0 ? false : invResults.Misc.toFixed(2),
         Token_Amt:
           invResults.Token_Amt === 0 ? false : invResults.Token_Amt.toFixed(2),
+        Token_Amt_INR:
+          invResults.Token_Amt_INR === 0
+            ? false
+            : invResults.Token_Amt_INR.toFixed(2),
         GST_Amt:
           invResults.GST_Amt === 0 ? false : invResults.GST_Amt.toFixed(2),
         Comm_Amt:
@@ -100,15 +105,15 @@ function printInvoicePdf(invoice_id) {
         currency: currencyCode,
       };
 
-      let templateHtml = fs.readFileSync(
-        path.join(app.getAppPath(), "../build/invoicetemplate.html"),
-        "utf8",
-      );
-
       // let templateHtml = fs.readFileSync(
-      //   path.join(__dirname, "../build/invoicetemplate.html"),
+      //   path.join(app.getAppPath(), "../build/invoicetemplate.html"),
       //   "utf8",
       // );
+
+      let templateHtml = fs.readFileSync(
+        path.join(__dirname, "../build/invoicetemplate.html"),
+        "utf8",
+      );
 
       let template = handlebars.compile(templateHtml);
       let html = template(data);
@@ -123,10 +128,10 @@ function printInvoicePdf(invoice_id) {
 
       const browser = await puppeteer.launch({
         headless: true,
-        executablePath: path.join(
-          app.getAppPath(),
-          "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
-        ),
+        // executablePath: path.join(
+        //   app.getAppPath(),
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
+        // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
 
