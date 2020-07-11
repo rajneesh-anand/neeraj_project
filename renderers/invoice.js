@@ -426,9 +426,12 @@ form.addEventListener("submit", function (event) {
           : gross_amount_inr,
       EntryType: "INVOICE",
       InvoiceNumber: data.get("invoice_no"),
+      Comments:
+        data.get("invoiceType") === "TOKEN"
+          ? `Token Invoice at R.O.E - ${val18}`
+          : `Invoice at R.O.E - ${val18}`,
     };
 
-    console.log(invoiceData);
     axios
       .post(`http://localhost:3000/api/invoice`, invoiceData, {
         headers: {

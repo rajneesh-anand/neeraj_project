@@ -6,7 +6,7 @@ module.exports = {
             Comm_Rate,Comm_Amt,NCF,NCF_Amt,TAX,TAX_Amt,Grat,Grat_Amt,HS,HS_Amt,Misc,TDS,TDS_Amt,Token_Amt,CGST,IGST,SGST,GST_Amt,ROE, Base_Amt,Total_Payable_Amt,Total_Payable_Amt_INR,Token,GST,PAX,Token_Amt_INR)
            
             values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); 
-            insert into payments(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,Invoice_Number)values(?,?,?,?,?,?,?)`;
+            insert into payments(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,Invoice_Number,Comments)values(?,?,?,?,?,?,?,?)`;
 
     pool.query(
       insertIntoInvoiceAndAccounts,
@@ -63,6 +63,7 @@ module.exports = {
         data.Debit_Amount,
         data.EntryType,
         data.InvoiceNumber,
+        data.Comments,
       ],
       (error, results, fields) => {
         if (error) {
