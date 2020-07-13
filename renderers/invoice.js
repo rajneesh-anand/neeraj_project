@@ -372,7 +372,8 @@ form.addEventListener("submit", function (event) {
     let data = new FormData(form);
     let invoiceData = {
       Invoice_Number: data.get("invoice_no"),
-      Invoice_Type: data.get("invoiceType"),
+      Invoice_Type:
+        data.get("invoiceType") === "TOKEN" ? "Token Invoice" : "Invoice",
       Invoice_Date: formattedDate(data.get("invoice_date")),
       Departure_Date: formattedDate(data.get("departure_date")),
       Agent_Name: data.get("agent"),
@@ -418,18 +419,22 @@ form.addEventListener("submit", function (event) {
       PAX: total_passenger,
       EntryDate: formattedDate(data.get("invoice_date")),
       Credit_Account: "ACC1",
-      Credit_Amount: token_amount_inr,
+      Credit_Amount:
+        data.get("invoiceType") === "TOKEN"
+          ? token_amount_inr
+          : gross_amount_inr,
       Debit_Account: data.get("agent"),
       Debit_Amount:
         data.get("invoiceType") === "TOKEN"
           ? token_amount_inr
           : gross_amount_inr,
-      EntryType: "INVOICE",
+      EntryType:
+        data.get("invoiceType") === "TOKEN" ? "Token Invoice" : "Invoice",
       InvoiceNumber: data.get("invoice_no"),
       Comments:
         data.get("invoiceType") === "TOKEN"
-          ? `Token Invoice at R.O.E - ${val18}`
-          : `Invoice at R.O.E - ${val18}`,
+          ? `Token Invoice at R.O.E  ${val18}`
+          : `Invoice at R.O.E  ${val18}`,
     };
 
     axios

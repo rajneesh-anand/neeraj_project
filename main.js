@@ -571,7 +571,7 @@ ipcMain.on("invoice:edit", (event, args) => {
     },
   });
 
-  // inveditWin.webContents.openDevTools();
+  inveditWin.webContents.openDevTools();
 
   inveditWin.loadURL(modalPath);
 

@@ -54,7 +54,7 @@ function printAgentLedgerPdf(id) {
         path.join(__dirname, "../build/ledgertemplate.html"),
         "utf8",
       );
-      console.log(results);
+      // console.log(results);
       let template = handlebars.compile(templateHtml);
       let html = template(results);
       const pdfPath = `C://pdfreports//Ledger.pdf`;

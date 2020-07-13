@@ -53,16 +53,7 @@
 	  </div>
 		<div class="row" style="margin-top: 15px;">
 			<form method="post" class="col s12">
-				<div class="row" style="margin-bottom: 0px !important;">
-					<div class="input-field col s3">
-						<div class="switch ">
-							<label>
-								TokenType
-								<input id="my-switch"  type="checkbox" />
-								<span class="lever"></span>
-							</label>
-						</div>
-						</div>
+				<div class="row" style="margin-bottom: 0px !important;">				
 					<div class="input-field col s2">
 						<i class="material-icons prefix">arrow_forward</i>
 						<input
@@ -73,6 +64,14 @@
 							readonly
 						/>
 						<label for="invoice_no">Invoice No.</label>
+					</div>
+					<div class="col s2">
+						<label>Invoice Type</label>
+								<select id="invoiceType" name="invoiceType" class="browser-default"   onchange="checkInvoiceType(this)">
+									<option value="TOKEN">TOKEN</option>   
+									<option value="REGULAR">REGULAR</option>
+									
+								</select>
 					</div>
 					<div class="input-field col s2">
 						<i class="material-icons prefix">date_range</i>
@@ -106,7 +105,7 @@
 									<option value="5">USD</option>
 								</select>
 					</div>
-					<div class=" col s5">
+					<div class=" col s3">
 						<label>AGENT NAME</label>
 						<select name="agent" id ="agentName" class="browser-default agentName">		
 							<option value="" disabled selected>Select Agent</option>					
@@ -367,40 +366,29 @@
 							/>
 							<label for="tds">TDS</label>
 						</div>
-						<div class="input-field col s3">
-						<div class="switch ">
-							<label>
-								ADVANCE/TOKEN
-								<input id="my-switch"  type="checkbox" />
-								<span class="lever"></span>
-							</label>
-						</div>
-						</div>
 					
-                        <div class="input-field col s3">							
+					
+                        <div class="input-field col s4">							
 							<!-- <i class="material-icons prefix">phone</i> -->
-                            <input   placeholder=""
-                            disabled
+                            <input   placeholder=""                          
 								id="token"
 								type="text"
 								name="token"
 								class="validate"
 								onkeypress="return isNumberKey(event,this);"
-								onkeyup="GetTotal();"
+							
 							/>
 							<label for="token">Token Amount </label>
 						</div>
 						
-                        <div class="input-field col s2">							
+                        <div class="input-field col s4">							
 							<!-- <i class="material-icons prefix">phone</i> -->
-                            <input   placeholder=""
-                            
+                            <input   placeholder=""                            
 								id="roe"
 								type="text"
 								name="roe"
 								class="validate"
-								onkeypress="return isNumberKey(event,this);"
-									onkeyup="GetTotal();"
+								onkeypress="return isNumberKey(event,this);"						
 							
 							/>
 							<label for="roe">R.O.E </label>

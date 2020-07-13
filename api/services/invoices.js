@@ -75,13 +75,14 @@ module.exports = {
   },
 
   update: (data, callBack) => {
-    const updateIntoInvoiceAndAccounts = `update invoices set Invoice_Date=?, Departure_Date=?, Agent_Name=?, Cruise_Ship=?, Cruise=?, Currency=?, Booking=?, Cabin=?, Cat_Bkg=?, Pass_Name=?, Nationality=?, Adults=?, Children=?, Infants=?, Adults_Rate=?, Children_Rate=?, Infants_Rate=?, 
-            Comm_Rate=?, Comm_Amt=?, NCF=?, NCF_Amt=?, TAX=?,TAX_Amt=?,Grat=?,Grat_Amt=?,HS=?,HS_Amt=?,Misc=?,TDS=?,TDS_Amt=?,Token_Amt=?,CGST=?,IGST=?,SGST=?,GST_Amt=?,ROE=?, Base_Amt=?,Total_Payable_Amt=?,Total_Payable_Amt_INR=?,Token=?,GST=?,PAX=? where Invoice_Number=?;             
-           update payments set EntryDate=?,Credit_Account=?,Credit_Amount=?,Debit_Account=?,Debit_Amount=?,EntryType=? where Invoice_Number =? `;
+    const updateIntoInvoiceAndAccounts = `update invoices set Invoice_Type=?,Invoice_Date=?, Departure_Date=?, Agent_Name=?, Cruise_Ship=?, Cruise=?, Currency=?, Booking=?, Cabin=?, Cat_Bkg=?, Pass_Name=?, Nationality=?, Adults=?, Children=?, Infants=?, Adults_Rate=?, Children_Rate=?, Infants_Rate=?, 
+            Comm_Rate=?, Comm_Amt=?, NCF=?, NCF_Amt=?, TAX=?,TAX_Amt=?,Grat=?,Grat_Amt=?,HS=?,HS_Amt=?,Misc=?,TDS=?,TDS_Amt=?,Token_Amt=?,Token_Amt_INR=?,CGST=?,IGST=?,SGST=?,GST_Amt=?,ROE=?, Base_Amt=?,Total_Payable_Amt=?,Total_Payable_Amt_INR=?,Token=?,GST=?,PAX=? where Invoice_Number=?;             
+           update payments set EntryDate=?,Credit_Account=?,Credit_Amount=?,Debit_Account=?,Debit_Amount=?,Comments=? where Invoice_Number =? and EntryType=?`;
     console.log(updateIntoInvoiceAndAccounts);
     pool.query(
       updateIntoInvoiceAndAccounts,
       [
+        data.Invoice_Type,
         data.Invoice_Date,
         data.Departure_Date,
         data.Agent_Name,
@@ -113,6 +114,77 @@ module.exports = {
         data.TDS,
         data.TDS_Amt,
         data.Token_Amt,
+        data.Token_Amt_INR,
+        data.CGST,
+        data.IGST,
+        data.SGST,
+        data.GST_Amt,
+        data.ROE,
+        data.Base_Amt,
+        data.Total_Payable_Amt,
+        data.Total_Payable_Amt_INR,
+        data.Token,
+        data.GST,
+        data.PAX,
+        data.Invoice_Number,
+        data.EntryDate,
+        data.Credit_Account,
+        data.Credit_Amount,
+        data.Debit_Account,
+        data.Debit_Amount,
+        data.Comments,
+        data.InvoiceNumber,
+        data.EntryType,
+      ],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      },
+    );
+  },
+  updateInsert: (data, callBack) => {
+    const updateInsertIntoInvoiceAndAccounts = `update invoices set Invoice_Type=?,Invoice_Date=?, Departure_Date=?, Agent_Name=?, Cruise_Ship=?, Cruise=?, Currency=?, Booking=?, Cabin=?, Cat_Bkg=?, Pass_Name=?, Nationality=?, Adults=?, Children=?, Infants=?, Adults_Rate=?, Children_Rate=?, Infants_Rate=?, 
+            Comm_Rate=?, Comm_Amt=?, NCF=?, NCF_Amt=?, TAX=?,TAX_Amt=?,Grat=?,Grat_Amt=?,HS=?,HS_Amt=?,Misc=?,TDS=?,TDS_Amt=?,Token_Amt=?,Token_Amt_INR=?,CGST=?,IGST=?,SGST=?,GST_Amt=?,ROE=?, Base_Amt=?,Total_Payable_Amt=?,Total_Payable_Amt_INR=?,Token=?,GST=?,PAX=? where Invoice_Number=?;             
+            insert into payments(EntryDate,Credit_Account,Credit_Amount,Debit_Account,Debit_Amount,EntryType,Invoice_Number,Comments)values(?,?,?,?,?,?,?,?)`;
+    console.log(updateInsertIntoInvoiceAndAccounts);
+    pool.query(
+      updateInsertIntoInvoiceAndAccounts,
+      [
+        data.Invoice_Type,
+        data.Invoice_Date,
+        data.Departure_Date,
+        data.Agent_Name,
+        data.Cruise_Ship,
+        data.Cruise,
+        data.Currency,
+        data.Booking,
+        data.Cabin,
+        data.Cat_Bkg,
+        data.Pass_Name,
+        data.Nationality,
+        data.Adults,
+        data.Children,
+        data.Infants,
+        data.Adults_Rate,
+        data.Children_Rate,
+        data.Infants_Rate,
+        data.Comm_Rate,
+        data.Comm_Amt,
+        data.NCF,
+        data.NCF_Amt,
+        data.TAX,
+        data.TAX_Amt,
+        data.Grat,
+        data.Grat_Amt,
+        data.HS,
+        data.HS_Amt,
+        data.Misc,
+        data.TDS,
+        data.TDS_Amt,
+        data.Token_Amt,
+        data.Token_Amt_INR,
         data.CGST,
         data.IGST,
         data.SGST,
@@ -132,6 +204,7 @@ module.exports = {
         data.Debit_Amount,
         data.EntryType,
         data.InvoiceNumber,
+        data.Comments,
       ],
       (error, results, fields) => {
         if (error) {

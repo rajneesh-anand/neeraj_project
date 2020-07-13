@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 const NodeTable = require("../services/nodetable");
 
-const { create, update } = require("../services/invoices");
+const { create, update, updateInsert } = require("../services/invoices");
 
 module.exports = {
   getInvoiceNumber: (req, res) => {
@@ -59,18 +59,54 @@ module.exports = {
     const body = req.body;
     console.log(body);
 
-    update(body, (err, results) => {
-      if (err) {
-        return res.status(500).json({
-          success: 0,
-          message: "Database connection error !",
-        });
-      }
-      return res.status(200).json({
-        message: "Invoice updated successfully !",
-        data: results,
-      });
-    });
+    const reg = {
+      Invoice_Number: body.Invoice_Number,
+      EntryType: body.Invoice_Type,
+    };
+    console.log(reg.Invoice_Number);
+    console.log(reg.EntryType);
+
+    pool.query(
+      "SELECT COUNT(*) AS cnt FROM payments WHERE Invoice_Number = ? and EntryType=?",
+      [reg.Invoice_Number, reg.EntryType],
+      (err, data) => {
+        console.log(data);
+        if (err) {
+          return res.status(403).json({
+            error: err,
+          });
+        }
+        if (data[0].cnt > 0) {
+          console.log(`update`);
+          update(body, (err, results) => {
+            if (err) {
+              return res.status(500).json({
+                success: 0,
+                message: "Database connection error !",
+              });
+            }
+            return res.status(200).json({
+              message: "Invoice updated successfully !",
+              data: results,
+            });
+          });
+        } else {
+          updateInsert(body, (err, results) => {
+            console.log(`updateInsert`);
+            if (err) {
+              return res.status(500).json({
+                success: 0,
+                message: "Database connection error !",
+              });
+            }
+            return res.status(200).json({
+              message: "Invoice updated successfully !",
+              data: results,
+            });
+          });
+        }
+      },
+    );
   },
 
   //   getInvoices: (req, res) => {

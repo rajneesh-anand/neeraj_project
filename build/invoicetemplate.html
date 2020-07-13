@@ -90,8 +90,8 @@
             padding: 5px 5px;
           "
         >
-          {{#ifEqual Invoice_Type "TOKEN"}} &#x20B9; {{Token_Amt_INR}} {{else}}
-          &#x20B9; {{TotalINR}} {{/ifEqual}}
+          {{#ifEqual Invoice_Type "Token Invoice"}} &#x20B9; {{Token_Amt_INR}}
+          {{else}} &#x20B9; {{TotalINR}} {{/ifEqual}}
         </div>
       </div>
     </div>
@@ -231,7 +231,7 @@
       {{/if}}
     </div> -->
     <div class="container row" style="padding-top: 8px; padding-bottom: 8px;">
-      {{#ifEqual Invoice_Type "TOKEN"}}
+      {{#ifEqual Invoice_Type "Token Invoice"}}
       <div>Amount Payable in INR :</div>
       <div>Applicable Rate Of Exchange - {{ROE}}</div>
       <div>&#x20B9; {{Token_Amt_INR}}</div>

@@ -88,7 +88,7 @@
           "
           class="tophead"
         >
-          General Ledger : {{first_name}}
+          LEDGER : {{first_name}}
         </div>
         <div class="tophead">{{address_line_one}}</div>
         <div class="tophead">{{city}}</div>
@@ -105,17 +105,18 @@
         <th>DESCRIPTION</th>
         <th>CREDIT</th>
         <th>DEBIT</th>
+        <th>BALANCE</th>
       </thead>
 
       <tbody>
         {{#each this}} {{#ifEqual @index 1}} {{#each this}}
-
         <tr>
           <td>{{formatDate EntryDate}}</td>
           <td>{{EntryType}} {{Invoice_Number}}</td>
           <td>{{Comments}}</td>
           <td>{{Credit}}</td>
           <td>{{Debit}}</td>
+          <td>{{runningBalance this}}</td>
         </tr>
         {{/each}} {{/ifEqual}} {{/each}}
       </tbody>

@@ -64,6 +64,16 @@ handlebars.registerHelper("sumCredit", function (arr) {
   return s;
 });
 
+var balance = 0;
+handlebars.registerHelper("runningBalance", function (a) {
+  console.log(a);
+  let diff = a.Debit - a.Credit;
+  console.log(diff);
+  balance = balance + diff;
+  console.log(balance);
+  return balance.toFixed(2);
+});
+
 handlebars.registerHelper("formatDate", function (dateString) {
   let event = new Date(`${dateString}`);
   let month = event.getMonth();
