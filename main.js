@@ -427,7 +427,44 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
     },
   });
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
+
+  win.loadURL(modalPath);
+
+  win.webContents.on("did-finish-load", (event) => {
+    statesData().then((data) => {
+      win.webContents.send("fetchStates", data);
+    });
+  });
+
+  win.on("closed", () => {
+    win = null;
+  });
+});
+
+// Supplier Window
+
+ipcMain.on("create:supplierwindow", (event, fileName) => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/` + fileName + `.html`,
+  );
+
+  let win = new BrowserWindow({
+    resizable: false,
+    height: 630,
+    width: width - 350,
+    frame: false,
+    title: "Add Supplier",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 

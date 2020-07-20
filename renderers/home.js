@@ -272,6 +272,11 @@ custButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:customerwindow", "customer");
 });
 
+const supButton = document.getElementById("newSupplier");
+supButton.addEventListener("click", (event) => {
+  ipcRenderer.send("create:supplierwindow", "supplier");
+});
+
 const invButton = document.getElementById("newInvoice");
 invButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:invoiceWindow", "invoice");
@@ -376,6 +381,12 @@ cusListButton.addEventListener("click", (event) => {
   // 		generateCustomerDataTable();
   // 	}
   // });
+});
+
+const supListButton = document.getElementById("supList");
+supListButton.addEventListener("click", (event) => {
+  $("#invTable_wrapper").remove();
+  generateSupplierDataTable();
 });
 
 const invListButton = document.getElementById("invList");
@@ -647,7 +658,7 @@ function generateGeneralLedgerDataTable() {
   });
 }
 
-//Customer DataTable
+// Customer DataTable
 
 function generateCustomerDataTable() {
   let cusID;
@@ -724,6 +735,89 @@ function generateCustomerDataTable() {
 
     var selectedRows = $("tr.selected").length;
     $("#cusTable")
+      .DataTable()
+      .button(0)
+      .enable(selectedRows === 1);
+  });
+}
+
+// Supplier DataTable
+
+function generateSupplierDataTable() {
+  let supID;
+  const htmlTemplate = `<table id="supTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>SUPPLIER NAME</th>
+					<th>CITY</th>
+					<th>STATE</th>
+					<th>GSTIN</th>	   
+				</tr>
+			</thead> 
+		</table>
+	`;
+
+  document.getElementById("createTable").innerHTML = htmlTemplate;
+
+  $("#supTable").dataTable({
+    paging: true,
+    sort: true,
+    searching: true,
+    responsive: true,
+    processing: true,
+    serverSide: true,
+    ajax: "http://localhost:3000/api/suppliers",
+    language: {
+      searchPlaceholder: "Search Supplier",
+      sSearch: "",
+    },
+    pageLength: 100,
+
+    // data: dataTableRecords,
+
+    // columns: [
+    // 	{ data: "id" },
+    // 	{ data: "first_name" },
+    // 	{ data: "city" },
+    // 	{ data: "State_Name" },
+    // 	{ data: "gstin" },
+    // ],
+    dom: "Bfrtip",
+    select: true,
+
+    buttons: [
+      {
+        text: "Edit Selected Supplier",
+        action: function (e, dt, node, config) {
+          ipcRenderer.send("supplier:edit", {
+            supID: supID,
+          });
+        },
+
+        enabled: false,
+      },
+    ],
+  });
+
+  //------------- Table row selection condition ------
+
+  $("#supTable tbody").on("click", "tr", function () {
+    if ($(this).hasClass("selected")) {
+      $(this).removeClass("selected");
+    } else {
+      $("#supTable").dataTable().$("tr.selected").removeClass("selected");
+      $(this).addClass("selected");
+    }
+  });
+
+  $("#supTable tbody").on("click", "tr", function () {
+    rowIndex = $("#supTable").DataTable().row(this).index();
+
+    supID = $("#supTable").DataTable().cell(".selected", 0).data();
+
+    var selectedRows = $("tr.selected").length;
+    $("#supTable")
       .DataTable()
       .button(0)
       .enable(selectedRows === 1);

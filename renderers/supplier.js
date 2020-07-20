@@ -37,7 +37,7 @@ $(document).ready(function () {
 });
 
 const isvalid = () => {
-  let firstName = document.getElementById("first_name").value;
+  let firstName = document.getElementById("fname").value;
   // let lastName = document.getElementById("last_name").value;
   let gstin = document.getElementById("gstin").value;
   let city = document.getElementById("city").value;
@@ -58,12 +58,12 @@ form.addEventListener("submit", (event) => {
 
   if (isvalid()) {
     let data = new FormData(form);
-    let customerData = {
-      prefix: "CUS",
-      first_name: data.get("first_name").toUpperCase(),
-      last_name: data.get("last_name").toUpperCase(),
-      address_line_one: data.get("address_one").toUpperCase(),
-      address_line_two: data.get("address_two").toUpperCase(),
+    let supplierData = {
+      prefix: "SUP",
+      first_name: data.get("fname").toUpperCase(),
+      last_name: data.get("lname").toUpperCase(),
+      address_line_one: data.get("address1").toUpperCase(),
+      address_line_two: data.get("address2").toUpperCase(),
       city: data.get("city").toUpperCase(),
       pincode: data.get("pincode"),
       state: data.get("state"),
@@ -76,8 +76,8 @@ form.addEventListener("submit", (event) => {
 
     axios
       .post(
-        `http://localhost:3000/api/customer`,
-        customerData,
+        `http://localhost:3000/api/supplier`,
+        supplierData,
 
         {
           headers: {
