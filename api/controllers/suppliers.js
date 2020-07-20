@@ -105,4 +105,51 @@ module.exports = {
       res.send(data);
     });
   },
+  getSupplierById: (req, res) => {
+    const id = req.params.id;
+    pool.query(
+      `select * from suppliers where id = ?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          return res.status(403).json({
+            message: error,
+          });
+        }
+        return res.status(200).json({
+          data: results[0],
+        });
+      },
+    );
+  },
+  updateSupplier: (req, res) => {
+    const body = req.body;
+
+    pool.query(
+      `update suppliers set first_name=?, last_name=?, address_line_one=?, email=?, address_line_two=?, mobile=?, phone=?, state=?, gstin=?, city=? where id = ?`,
+      [
+        body.first_name,
+        body.last_name,
+        body.address_line_one,
+        body.email,
+        body.address_line_two,
+        body.mobile,
+        body.phone,
+        body.state,
+        body.gstin,
+        body.city,
+        body.id,
+      ],
+      (error, results, fields) => {
+        if (error) {
+          return res.status(403).json({
+            message: error,
+          });
+        }
+        return res.status(200).json({
+          message: "Supplier Record Updated",
+        });
+      },
+    );
+  },
 };

@@ -397,6 +397,58 @@ ipcMain.on("customer:edit", function (event, args) {
   });
 });
 
+// Supplier Edit
+
+const fetchSupplierDataByID = async (id) => {
+  return await axios
+    .get(`http://localhost:3000/api/supplier/${id}`)
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((error) => {
+      if (error) throw new Error(error);
+    });
+};
+
+ipcMain.on("supplier:edit", function (event, args) {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/supplier_edit.html`,
+  );
+
+  let cuseditWindow = new BrowserWindow({
+    resizable: false,
+    height: 630,
+    width: width - 350,
+    frame: false,
+    title: "Edit Supplier",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  // console.log(args.cusID);
+  // cuseditWindow.webContents.openDevTools();
+
+  cuseditWindow.loadURL(modalPath);
+
+  cuseditWindow.webContents.on("did-finish-load", (event) => {
+    statesData().then((data) => {
+      cuseditWindow.webContents.send("fetchStates", data);
+    });
+
+    fetchSupplierDataByID(args.supID.slice(-1)).then((cusData) => {
+      cuseditWindow.webContents.send("sendSupplierDataForEdit", cusData);
+    });
+  });
+
+  cuseditWindow.on("closed", () => {
+    cuseditWindow = null;
+  });
+});
+
 // Payment Edit
 
 // ipcMain.on("close:window", (event, args) => {

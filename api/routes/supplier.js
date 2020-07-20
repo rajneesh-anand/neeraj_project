@@ -8,7 +8,7 @@ const {
 } = require("../controllers/suppliers");
 router.get("/suppliers", getSupplierslist);
 router.post("/supplier", createSupplier);
-// router.get("/supplier/:id", getSupplierById);
-// router.put("/customer", updateSupplier);
+router.get("/supplier/:id", getSupplierById);
+router.put("/supplier", updateSupplier);
 
 module.exports = router;
