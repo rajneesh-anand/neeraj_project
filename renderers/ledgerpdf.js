@@ -1,8 +1,6 @@
-var ledResults = null;
-
 // Generate Agent Ledger Date Range
 
-const printLedgerAPICallDateWise = (id) => {
+const agentLedgerAPICallDateWise = (id) => {
   return axios
     .post(
       `http://localhost:3000/api/ledgerpdfdatewise/${id}`,
@@ -20,30 +18,20 @@ const printLedgerAPICallDateWise = (id) => {
     )
     .then((response) => {
       // console.log(response.data);
-      ledResults = response.data.data;
-      return response.data.message;
+      return response.data;
     })
     .catch((error) => {
       alert(error.response.data.message);
     });
-  //   .then((response) => {
-  // 	console.log(response.data);
-  // 	results.splice(0, results.length);
-
-  // 	results = [...response.data.data];
-
-  // 	console.log(results);
-
-  // 	return response.data.message;
-  //   })
-  //   .catch((error) => {
-  // 	console.log(error.response.data.message);
-  //   });
 };
 
 function printAgentLedgerPdf(id) {
-  printLedgerAPICallDateWise(id).then(async (message) => {
-    if (message === "success") {
+  agentLedgerAPICallDateWise(id).then(async (results) => {
+    if (results.message === "success") {
+      let data = results.data;
+      let agentData = data[0];
+      console.log(agentData[0].first_name);
+
       // let templateHtml = fs.readFileSync(
       // 	path.join(app.getAppPath(), "../build/ledgertemplate.html"),
       // 	"utf8"
@@ -53,11 +41,10 @@ function printAgentLedgerPdf(id) {
         path.join(__dirname, "../build/ledgertemplate.html"),
         "utf8"
       );
-      let agentNameObject = ledResults[0];
-      // console.log(agentNameObject[0].first_name);
+
       let template = handlebars.compile(templateHtml);
-      let html = template(ledResults);
-      const pdfPath = `C://pdfreports//${agentNameObject[0].first_name} LEDGER.pdf`;
+      let html = template(data);
+      const pdfPath = `C://pdfreports//${agentData[0].first_name} LEDGER.pdf`;
       let options = {
         printBackground: true,
         path: pdfPath,
@@ -82,7 +69,7 @@ function printAgentLedgerPdf(id) {
 
 // Generate General ledger date range
 
-const printGeneralLedgerAPICall = (id) => {
+const generalLedgerAPICallDateWise = (id) => {
   return axios
     .post(
       `http://localhost:3000/api/generalledger/${id}`,
@@ -99,11 +86,8 @@ const printGeneralLedgerAPICall = (id) => {
       }
     )
     .then((response) => {
-      results = response.data.data;
-
-      // console.log(results);
-
-      return response.data.message;
+      console.log(response.data);
+      return response.data;
     })
     .catch((error) => {
       alert(error.response.data.message);
@@ -111,8 +95,11 @@ const printGeneralLedgerAPICall = (id) => {
 };
 
 function printGeneralLedgerPdf(id) {
-  printGeneralLedgerAPICall(id).then(async (message) => {
-    if (message === "success") {
+  generalLedgerAPICallDateWise(id).then(async (results) => {
+    if (results.message === "success") {
+      let data = results.data;
+      console.log(data);
+
       //   let templateHtml = fs.readFileSync(
       //     path.join(app.getAppPath(), "../build/generalledgertemplate.html"),
       //     "utf8",
@@ -124,7 +111,7 @@ function printGeneralLedgerPdf(id) {
       );
 
       let template = handlebars.compile(templateHtml);
-      let html = template(results);
+      let html = template(data);
       const pdfPath = `C://pdfreports//Ledger.pdf`;
       let options = {
         printBackground: true,
@@ -159,9 +146,7 @@ const printLedgerAPICall = (id) => {
       },
     })
     .then((response) => {
-      ledResults = response.data.data;
-      console.log(ledResults);
-      return response.data.message;
+      return response.data;
     })
     .catch((error) => {
       alert(error.response.data.message);
@@ -169,8 +154,9 @@ const printLedgerAPICall = (id) => {
 };
 
 function printLedger(accountId) {
-  printLedgerAPICall(accountId).then(async (message) => {
-    if (message === "success") {
+  printLedgerAPICall(accountId).then(async (results) => {
+    if (results.message === "success") {
+      let data = results.data;
       //   let templateHtml = fs.readFileSync(
       //     path.join(app.getAppPath(), "../build/ledgertemplate.html"),
       //     "utf8",
@@ -182,7 +168,7 @@ function printLedger(accountId) {
       );
 
       let template = handlebars.compile(templateHtml);
-      let html = template(ledResults);
+      let html = template(data);
 
       const pdfPath = `C://pdfreports//Ledger.pdf`;
 
