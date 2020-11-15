@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>CRUISE CARROT</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/materialize.min.css" />
+    <link rel="stylesheet" href="../assets/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="../assets/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" href="../assets/css/select.dataTables.min.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <header class="navbar-fixed">
+      <nav class="light-blue lighten-4">
+        <div class="nav-wrapper">
+          <a
+            href="#"
+            data-target="sidenav-1"
+            class="left sidenav-trigger show-on-medium-and-up"
+            id="test"
+            ><i class="large material-icons">menu</i></a
+          >
+
+          <a href="#" class="brand-logo"
+            ><img src="http://localhost:3000/logo.png" alt="logo"
+          /></a>
+        </div>
+      </nav>
+    </header>
+
+    <aside id="sidenav-1" class="sidenav white sidenav-fixed">
+      <div class="sidenav-wrapper">
+        <div class="sidebar-profile">
+          <div class="sidebar-profile-image">
+            <img src="../assets/images/profile.png" class="circle" alt="logo" />
+            <div
+              class="right"
+              id="currentTime"
+              style="
+                font-family: 'Roboto Condensed', sans-serif;
+                font-size: 16px;
+              "
+            ></div>
+          </div>
+          <div class="sidebar-profile-info">
+            <h6
+              id="userName"
+              style="
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
+                  serif;
+              "
+            ></h6>
+            <!-- <a href="javascript:void(0);" class="account-settings-link">
+              <p id="userName"></p>
+              <span id="userEmail"></span>
+            </a> -->
+
+            <a href="javascript:void(0);" id="btnLogout"
+              >LOGOUT <i class="small material-icons">exit_to_app</i></a
+            >
+          </div>
+        </div>
+
+        <ul class="sidebar-menu collapsible">
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>CUSTOMER<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newCustomer"><a href="#">Add Customer</a></li>
+                <li id="cusList"><a href="#">Customer List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>SUPPLIER<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newSupplier"><a href="#">Add Supplier</a></li>
+                <li id="supList"><a href="#">Supplier List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>INVOICE<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newInvoice"><a href="#">New Invoice</a></li>
+                <li id="invList"><a href="#">Invoice List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding" id="setAccount">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>ACCOUNT<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="account"><a href="#">Add Account</a></li>
+                <li id="journal"><a href="#">Journal Entry</a></li>
+                <li id="ledger"><a href="#">Agents Ledger</a></li>
+                <li id="generalledger"><a href="#">General Ledger</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding" id="setPayment">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>PAYABLE<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="payment"><a href="#">New Payment</a></li>
+                <li id="listPayments"><a href="#">Payments List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding" id="setReceive">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>RECEIVABLE<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="receipt"><a href="#">New Receipt</a></li>
+                <li id="listReceive"><a href="#">Receipt List</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>REPORTS<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="pdfReport"><a href="#">Ledger Report</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"
+              ><i class="large material-icons">apps</i>EXTRA<i
+                class="nav-drop-icon material-icons"
+                >keyboard_arrow_right</i
+              ></a
+            >
+            <div class="collapsible-body">
+              <ul>
+                <li id="newUser"><a href="#">New User</a></li>
+                <li id="dbbackup"><a href="#">Data Backup</a></li>
+                <li id="messenger"><a href="#">Send Message</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- RIGHT SIDEBAR	 -->
+    <ul id="sidenav-2" class="sidenav">
+      <li><a class="subheader">Subheader</a></li>
+      <li>
+        <a href="https://github.com/dogfalo/materialize/" target="_blank"
+          >Github</a
+        >
+      </li>
+      <li>
+        <a href="https://twitter.com/MaterializeCSS" target="_blank">Twitter</a>
+      </li>
+      <li>
+        <a
+          href="http://next.materializecss.com/getting-started.html"
+          target="_blank"
+          >Docs</a
+        >
+      </li>
+    </ul>
+
+    <main id="test2" class="testPad">
+      <div class="col s12">
+        <div class="card" style="margin: 0 0 1rem 0 !important;">
+          <div id="createTable" class="card-content"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <!-- 
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script> -->
+    <script
+      type="text/javascript"
+      src="../assets/js/jquery-3.4.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/materialize.min.js"
+    ></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
+
+    <script
+      type="text/javascript"
+      src="../assets/js/dataTables.select.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/dataTables.buttons.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/dataTables.responsive.min.js"
+    ></script>
+    <script src="./home.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script src="./invoicepdf.js"></script>
+    <script src="./ledgerpdf.js"></script>
+
+    <script>
+      (function () {
+        function checkTime(i) {
+          return i < 10 ? "0" + i : i;
+        }
+
+        function startTime() {
+          var today = new Date(),
+            h = checkTime(today.getHours()),
+            m = checkTime(today.getMinutes()),
+            s = checkTime(today.getSeconds());
+          document.getElementById("currentTime").innerHTML =
+            h + ":" + m + ":" + s;
+          t = setTimeout(function () {
+            startTime();
+          }, 500);
+        }
+        startTime();
+      })();
+    </script>
+    <script>
+      if (window.module) module = window.module;
+    </script>
+  </body>
+</html>

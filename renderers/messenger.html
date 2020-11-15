@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/materialize.min.css" />
+  </head>
+
+  <body onkeydown="return (event.keyCode!=13)" onunload="">
+    <div
+      class="row"
+      style="display: flex; padding-left: 1rem; padding-right: 1rem;"
+    >
+      <h6 class="flow-text teal-text text-darken-3">MESSENGER</h6>
+
+      <a
+        class="btn-flat"
+        id="btnClose"
+        style="margin-left: auto; padding-top: 1rem;"
+      >
+        <i class="material-icons right">close</i></a
+      >
+    </div>
+    <hr />
+    <div class="row" style="margin-top: 20px;">
+      <form class="col s12">
+        <div class="col s6">
+          <label>SELECT CONTACT</label>
+          <select
+            name="accountList"
+            id="accountList"
+            class="browser-default accountList"
+            onchange="fetchContact(this)"
+          >
+          </select>
+        </div>
+        <div class="input-field col s6">
+          <input
+            name="contact"
+            id="contact"
+            placeholder=""
+            type="text"
+            required
+            class="validate"
+          />
+          <label for="contact">CONTACT NUMBER</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input
+            name="message"
+            id="message"
+            placeholder="Write Message"
+            type="text"
+            required
+            class="validate"
+          />
+          <label for="message">MESSAGE</label>
+        </div>
+
+        <div class="right-align">
+          <button
+            class="btn waves-effect waves-light"
+            type="submit"
+            id="send"
+            name="action"
+          >
+            SEND MESSAGE
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="../assets/js/jquery-3.4.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/materialize.min.js"
+    ></script>
+
+    <script src="./messenger.js"></script>
+
+    <script>
+      if (window.module) module = window.module;
+    </script>
+  </body>
+</html>

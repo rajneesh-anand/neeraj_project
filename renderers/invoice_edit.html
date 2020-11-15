@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--Import Google Icon Font-->
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<!--Import materialize.css-->
+		<link rel="stylesheet" href="../assets/css/materialize.min.css" />
+
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			.input-field {
+				margin-bottom: 0px !important;
+			}
+			td{
+				padding: 8px 5px;
+				text-align: right;
+				color: rgb(3, 19, 11);
+				font-weight: 600;
+				font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				
+			
+			}
+			tr{
+				border: none;
+			}
+			table#valueInput td{
+				text-align: right;
+			}
+			.print-wrap {
+        width: 500px;
+    }
+		</style>
+	</head>
+
+	<body onkeydown="return (event.keyCode!=13)" style="width:100%">
+		<div
+		class="row"
+		style="display: flex; padding-left: 1rem; padding-right: 1rem;"
+	  >
+		<h6 class="flow-text teal-text text-darken-3">EDIT INVOICE</h6>
+  
+		<a
+		  class="btn-flat"
+		  id="btnClose"
+		  style="margin-left: auto; padding-top: 1rem;"
+		>
+		  <i class="material-icons right">close</i></a
+		>
+	  </div>
+		<div class="row" style="margin-top: 15px;">
+			<form method="post" class="col s12">
+				<div class="row" style="margin-bottom: 0px !important;">				
+					<div class="input-field col s2">
+						<i class="material-icons prefix">arrow_forward</i>
+						<input
+							placeholder=""
+							id="invoice_no"
+							type="text"						
+							name="invoice_no"
+							readonly
+						/>
+						<label for="invoice_no">Invoice No.</label>
+					</div>
+					<div class="col s2">
+						<label>Invoice Type</label>
+								<select id="invoiceType" name="invoiceType" class="browser-default"   onchange="checkInvoiceType(this)">
+									<option value="TOKEN">TOKEN</option>   
+									<option value="REGULAR">REGULAR</option>
+									
+								</select>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">date_range</i>
+						<input
+							id="invoice_date"
+							type="text"
+							name="invoice_date"
+							class="datepicker"
+							required
+						/>
+						<label for="invoice_date">Invoice Date</label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">date_range</i>
+						<input
+							id="departure_date"
+							type="text"
+							name="departure_date"
+							class="datepicker"
+							required
+						/>
+						<label for="departure_date">Departure Date</label>
+					</div>
+					<div class="col s1">
+						<label>Currency</label>
+								<select id="currency" name="currency" class="browser-default">
+									<option value="1">AED</option>   
+									<option value="2">EURO</option>
+									<option value="3">GBP</option>
+									<option value="4">INR</option>								
+									<option value="5">USD</option>
+								</select>
+					</div>
+					<div class=" col s3">
+						<label>AGENT NAME</label>
+						<select name="agent" id ="agentName" class="browser-default agentName">		
+							<option value="" disabled selected>Select Agent</option>					
+						  </select>						
+					</div>
+				</div>
+				<div class="row" style="margin-bottom: 0px !important;">
+					<div class="input-field col s3">
+						<i class="material-icons prefix">edit</i>
+                        <input
+                        placeholder=""
+							id="ship_name"
+							name="ship_name"
+							type="text"
+							class="validate"
+						/>
+						<label for="ship_name">Ship Name</label>
+					</div>
+					<div class="input-field col s3">
+						<i class="material-icons prefix">edit</i>
+						<input   placeholder=""
+							id="cruise"
+							type="text"
+							name="cruise"
+							class="validate"
+							required
+						/>
+						<label for="cruise">Cruise Company </label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">edit</i>
+						<input   placeholder=""
+							id="bookings"
+							type="text"
+							name="bookings"
+							class="validate"
+							
+						/>
+						<label for="bookings">Booking </label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">edit</i>
+						<input   placeholder=""
+							id="cabin"
+							name="cabin"
+							type="text"
+							class="validate"
+						
+						
+						/>
+						<label for="cabin">Cabin</label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">edit</i>
+						<input   placeholder=""
+							id="cat_bkg"
+							name="cat_bkg"
+							type="text"
+							class="validate"
+							
+							
+						/>
+						<label for="cat_bkg">Cat..Bkg</label>
+					</div>
+				</div>
+
+				<div class="row" style="margin-bottom: 0px !important;">
+					<div class="input-field col s4">
+						<i class="material-icons prefix">person</i>
+						<input   placeholder=""
+							id="name"
+							type="text"
+							name="name"
+							class="validate"
+							
+						/>
+						<label for="name">Passenger Name</label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">edit</i>
+						<input   placeholder=""
+							id="nationality"
+							name="nationality"
+							type="text"
+							class="validate"
+							required
+						
+						/>
+						<label for="nationality">Nationality</label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">person</i>
+						<input   placeholder=""
+							id="adults"
+							type="text"
+							name="adults"
+							class="validate"
+							required
+							onkeypress="return ValidateNumbers(event)"
+							onkeyup="GetTotal();"
+						/>
+						<label for="adults">Adults </label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">person</i>
+						<input   placeholder=""
+							id="children"
+							type="text"
+							name="children"
+							class="validate"
+														
+							onkeypress="return ValidateNumbers(event)"
+							onkeyup="GetTotal();"
+						/>
+						<label for="children">Children </label>
+					</div>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">person</i>
+						<input   placeholder=""
+							id="infants"
+							type="text"
+							name="infants"
+							class="validate"							
+							onkeypress="return ValidateNumbers(event)"
+							onkeyup="GetTotal();"
+						/>
+						<label for="infants">Infants </label>
+					</div>
+				</div>
+				<!-- <hr style="border-top: 1px dotted red;" /> -->
+
+				<div class="row" style=" justify-content: space-between; margin-bottom: 0 !important;">
+					<div class="col s6" style="padding-bottom: 16px; margin-left: 32px; margin-top: 16px; border: 2px solid rgb(108, 216, 153);
+					border-radius: 5px;background-color: rgb(245, 243, 239);">
+
+
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">attach_money</i> -->
+							<input   placeholder=""
+								id="price_adults"
+								name="price_adults"
+								type="text"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+								required
+							/>
+							<label for="price_adults">Price : Adults </label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">add_location</i> -->
+							<input   placeholder=""
+								id="price_children"
+								type="text"
+								name="price_children"
+								class="validate"
+							
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="price_children">Price : Children </label>
+						</div>
+
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">add_location</i> -->
+							<input   placeholder=""
+								id="price_infants"
+								type="text"
+								name="price_infants"
+								class="validate"
+							
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="price_infants">Price : Infants </label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+								id="comm"
+								type="text"
+								name="comm"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="comm">Commi.. Rate(%)</label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone_android</i> -->
+							<input   placeholder=""
+								id="ncf"
+								name="ncf"
+								type="tel"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="ncf">NCF</label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+								id="tax"
+								type="text"
+								name="tax"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="tax">TAX</label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+								id="gratuity"
+								type="text"
+								name="gratuity"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="gratuity">Gratuity</label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+								id="holiday"
+								type="text"
+								name="holiday"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="holiday">Holiday Surcharge</label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+								id="misc"
+								type="text"
+								name="misc"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="misc">Misc..Expense</label>
+						</div>
+						<div class="input-field col s4">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+								id="tds"
+								type="text"
+								name="tds"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal();"
+							/>
+							<label for="tds">TDS</label>
+						</div>
+					
+					
+                        <div class="input-field col s4">							
+							<!-- <i class="material-icons prefix">phone</i> -->
+                            <input   placeholder=""                          
+								id="token"
+								type="text"
+								name="token"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+							
+							/>
+							<label for="token">Token Amount </label>
+						</div>
+						
+                        <div class="input-field col s4">							
+							<!-- <i class="material-icons prefix">phone</i> -->
+                            <input   placeholder=""                            
+								id="roe"
+								type="text"
+								name="roe"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"						
+							
+							/>
+							<label for="roe">R.O.E </label>
+						</div>
+						<div class="input-field col s3">
+							<div class="switch ">
+								<label>
+									GST
+									<input id="gst-switch" type="checkbox" />
+									<span class="lever"></span>
+								</label>
+							</div>
+							
+						</div>
+						<div class="input-field col s3">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input  placeholder=""
+							
+								id="cgst"
+								type="text"
+								name="cgst"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+									onkeyup="GetTotal();"
+							/>
+							<label for="cgst">CGST </label>
+						</div>
+						<div class="input-field col s3">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input   placeholder=""
+							
+								id="sgst"
+								type="text"
+								name="sgst"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+									onkeyup="GetTotal();"
+							/>
+							<label for="sgst">SGST </label>
+						</div>
+						<div class="input-field col s3">
+							<!-- <i class="material-icons prefix">phone</i> -->
+							<input		   placeholder=""					
+								id="igst"
+								type="text"
+								name="igst"
+								class="validate"
+								onkeypress="return isNumberKey(event,this);"
+									onkeyup="GetTotal();"
+							/>
+							<label for="igst">IGST </label>
+						</div>
+					</div>
+					<div class="col s4" style="padding-bottom: 16px; margin-left: 30px;" >
+						<table >
+								<tbody>
+							<tr >
+								<td>Base Amount</td>
+								<td>#</td>
+								<td id="base_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>Commission Amount</td>
+								<td>#</td>
+								<td id="comm_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>NCF Amount</td>
+								<td>#</td>
+								<td id="ncf_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>TAX Amount</td>
+								<td>#</td>
+								<td id="tax_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>Holiday Surcharge Amount</td>
+								<td>#</td>
+								<td id="hs_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>Gratuity Amount</td>
+								<td>#</td>
+								<td id="gt_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>TDS Amount</td>
+								<td>#</td>
+								<td id="tds_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>GST Amount</td>
+								<td>#</td>
+								<td id="gst_amt"></td>
+							
+							</tr>
+							<tr>
+								<td>Total Payable Amount</td>
+								<td>#</td>
+								<td id="total"></td>	
+							</tr>	 
+						</tbody>
+						</table>					
+					</div>				
+					</div>			
+				</div>
+				<div class="right-align" style="padding-right: 15px;">					
+					<button
+						class="btn-small waves-effect waves-light"
+						type="submit"
+						id="btnSave"
+						name="action"
+					>
+						UPDATE<i class="material-icons right">save</i>
+					</button>
+					<button
+						class="btn-small waves-effect waves-light"					
+						id="download"					
+					>
+						DOWNLOAD<i class="material-icons right">cloud_download</i>
+					</button>
+				</div>
+
+			</form>
+		
+		</div>
+
+		<table id="invoice" style="display: none;"></table>
+		
+
+		<script>
+			if (typeof module === "object") {
+				window.module = module;
+				module = undefined;
+			}
+		</script>
+  <script
+  type="text/javascript"
+  src="../assets/js/jquery-3.4.1.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="../assets/js/materialize.min.js"
+></script>
+
+
+		<script src="./invoice_edit.js"></script>
+		<script src="./invoicepdf.js"></script>
+	
+	
+
+		<script>
+			if (window.module) module = window.module;
+		</script>
+	</body>
+</html>
