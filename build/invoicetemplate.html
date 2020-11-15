@@ -61,7 +61,7 @@
         padding-left: 30px;
         padding-right: 30px;
         font-family: "Lato", sans-serif;
-        font-size: 12px;
+        font-size: 14px;
       }
     </style>
   </head>
@@ -77,8 +77,8 @@
         <div>GSTIN :</div>
       </div>
       <div class="invoice_details">
-        <div class="tophead">INVOICE NO - {{Invoice_Number}}</div>
-        <div class="tophead">INVOICE DATE - {{formatDate Invoice_Date}}</div>
+        <div class="tophead">INVOICE NO :  {{Invoice_Number}}</div>
+        <div class="tophead">INVOICE DATE : {{formatDate Invoice_Date}}</div>
         <div class="tophead" style="text-align: center;">
           TOTAL AMOUNT PAYABLE
         </div>
@@ -115,17 +115,16 @@
       </div>
     </div>
     <hr />
-    <div
+    <!-- <div
       class="container row"
-      style="
-        background-color: #8cb8c5;
+      style="      
         border: 2px solid #8cb8c5;
         border-radius: 5px;
       "
     >
       <div>DESCRIPTION</div>
       <div>AMOUNT</div>
-    </div>
+    </div> -->
 
     <div class="container row">
       <div>Cruise Base Fare</div>
@@ -155,24 +154,28 @@
       <div>{{{currency}}} {{Grat_Amt}}</div>
       {{/if}}
     </div>
-    <div class="container row">
+   
       {{#if Misc}}
+      <div class="container row">
       <div>Extra Charges</div>
       <div>{{{currency}}} {{Misc}}</div>
+      </div>
       {{/if}}
-    </div>
+    
     <div class="container row">
       {{#if Comm_Amt}}
       <div>Commission</div>
       <div>{{{currency}}} {{Comm_Amt}}</div>
       {{/if}}
     </div>
-    <div class="container row">
+    
       {{#if TDS_Amt}}
+      <div class="container row">
       <div>TDS Applicable</div>
       <div>{{{currency}}} {{TDS_Amt}}</div>
+      </div>
       {{/if}}
-    </div>
+    
     <div class="container row">
       {{#if Token_Amt}}
       <div>Token / Advance</div>
@@ -181,7 +184,7 @@
     </div>
     <hr />
     <div class="container row">
-      <div>SUB TOTAL :</div>
+      <div>Sub Total </div>
       <div>{{{currency}}} {{SubTotal}}</div>
     </div>
 
@@ -219,7 +222,7 @@
         margin-top: 8px;
       "
     >
-      <div>TOTAL AMOUNT :</div>
+      <div>GRAND TOTAL </div>
       <div>{{{currency}}} {{Total}}</div>
     </div>
 
@@ -232,12 +235,12 @@
     </div> -->
     <div class="container row" style="padding-top: 8px; padding-bottom: 8px;">
       {{#ifEqual Invoice_Type "Token Invoice"}}
-      <div>Amount Payable in INR :</div>
-      <div>Applicable Rate Of Exchange - {{ROE}}</div>
+      <div>Amount Payable in INR </div>
+      <div>( Applicable Rate of Exchange <strong>{{ROE}}</strong> )</div>
       <div>&#x20B9; {{Token_Amt_INR}}</div>
       {{else}}
-      <div>Amount Payable in INR :</div>
-      <div>Applicable Rate Of Exchange - {{ROE}}</div>
+      <div>Amount Payable in INR </div>
+      <div>( Applicable Rate of Exchange <strong>{{ROE}}</strong> )</div>
       <div>&#x20B9; {{TotalINR}}</div>
       {{/ifEqual}}
     </div>
@@ -247,17 +250,19 @@
       Terms and conditions apply *
     </div>
     <div class="footer">
-      Payment in Indian Rupees at the prevalent rate of exchange via
-      Cheque/Demand Draft/RTGS, should be payable to Carrot Cruises Shipping Pvt
+      Payment in Indian Rupees at the prevalent rate of exchange via <strong>
+      Cheque/Demand Draft/RTGS </strong>, should be payable to Carrot Cruise Shipping Pvt
       Ltd.
     </div>
-    <div class="footer">
-      HDFC BANK (Carrot Cruise Shipping Pvt. Ltd ) A/C No - 50200024394736
-      IFSC/RTGS/NEFT Code : HDFC0001441
+    <div class="footer" style="padding-top: 10px;font-size: 16px;">
+      <strong>
+      HDFC BANK (Carrot Cruise Shipping Pvt. Ltd ) A/C No. 50200024394736<br>
+      IFSC/RTGS/NEFT Code : HDFC0001441</strong>
     </div>
-    <div class="footer">
-      YES BANK (Carrot Cruise Shipping Pvt. Ltd) A/C No. 059861900002113 IFSC
-      Code : YESB0000598
+    <div class="footer" style="padding-top: 10px; padding-bottom: 10px; font-size: 16px;">
+      <strong>
+      YES BANK (Carrot Cruise Shipping Pvt. Ltd) A/C No. 059861900002113 <br>
+      IFSC/RTGS/NEFT Code : YESB0000598</strong>
     </div>
     <div class="footer">
       *This is computer generated copy, hence does not require any signature.

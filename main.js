@@ -573,6 +573,37 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
   });
 });
 
+// TDS REPORT WINDOW
+
+ipcMain.on("create:tdsReportWindow", (event, fileName) => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/` + fileName + `.html`
+  );
+
+  let win = new BrowserWindow({
+    resizable: false,
+    height: 510,
+    width: 600,
+    frame: false,
+    title: "Reports",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+
+  win.webContents.openDevTools();
+
+  win.loadURL(modalPath);
+
+  win.on("closed", () => {
+    win = null;
+  });
+});
+
 ipcMain.on("create:invoiceWindow", (event, fileName) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   //  console.log(height);

@@ -1,4 +1,3 @@
-let invResults = null;
 const printInvoiceAPICall = (id) => {
   return axios
     .get(`http://localhost:3000/api/generatepdf/${id}`, {
@@ -8,8 +7,7 @@ const printInvoiceAPICall = (id) => {
       },
     })
     .then((response) => {
-      invResults = response.data.data[0];
-      return response.data.message;
+      return response.data;
     })
     .catch((error) => {
       alert(error.response.data.message);
@@ -17,8 +15,9 @@ const printInvoiceAPICall = (id) => {
 };
 
 function printInvoicePdf(invoice_id) {
-  printInvoiceAPICall(invoice_id).then(async (message) => {
-    if (message === "success") {
+  printInvoiceAPICall(invoice_id).then(async (result) => {
+    if (result.message === "success") {
+      let invResults = result.data[0];
       let gst_rate = invResults.CGST + invResults.IGST + invResults.SGST;
       let currencyCode = invResults.Currency;
       switch (currencyCode) {
@@ -60,7 +59,7 @@ function printInvoicePdf(invoice_id) {
         Invoice_Date: invResults.Invoice_Date,
         Invoice_Type: invResults.Invoice_Type,
         Departure_Date: invResults.Departure_Date,
-        TotalINR: invResults.Total_Payable_Amt_INR,
+        TotalINR: invResults.Total_Payable_Amt_INR.toFixed(2),
         Pass_Name: invResults.Pass_Name,
         PAX: invResults.PAX,
         first_name: invResults.first_name,
@@ -112,7 +111,7 @@ function printInvoicePdf(invoice_id) {
 
       let templateHtml = fs.readFileSync(
         path.join(__dirname, "../build/invoicetemplate.html"),
-        "utf8",
+        "utf8"
       );
 
       let template = handlebars.compile(templateHtml);

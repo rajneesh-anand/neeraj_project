@@ -292,6 +292,11 @@ repButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:reportWindow", "ledger_reports");
 });
 
+const tdsButton = document.getElementById("tdsReport");
+tdsButton.addEventListener("click", (event) => {
+  ipcRenderer.send("create:tdsReportWindow", "tds_reports");
+});
+
 const jouButton = document.getElementById("journal");
 jouButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:journalWindow", "journal");
