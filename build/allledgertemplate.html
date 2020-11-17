@@ -76,7 +76,7 @@
         <div>Call Us @ +918189457845 / 98978789787</div>
         <div>GSTIN :</div>
       </div>
-      {{#each this}} {{#ifEqual @index 0}} {{#each this}}
+     
       <div class="agent_details">
         <div
           style="
@@ -87,45 +87,33 @@
           "
           class="tophead"
         >
-          LEDGER : {{first_name}}
+          LEDGER
         </div>
-        <div class="tophead">{{address_line_one}}</div>
-        <div class="tophead">{{city}}</div>
-        <div class="tophead">{{State_Name}} {{pincode}}</div>
-        <div class="tophead">GSTIN : {{gstin}} </div>
-      </div>
-      {{/each}} {{/ifEqual}} {{/each}}
+       
+    </div>
     </div>
     <hr />
     <table class="zebra">
       <thead>
-        <th>ENTRY DATE</th>
-        <th>ENTRY TYPE</th>
-        <th>DESCRIPTION</th>
+        <th>AGENT NAME</th>
+        <th>CITY</th>
         <th>CREDIT</th>
         <th>DEBIT</th>
         <th>BALANCE</th>
       </thead>
 
       <tbody>
-        {{#each this}} {{#ifEqual @index 1}} {{#each this}}
+        {{#each this}} 
         <tr>
-          <td>{{formatDate EntryDate}}</td>
-          <td>{{EntryType}} {{Invoice_Number}}</td>
-          <td>{{Comments}}</td>
+          <td>{{first_name}}</td>
+          <td>{{city}}</td>
           <td>{{Credit}}</td>
           <td>{{Debit}}</td>
           <td>{{runningBalance this}}</td>
         </tr>
-        {{/each}} {{/ifEqual}} {{/each}}
+        {{/each}} 
       </tbody>
     </table>
-    <div>
-      {{#each this}} {{#ifEqual @index 1}}
-      <h4>Total Debit : {{sumDebit this}}</h4>
-      {{/ifEqual}} {{/each}} {{#each this}} {{#ifEqual @index 1}}
-      <h4>Total Credit : {{sumCredit this}}</h4>
-      {{/ifEqual}} {{/each}}
-    </div>
+  
   </body>
 </html>

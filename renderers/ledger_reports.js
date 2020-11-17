@@ -265,14 +265,18 @@ const genButton = document.getElementById("generate");
 genButton.addEventListener("click", (event) => {
   event.preventDefault();
 
-  var x = document.getElementById("accountList");
-  accName = x.options[x.selectedIndex].text;
-  let accountId = document.getElementById("accountList").value;
-  if (isValid()) {
-    if (document.getElementById("agentRadio").checked) {
-      printAgentLedgerPdf(accountId);
-    } else {
-      printGeneralLedgerPdf(accountId);
+  if (document.getElementById("all").checked) {
+    printAllAgentsLedgerPdf();
+  } else {
+    var x = document.getElementById("accountList");
+    accName = x.options[x.selectedIndex].text;
+    let accountId = document.getElementById("accountList").value;
+    if (isValid()) {
+      if (document.getElementById("agentRadio").checked) {
+        printAgentLedgerPdf(accountId);
+      } else {
+        printGeneralLedgerPdf(accountId);
+      }
     }
   }
 });

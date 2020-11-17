@@ -30,7 +30,7 @@ function printAgentLedgerPdf(id) {
     if (results.message === "success") {
       let data = results.data;
       let agentData = data[0];
-      console.log(agentData[0].first_name);
+      // console.log(agentData[0].first_name);
 
       // let templateHtml = fs.readFileSync(
       // 	path.join(app.getAppPath(), "../build/ledgertemplate.html"),
@@ -171,6 +171,79 @@ function printLedger(accountId) {
       let html = template(data);
 
       const pdfPath = `C://pdfreports//Ledger.pdf`;
+
+      let options = {
+        printBackground: true,
+        path: pdfPath,
+        format: "A4",
+      };
+
+      const browser = await puppeteer.launch({
+        headless: true,
+        // executablePath: path.join(
+        //   app.getAppPath(),
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
+        // ),
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      });
+
+      let page = await browser.newPage();
+      await page.setContent(html);
+
+      await page.pdf(options);
+      await browser.close();
+
+      alert("LEDGER GENERATED");
+    }
+  });
+}
+
+// Ledger for all customers
+
+const allAgentLedgerAPICallDateWise = () => {
+  return axios
+    .post(
+      `http://localhost:3000/api/ledgerpdfdatewise`,
+      {
+        from: fromDate,
+        to: toDate,
+      },
+
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      alert(error.response.data.message);
+    });
+};
+
+function printAllAgentsLedgerPdf() {
+  allAgentLedgerAPICallDateWise().then(async (results) => {
+    if (results.message === "success") {
+      let data = results.data;
+
+      //   let templateHtml = fs.readFileSync(
+      //     path.join(app.getAppPath(), "../build/allledgertemplate.html"),
+      //     "utf8",
+      //   );
+
+      let templateHtml = fs.readFileSync(
+        path.join(__dirname, "../build/allledgertemplate.html"),
+        "utf8"
+      );
+
+      let template = handlebars.compile(templateHtml);
+      let html = template(data);
+
+      const pdfPath = `C://pdfreports//LEDGER.pdf`;
 
       let options = {
         printBackground: true,
