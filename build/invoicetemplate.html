@@ -161,13 +161,12 @@
       <div>{{{currency}}} {{Misc}}</div>
       </div>
       {{/if}}
-    
-    <div class="container row">
       {{#if Comm_Amt}}
-      <div>Commission</div>
-      <div>{{{currency}}} {{Comm_Amt}}</div>
-      {{/if}}
+    <div class="container row">    
+      <div>Less Commission</div>
+      <div>{{{currency}}} {{Comm_Amt}}</div>     
     </div>
+    {{/if}}
     
       {{#if TDS_Amt}}
       <div class="container row">
@@ -175,43 +174,45 @@
       <div>{{{currency}}} {{TDS_Amt}}</div>
       </div>
       {{/if}}
-    
-    <div class="container row">
-      {{#if Token_Amt}}
-      <div>Token / Advance</div>
-      <div>{{{currency}}} {{Token_Amt}}</div>
-      {{/if}}
-    </div>
+     
     <hr />
     <div class="container row">
       <div>Sub Total </div>
       <div>{{{currency}}} {{SubTotal}}</div>
     </div>
 
-    <div class="container row">
-      {{#if GSTRate}}
+
+    {{#if GSTRate}}
+    <div class="container row">     
       <div>GST @ {{GSTRate}} %</div>
-      <div>{{GST_Amt}}</div>
-      {{/if}}
+      <div>{{GST_Amt}}</div>    
     </div>
-    <div class="container row">
-      {{#if CGST}}
+    {{/if}}
+
+    {{#if CGST}}
+    <div class="container row">     
       <div></div>
       <div>CGST @ {{CGST}} %</div>
       <div>{{CGSTAmt}}</div>
-      <div></div>
-
-      {{/if}}
+      <div></div>    
     </div>
-    <div class="container row">
-      {{#if SGST}}
+    {{/if}}
+    {{#if SGST}}
+    <div class="container row">   
       <div></div>
       <div>SGST @ {{SGST}} %</div>
       <div>{{SGSTAmt}}</div>
       <div></div>
-
-      {{/if}}
     </div>
+    {{/if}}
+    
+     
+    {{#if Token_Amt}}
+    <div class="container row">    
+      <div>Token Amount</div>
+      <div>{{{currency}}} {{Token_Amt}}</div>     
+    </div>
+    {{/if}}
     <div
       class="container row"
       style="
@@ -219,7 +220,7 @@
         background: #bada55;
         padding-top: 8px;
         padding-bottom: 8px;
-        margin-top: 8px;
+        margin-top: 10px;
       "
     >
       <div>GRAND TOTAL </div>
@@ -233,6 +234,9 @@
       <div>&#x20B9; {{Token_Amt_INR}}</div>
       {{/if}}
     </div> -->
+    {{#ifEqual checkCurr 4}}
+    <div></div>
+    {{else}}
     <div class="container row" style="padding-top: 8px; padding-bottom: 8px;">
       {{#ifEqual Invoice_Type "Token Invoice"}}
       <div>Amount Payable in INR </div>
@@ -244,8 +248,9 @@
       <div>&#x20B9; {{TotalINR}}</div>
       {{/ifEqual}}
     </div>
+    {{/ifEqual}}
 
-    <hr />
+    
     <div class="footer" style="padding-top: 60px;">
       Terms and conditions apply *
     </div>

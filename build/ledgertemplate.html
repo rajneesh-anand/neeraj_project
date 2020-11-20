@@ -118,6 +118,17 @@
           <td>{{runningBalance this}}</td>
         </tr>
         {{/each}} {{/ifEqual}} {{/each}}
+       <tr></tr>
+        {{#each this}} {{#ifEqual @index 1}}
+        <tr>
+          <td></td>
+          <td></td>
+          <td>TOTAL</td>
+          <td><strong>{{sumCredit this}}</strong></td>
+          <td><strong>{{sumDebit this}}</strong></td>
+          <td></td>
+        </tr>
+        {{/ifEqual}} {{/each}}
       </tbody>
     </table>
     <div>

@@ -7,7 +7,9 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const handlebars = require("handlebars");
 
-var val1,
+var x,
+  gstSwitchStatus,
+  val1,
   val2,
   val3,
   val4,
@@ -129,7 +131,11 @@ function thFormat(num) {
   return num_parts.join(".");
 }
 
-function GetTotal() {
+function GetTotal(obj) {
+  x = document.getElementById("invoiceType").options[
+    document.getElementById("invoiceType").selectedIndex
+  ].text;
+
   val1 =
     document.getElementById("adults").value === ""
       ? 0
@@ -235,9 +241,19 @@ function GetTotal() {
 
   // GST Calculation
   gst = parseFloat(val15) + parseFloat(val16) + parseFloat(val17);
-  cgst_amount = ((net_amount * parseFloat(val15)) / 100).toFixed(2);
-  igst_amount = ((net_amount * parseFloat(val16)) / 100).toFixed(2);
-  sgst_amount = ((net_amount * parseFloat(val17)) / 100).toFixed(2);
+  cgst_amount =
+    x === "TOKEN"
+      ? ((token_amount * parseFloat(val15)) / 100).toFixed(2)
+      : ((net_amount * parseFloat(val15)) / 100).toFixed(2);
+  igst_amount =
+    x === "TOKEN"
+      ? ((token_amount * parseFloat(val16)) / 100).toFixed(2)
+      : ((net_amount * parseFloat(val16)) / 100).toFixed(2);
+  sgst_amount =
+    x === "TOKEN"
+      ? ((token_amount * parseFloat(val17)) / 100).toFixed(2)
+      : ((net_amount * parseFloat(val17)) / 100).toFixed(2);
+
   total_gst = (
     parseFloat(cgst_amount) +
     parseFloat(igst_amount) +
@@ -246,73 +262,63 @@ function GetTotal() {
 
   //--------------------------------
 
-  var x = document.getElementById("invoiceType").options[
-    document.getElementById("invoiceType").selectedIndex
-  ].text;
+  token_amount_inr = (
+    (parseFloat(token_amount) + parseFloat(total_gst)) *
+    parseFloat(val18)
+  ).toFixed(2);
 
-  if (x === "TOKEN") {
-    if ($("#gst-switch").is(":checked")) {
-      gross_amount = parseFloat(net_amount).toFixed(2);
-      document.getElementById("total").innerHTML = parseFloat(
-        gross_amount,
-      ).toFixed(2);
-    } else {
-      gross_amount = (parseFloat(net_amount) + parseFloat(total_gst)).toFixed(
-        2,
-      );
-      document.getElementById("total").innerHTML = parseFloat(
-        gross_amount,
-      ).toFixed(2);
-    }
+  if (gstSwitchStatus) {
+    gross_amount =
+      x === "TOKEN"
+        ? parseFloat(net_amount).toFixed(2)
+        : (
+            parseFloat(net_amount) +
+            parseFloat(total_gst) -
+            parseFloat(token_amount)
+          ).toFixed(2);
+    document.getElementById("total").innerHTML = parseFloat(
+      gross_amount
+    ).toFixed(2);
   } else {
-    if ($("#gst-switch").is(":checked")) {
-      gross_amount = (
-        parseFloat(net_amount) - parseFloat(token_amount)
-      ).toFixed(2);
-      document.getElementById("total").innerHTML = parseFloat(
-        gross_amount,
-      ).toFixed(2);
-    } else {
-      gross_amount = (
-        parseFloat(net_amount) +
-        parseFloat(total_gst) -
-        parseFloat(token_amount)
-      ).toFixed(2);
-      document.getElementById("total").innerHTML = parseFloat(
-        gross_amount,
-      ).toFixed(2);
-    }
+    gross_amount =
+      x === "TOKEN"
+        ? parseFloat(net_amount).toFixed(2)
+        : (parseFloat(net_amount) - parseFloat(token_amount)).toFixed(2);
+    document.getElementById("total").innerHTML = parseFloat(
+      gross_amount
+    ).toFixed(2);
   }
+
   document.getElementById("base_amt").innerHTML = parseFloat(total).toFixed(2);
   document.getElementById("comm_amt").innerHTML = parseFloat(
-    comm_amount,
+    comm_amount
   ).toFixed(2);
 
   document.getElementById("ncf_amt").innerHTML = parseFloat(ncf_amount).toFixed(
-    2,
+    2
   );
   document.getElementById("tax_amt").innerHTML = parseFloat(tax_amount).toFixed(
-    2,
+    2
   );
 
   document.getElementById("hs_amt").innerHTML = parseFloat(hs_amount).toFixed(
-    2,
+    2
   );
   document.getElementById("gt_amt").innerHTML = parseFloat(
-    gratuity_amount,
+    gratuity_amount
   ).toFixed(2);
   document.getElementById("tds_amt").innerHTML = parseFloat(tds_amount).toFixed(
-    2,
+    2
   );
   document.getElementById("gst_amt").innerHTML = parseFloat(total_gst).toFixed(
-    2,
+    2
   );
 
   if (val18 === 0 || val18 == "") {
     gross_amount_inr = parseFloat(gross_amount).toFixed(2);
   } else {
     gross_amount_inr = (parseFloat(gross_amount) * parseFloat(val18)).toFixed(
-      2,
+      2
     );
   }
 }
@@ -486,8 +492,8 @@ updateBtn.addEventListener("click", function (event) {
       InvoiceNumber: data.get("invoice_no"),
       Comments:
         data.get("invoiceType") === "TOKEN"
-          ? `Token Invoice at R.O.E  ${val18}`
-          : `Invoice at R.O.E  ${val18}`,
+          ? `Token Invoice @ R.O.E  ${val18}`
+          : `Invoice @ R.O.E  ${val18}`,
     };
 
     console.log(invoiceData);
@@ -532,41 +538,30 @@ ipcRenderer.on("fetchCustomers", (event, data) => {
 //   }
 // });
 
-var gstSwitchStatus = false;
 $("#gst-switch").on("change", function () {
+  gstSwitchStatus = $(this).is(":checked");
   GetTotal();
-  if ($(this).is(":checked")) {
-    gstSwitchStatus = $(this).is(":checked");
-    // gross_amount = parseFloat(net_amount).toFixed(2);
-    // document.getElementById("total").innerHTML = parseFloat(
-    //   gross_amount,
-    // ).toFixed(2);
-  } else {
-    gstSwitchStatus = $(this).is(":checked");
-    // gross_amount = parseFloat(net_amount) + parseFloat(total_gst);
-    // document.getElementById("total").innerHTML = parseFloat(
-    //   gross_amount,
-    // ).toFixed(2);
-  }
 });
 
 function checkInvoiceType(invoiceTag) {
-  var x = invoiceTag.options[invoiceTag.selectedIndex].text;
+  x = invoiceTag.options[invoiceTag.selectedIndex].text;
+  console.log(x, gstSwitchStatus);
+  GetTotal();
 
   if (x === "REGULAR") {
     $("#token").prop("readonly", true);
-    let total = document.getElementById("total").innerText;
-    let token = document.getElementById("token").value;
-    gross_amount = (parseFloat(total) - parseFloat(token)).toFixed(2);
-    console.log(`${total} ${token} ${gross_amount}`);
-    document.getElementById("total").innerHTML = gross_amount;
+    // let total = document.getElementById("total").innerText;
+    // let token = document.getElementById("token").value;
+    // gross_amount = (parseFloat(total) - parseFloat(token)).toFixed(2);
+    // console.log(`${total} ${token} ${gross_amount}`);
+    // document.getElementById("total").innerHTML = gross_amount;
   } else {
     $("#token").prop("readonly", false);
-    let total = document.getElementById("total").innerText;
-    let token = document.getElementById("token").value;
-    gross_amount = (parseFloat(total) + parseFloat(token)).toFixed(2);
-    console.log(`${total} ${token} ${gross_amount}`);
-    document.getElementById("total").innerHTML = gross_amount;
+    // let total = document.getElementById("total").innerText;
+    // let token = document.getElementById("token").value;
+    // gross_amount = (parseFloat(total) + parseFloat(token)).toFixed(2);
+    // console.log(`${total} ${token} ${gross_amount}`);
+    // document.getElementById("total").innerHTML = gross_amount;
   }
 }
 //--- Invoice PDF Generation ---
@@ -582,10 +577,10 @@ function setInvoiceData(data) {
   document.getElementById("invoiceType").value =
     data.Invoice_Type === "Token Invoice" ? "TOKEN" : "REGULAR";
   document.getElementById("invoice_date").value = dateddmmmyyyy(
-    data.Invoice_Date,
+    data.Invoice_Date
   );
   document.getElementById("departure_date").value = dateddmmmyyyy(
-    data.Departure_Date,
+    data.Departure_Date
   );
   document.getElementById("currency").value = data.Currency;
   document.getElementById("agentName").value = data.Agent_Name;
@@ -611,10 +606,11 @@ function setInvoiceData(data) {
   document.getElementById("tds").value = data.TDS;
   document.getElementById("token").value = data.Token_Amt;
   document.getElementById("roe").value = data.ROE;
-  document.getElementById("gst-switch").value =
-    data.GST === 0
-      ? $("#gst-switch").prop("checked", false)
-      : $("#gst-switch").prop("checked", true);
+  document.getElementById("gst-switch").value = gstSwitchStatus =
+    data.GST === 0 ? false : true;
+  data.GST === 0
+    ? $("#gst-switch").prop("checked", false)
+    : $("#gst-switch").prop("checked", true);
   document.getElementById("cgst").value = data.CGST;
   document.getElementById("sgst").value = data.SGST;
   document.getElementById("igst").value = data.IGST;

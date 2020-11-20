@@ -383,6 +383,7 @@
 								name="token"
 								class="validate"
 								onkeypress="return isNumberKey(event,this);"
+								onkeyup="GetTotal(this);"
 								
 							/>
 							<label for="token">Token Amount </label>
@@ -397,7 +398,7 @@
 								name="roe"
 								class="validate"
 								onkeypress="return isNumberKey(event,this);"
-									onkeyup="GetTotal(this);"
+									
 							
 							/>
 							<label for="roe">R.O.E </label>
@@ -406,7 +407,7 @@
 							<div class="switch ">
 								<label>
 									GST
-									<input id="gst-switch"  type="checkbox" />
+									<input id="gst-switch"  type="checkbox" checked />
 									<span class="lever"></span>
 								</label>
 							</div>

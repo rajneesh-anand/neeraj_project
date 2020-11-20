@@ -981,7 +981,7 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
     },
   });
 
-  // rWin.webContents.openDevTools();
+  rWin.webContents.openDevTools();
 
   rWin.loadURL(modalPath);
 
@@ -990,10 +990,10 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
       rWin.webContents.send("fetchCustomers", data);
     });
 
-    accountData().then((args) => {
-      //  console.log(args);
-      rWin.webContents.send("fetchAccounts", args);
-    });
+    // accountData().then((args) => {
+    //   //  console.log(args);
+    //   rWin.webContents.send("fetchAccounts", args);
+    // });
   });
 });
 

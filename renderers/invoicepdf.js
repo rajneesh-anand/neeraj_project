@@ -51,8 +51,14 @@ function printInvoicePdf(invoice_id) {
         invResults.TDS_Amt -
         invResults.Comm_Amt;
 
-      let CGST_AMT = ((net_amount * invResults.CGST) / 100).toFixed(2);
-      let SGST_AMT = ((net_amount * invResults.SGST) / 100).toFixed(2);
+      let CGST_AMT =
+        invResults.Invoice_Type === "Token Invoice"
+          ? ((invResults.Token_Amt * invResults.CGST) / 100).toFixed(2)
+          : ((net_amount * invResults.CGST) / 100).toFixed(2);
+      let SGST_AMT =
+        invResults.Invoice_Type === "Token Invoice"
+          ? ((invResults.Token_Amt * invResults.SGST) / 100).toFixed(2)
+          : ((net_amount * invResults.SGST) / 100).toFixed(2);
 
       const data = {
         Invoice_Number: invResults.Invoice_Number,
@@ -97,11 +103,12 @@ function printInvoicePdf(invoice_id) {
         SGSTAmt: SGST_AMT,
         TDS_Amt:
           invResults.TDS_Amt === 0 ? false : invResults.TDS_Amt.toFixed(2),
-        ROE: invResults.ROE,
+        ROE: invResults.ROE.toFixed(2),
         Total: invResults.Total_Payable_Amt.toFixed(2),
         SubTotal: net_amount.toFixed(2),
         pincode: invResults.pincode,
         currency: currencyCode,
+        checkCurr: invResults.Currency,
       };
 
       // let templateHtml = fs.readFileSync(

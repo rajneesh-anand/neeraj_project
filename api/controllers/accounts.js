@@ -35,7 +35,7 @@ module.exports = {
             data: results,
           });
         });
-      },
+      }
     );
   },
 
@@ -54,8 +54,29 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
+  },
+
+  fetchAccountsById: (req, res) => {
+    // const type = req.params.id === "BANK-RECEIVE" ? "BANK ACCOUNT" : "OTHERS";
+    const sql =
+      req.params.id === "BANK-RECEIVE"
+        ? `SELECT concat(Prefix,id) as id ,Account_Name from accounts where Account_Type ="BANK ACCOUNT"`
+        : `SELECT concat(Prefix,id) as id ,Account_Name from accounts where Account_Type <>"BANK ACCOUNT"`;
+    console.log(sql);
+    pool.query(sql, [], (err, results) => {
+      if (err) {
+        return res.status(403).json({
+          error: err,
+        });
+      } else {
+        return res.status(200).json({
+          message: "All Accounts",
+          data: results,
+        });
+      }
+    });
   },
 
   getCategories: (req, res) => {
@@ -73,7 +94,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -105,7 +126,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -137,7 +158,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -161,7 +182,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -187,7 +208,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -213,7 +234,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -256,7 +277,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -287,7 +308,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
   getAccounts: (req, res) => {
@@ -306,7 +327,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
   getPaymentByID: (req, res) => {
@@ -327,7 +348,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -349,7 +370,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -371,7 +392,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -408,7 +429,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -442,7 +463,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -476,7 +497,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -510,7 +531,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 
@@ -542,7 +563,7 @@ module.exports = {
             data: results,
           });
         }
-      },
+      }
     );
   },
 };

@@ -3,6 +3,7 @@ const { checkToken } = require("../auth/jwt_validation");
 const {
   createAccount,
   fetchAccounts,
+  fetchAccountsById,
   createPayment,
   createReceipt,
   createLedger,
@@ -24,6 +25,7 @@ const {
 
 router.post("/account", createAccount);
 router.get("/accounts", fetchAccounts);
+router.get("/accounts/:id", fetchAccountsById);
 router.post("/payment", createPayment);
 router.put("/payment", updatePayment);
 router.put("/receive", updateReceive);
