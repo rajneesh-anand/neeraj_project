@@ -4,7 +4,8 @@
 	"description": "Accounting project for shipping",
 	"main": "main.js",
 	"scripts": {
-		"start": "electron ./"
+		"start": "electron ./",
+		"dist" : "electron-builder build"
 	},
 	"keywords": [],
 	"author": "Rajneesh",
@@ -41,6 +42,7 @@
 		}
 	},
 	"devDependencies": {
-		"electron": "^10.1.5"
+		"electron": "^10.1.5",
+		"electron-builder": "^22.9.1"
 	}
 }
