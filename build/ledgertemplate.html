@@ -113,8 +113,8 @@
           <td>{{formatDate EntryDate}}</td>
           <td>{{EntryType}} {{Invoice_Number}}</td>
           <td>{{Comments}}</td>
-          <td>{{Credit}}</td>
-          <td>{{Debit}}</td>
+          <td>{{formatNumber Credit}}</td>
+          <td>{{formatNumber Debit}}</td>
           <td>{{runningBalance this}}</td>
         </tr>
         {{/each}} {{/ifEqual}} {{/each}}
@@ -123,20 +123,14 @@
         <tr>
           <td></td>
           <td></td>
-          <td>TOTAL</td>
+          <td><strong>TOTAL</strong></td>
           <td><strong>{{sumCredit this}}</strong></td>
           <td><strong>{{sumDebit this}}</strong></td>
-          <td></td>
+          <td><strong>{{balance this}}</strong></td>
         </tr>
         {{/ifEqual}} {{/each}}
       </tbody>
     </table>
-    <div>
-      {{#each this}} {{#ifEqual @index 1}}
-      <h4>Total Debit : {{sumDebit this}}</h4>
-      {{/ifEqual}} {{/each}} {{#each this}} {{#ifEqual @index 1}}
-      <h4>Total Credit : {{sumCredit this}}</h4>
-      {{/ifEqual}} {{/each}}
-    </div>
+  
   </body>
 </html>

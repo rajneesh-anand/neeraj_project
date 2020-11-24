@@ -120,13 +120,16 @@ form.addEventListener("submit", function (event) {
     let paymentData = {
       id: data.get("id"),
       date: formattedDate(data.get("payment_date")),
-      entryType: data.get("entryType"),
+      entryType:
+        data.get("entryType") === "BANK-RECEIVE"
+          ? "Bank Transaction"
+          : "Cash Transaction",
       creditAccount: data.get("agent"),
       creditAmount: data.get("amount"),
       debitAccount: data.get("fromAccount"),
       debitAmount: data.get("amount"),
       chequeNumber: data.get("cheque") ? data.get("cheque").toUpperCase() : "",
-      remarks: data.get("comment") ? data.get("comment").toUpperCase() : "",
+      remarks: data.get("comment") ? data.get("comment") : "",
       bankName: data.get("bank_name")
         ? data.get("bank_name").toUpperCase()
         : "",
@@ -144,6 +147,7 @@ form.addEventListener("submit", function (event) {
         $("#bank_name").val("");
         $("#cheque").val("");
         $("#comment").val("");
+        $("#amount").val("");
         $("#showBalance").text("");
       })
       .catch((error) => {
@@ -267,7 +271,8 @@ ipcRenderer.on("sendReceiveDataForEdit", (event, data) => {
   console.log(data);
   document.getElementById("id").value = data.id;
   document.getElementById("payment_date").value = dateddmmmyyyy(data.EntryDate);
-  document.getElementById("entry").value = data.EntryType;
+  document.getElementById("entry").value =
+    data.EntryType === "Bank Transaction" ? "BANK-RECEIVE" : "CASH-RECEIVE";
   document.getElementById("fromAccount").value = data.Debit_Account;
   document.getElementById("agent").value = data.Credit_Account;
   document.getElementById("bank_name").value = data.BankName;

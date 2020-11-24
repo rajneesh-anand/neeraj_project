@@ -8,19 +8,18 @@
     />
 
     <style type="text/css">
-      table {
-        border-collapse: collapse;
-        width: 95%;
+      table {      
+        width: 98%;
         font: normal medium/1.4 "Roboto", sans-serif;
         margin-top: 8px;
-        margin-left: 20px;
+        margin-left: 10px;
       }
 
       th,
       td {
         padding: 0.25rem;
         text-align: left;
-        border: 1px solid #ccc;
+      
       }
 
       tbody tr:nth-child(odd) {
@@ -60,7 +59,11 @@
         padding-left: 30px;
         padding-right: 60px;
       }
-    </style>
+      .zebra {
+        font-family: "Roboto", sans-serif;
+        font-size: 12px;
+      }
+    </style> 
   </head>
 
   <body>
@@ -97,10 +100,11 @@
     <hr />
     <table class="zebra">
       <thead>
-        <th>Entry Date</th>
-        <th>Description</th>
-        <th>Debit</th>
-        <th>Credit</th>
+        <th>ENTRY DATE</th>
+        <th>DESCRIPTION</th>
+        <th>CREDIT</th>
+        <th>DEBIT</th>
+        <th>BALANCE</th>
       </thead>
 
       <tbody>
@@ -108,15 +112,25 @@
         <tr>
           <td>{{formatDate EntryDate}}</td>
           <td>{{Comments}}</td>
-          <td>{{Debit}}</td>
-          <td>{{Credit}}</td>
+          <td>{{formatNumber Credit}}</td>
+          <td>{{formatNumber Debit}}</td>
+          <td>{{runningBalance this}}</td>
         </tr>
         {{/each}}
+        <tr></tr>
+      
+        <tr>  
+           
+          <td></td>
+          <td style="text-align:center"><strong>TOTAL</strong></td>
+          <td><strong>{{sumCredit this}}</strong></td>
+          <td><strong>{{sumDebit this}}</strong></td>
+          <td><strong>{{balance this}}</strong></td>
+        
+        </tr>
+        
       </tbody>
     </table>
-    <div>
-      <h4>Total Debit : {{sumDebit this}}</h4>
-      <h4>Total Credit : {{sumCredit this}}</h4>
-    </div>
+  
   </body>
 </html>

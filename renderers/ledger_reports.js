@@ -55,16 +55,22 @@ handlebars.registerHelper("sumDebit", function (arr) {
   return s.toFixed(2);
 });
 
+handlebars.registerHelper("formatNumber", function (a) {
+  if (a) {
+    return a.toFixed(2);
+  }
+});
+
 handlebars.registerHelper("sumCredit", function (arr) {
   let s = 0;
   for (let i = 0; i < arr.length; i++) {
     s = s + arr[i].Credit;
   }
 
-  return s;
+  return s.toFixed(2);
 });
 
-var balance = 0;
+var balance;
 handlebars.registerHelper("runningBalance", function (a) {
   console.log(a);
   let diff = a.Debit - a.Credit;
@@ -72,6 +78,19 @@ handlebars.registerHelper("runningBalance", function (a) {
   balance = balance + diff;
   console.log(balance);
   return balance.toFixed(2);
+});
+
+handlebars.registerHelper("balance", function (arr) {
+  let debit = 0;
+  let credit = 0;
+  for (let i = 0; i < arr.length; i++) {
+    debit = debit + arr[i].Debit;
+    credit = credit + arr[i].Credit;
+  }
+  let diff = debit - credit;
+  console.log(diff);
+
+  return diff.toFixed(2);
 });
 
 handlebars.registerHelper("formatDate", function (dateString) {
@@ -264,6 +283,7 @@ const genButton = document.getElementById("generate");
 
 genButton.addEventListener("click", (event) => {
   event.preventDefault();
+  balance = 0;
 
   if (document.getElementById("all").checked) {
     printAllAgentsLedgerPdf();

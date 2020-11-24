@@ -98,7 +98,9 @@ function printGeneralLedgerPdf(id) {
   generalLedgerAPICallDateWise(id).then(async (results) => {
     if (results.message === "success") {
       let data = results.data;
-      console.log(data);
+
+      let accNameEntry = document.getElementById("accountList");
+      let accName = accNameEntry.options[accNameEntry.selectedIndex].text;
 
       //   let templateHtml = fs.readFileSync(
       //     path.join(app.getAppPath(), "../build/generalledgertemplate.html"),
@@ -112,7 +114,7 @@ function printGeneralLedgerPdf(id) {
 
       let template = handlebars.compile(templateHtml);
       let html = template(data);
-      const pdfPath = `C://pdfreports//Ledger.pdf`;
+      const pdfPath = `C://pdfreports//${accName} LEDGER.pdf`;
       let options = {
         printBackground: true,
         path: pdfPath,
