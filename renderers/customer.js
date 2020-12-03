@@ -1,58 +1,6 @@
 const electron = require("electron");
-const remote = electron.remote;
-const { ipcRenderer, BrowserWindow } = electron;
+const { ipcRenderer, remote } = electron;
 const axios = require("axios");
-const path = require("path");
-const fs = require("fs");
-
-let states = [];
-var pdf = require("pdf-creator-node");
-
-//-----------
-
-// Read HTML Template
-var filepath = path.join(__dirname, "../assets/template.html");
-console.log(filepath);
-var html = fs.readFileSync(filepath, "utf8");
-
-var opt = {
-  format: "A4",
-  orientation: "portrait",
-  border: "10mm",
-};
-
-var users = [
-  {
-    name: "Shyam",
-    age: "26",
-  },
-  {
-    name: "Navjot",
-    age: "26",
-  },
-  {
-    name: "Vitthal",
-    age: "26",
-  },
-];
-
-var document = {
-  html: html,
-  data: {
-    users: users,
-  },
-  path: "./output.pdf",
-};
-
-var pdfButton = document.getElementById("btnPdf");
-pdfButton.addEventListener("click", () => {
-  fs.access("C://PDF_REPORTS", function (error) {
-    if (error) {
-      console.log("Directory does not exist.");
-      fs.mkdirSync("C://PDF_REPORTS");
-    }
-  });
-});
 
 function ValidateNumbers(e) {
   document.oncontextmenu = function () {
@@ -146,8 +94,6 @@ form.addEventListener("submit", (event) => {
 });
 
 ipcRenderer.on("fetchStates", (event, data) => {
-  states = [...data];
-
   var Options = "";
   data.map(function (element, i) {
     Options =

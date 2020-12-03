@@ -3,8 +3,6 @@ const remote = electron.remote;
 const { ipcRenderer } = electron;
 const axios = require("axios");
 
-let states = [];
-
 function ValidateNumbers(e) {
   document.oncontextmenu = function () {
     return false;
@@ -84,7 +82,7 @@ form.addEventListener("submit", (event) => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-        },
+        }
       )
       .then((response) => {
         alert(response.data.message);
@@ -97,8 +95,6 @@ form.addEventListener("submit", (event) => {
 });
 
 ipcRenderer.on("fetchStates", (event, data) => {
-  states = [...data];
-
   var Options = "";
   data.map(function (element, i) {
     Options =

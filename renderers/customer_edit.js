@@ -1,6 +1,5 @@
 const electron = require("electron");
-const remote = electron.remote;
-const { ipcRenderer } = electron;
+const { ipcRenderer, remote } = electron;
 const axios = require("axios");
 
 function ValidateNumbers(e) {
@@ -82,7 +81,7 @@ form.addEventListener("submit", function (event) {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-        },
+        }
       )
       .then((response) => {
         alert(response.data.message);
