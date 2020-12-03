@@ -283,6 +283,12 @@ const genButton = document.getElementById("generate");
 
 genButton.addEventListener("click", (event) => {
   event.preventDefault();
+  fs.access("C://PDF_REPORTS", function (error) {
+    if (error) {
+      // console.log("Directory does not exist.");
+      fs.mkdirSync("C://PDF_REPORTS");
+    }
+  });
   balance = 0;
 
   if (document.getElementById("all").checked) {

@@ -508,6 +508,12 @@ function checkInvoiceType(invoiceTag) {
 
 document.getElementById("download").addEventListener("click", (event) => {
   event.preventDefault();
+  fs.access("C://PDF_REPORTS", function (error) {
+    if (error) {
+      // console.log("Directory does not exist.");
+      fs.mkdirSync("C://PDF_REPORTS");
+    }
+  });
   const InvoiceNumber = document.getElementById("invoice_no").value;
   printInvoicePdf(InvoiceNumber);
 });

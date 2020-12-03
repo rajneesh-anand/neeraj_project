@@ -227,7 +227,6 @@ function GetTotal(obj) {
   misc_amount = parseFloat(val12).toFixed(2);
   tds_amount = ((comm_amount * parseFloat(val13)) / 100).toFixed(2);
   token_amount = parseFloat(val14).toFixed(2);
-  token_amount_inr = (parseFloat(token_amount) * parseFloat(val18)).toFixed(2);
 
   net_amount = (
     parseFloat(base_amount) +
@@ -568,6 +567,12 @@ function checkInvoiceType(invoiceTag) {
 
 document.getElementById("download").addEventListener("click", (event) => {
   event.preventDefault();
+  fs.access("C://PDF_REPORTS", function (error) {
+    if (error) {
+      // console.log("Directory does not exist.");
+      fs.mkdirSync("C://PDF_REPORTS");
+    }
+  });
   const InvoiceNumber = document.getElementById("invoice_no").value;
   printInvoicePdf(InvoiceNumber);
 });

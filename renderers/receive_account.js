@@ -120,13 +120,11 @@ function getAccountBalance() {
       console.log(Balance);
 
       if (Balance > 0) {
-        balanceField.innerText = `Balance : INR { ${thFormat(
-          Balance
-        )} } Credit `;
+        balanceField.innerText = `Balance : INR ${thFormat(Balance)}  Cr `;
       } else if (Balance < 0) {
-        balanceField.innerText = `Balance : INR { ${thFormat(
-          Math.abs(Balance)
-        )} } Debit `;
+        balanceField.innerText = `Balance : INR  ${thFormat(
+          Math.abs(Balance).toFixed(2)
+        )}  Dr `;
       } else {
         balanceField.innerText = `Balance : INR { 0.00 }`;
       }

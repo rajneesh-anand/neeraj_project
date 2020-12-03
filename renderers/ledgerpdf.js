@@ -33,8 +33,8 @@ function printAgentLedgerPdf(id) {
       // console.log(agentData[0].first_name);
 
       // let templateHtml = fs.readFileSync(
-      // 	path.join(app.getAppPath(), "../build/ledgertemplate.html"),
-      // 	"utf8"
+      //   path.join(app.getAppPath(), "../build/ledgertemplate.html"),
+      //   "utf8"
       // );
 
       let templateHtml = fs.readFileSync(
@@ -44,7 +44,7 @@ function printAgentLedgerPdf(id) {
 
       let template = handlebars.compile(templateHtml);
       let html = template(data);
-      const pdfPath = `C://pdfreports//${agentData[0].first_name} LEDGER.pdf`;
+      const pdfPath = `C://PDF_REPORTS//${agentData[0].first_name} LEDGER.pdf`;
       let options = {
         printBackground: true,
         path: pdfPath,
@@ -53,8 +53,8 @@ function printAgentLedgerPdf(id) {
       const browser = await puppeteer.launch({
         headless: true,
         // executablePath: path.join(
-        // 	app.getAppPath(),
-        // 	"../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+        //   app.getAppPath(),
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -102,10 +102,10 @@ function printGeneralLedgerPdf(id) {
       let accNameEntry = document.getElementById("accountList");
       let accName = accNameEntry.options[accNameEntry.selectedIndex].text;
 
-      //   let templateHtml = fs.readFileSync(
-      //     path.join(app.getAppPath(), "../build/generalledgertemplate.html"),
-      //     "utf8",
-      //   );
+      // let templateHtml = fs.readFileSync(
+      //   path.join(app.getAppPath(), "../build/generalledgertemplate.html"),
+      //   "utf8"
+      // );
 
       let templateHtml = fs.readFileSync(
         path.join(__dirname, "../build/generalledgertemplate.html"),
@@ -114,7 +114,7 @@ function printGeneralLedgerPdf(id) {
 
       let template = handlebars.compile(templateHtml);
       let html = template(data);
-      const pdfPath = `C://pdfreports//${accName} LEDGER.pdf`;
+      const pdfPath = `C://PDF_REPORTS//${accName} LEDGER.pdf`;
       let options = {
         printBackground: true,
         path: pdfPath,
@@ -124,7 +124,7 @@ function printGeneralLedgerPdf(id) {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -159,10 +159,10 @@ function printLedger(accountId) {
   printLedgerAPICall(accountId).then(async (results) => {
     if (results.message === "success") {
       let data = results.data;
-      //   let templateHtml = fs.readFileSync(
-      //     path.join(app.getAppPath(), "../build/ledgertemplate.html"),
-      //     "utf8",
-      //   );
+      // let templateHtml = fs.readFileSync(
+      //   path.join(app.getAppPath(), "../build/ledgertemplate.html"),
+      //   "utf8"
+      // );
 
       let templateHtml = fs.readFileSync(
         path.join(__dirname, "../build/ledgertemplate.html"),
@@ -172,7 +172,7 @@ function printLedger(accountId) {
       let template = handlebars.compile(templateHtml);
       let html = template(data);
 
-      const pdfPath = `C://pdfreports//Ledger.pdf`;
+      const pdfPath = `C://PDF_REPORTS//Ledger.pdf`;
 
       let options = {
         printBackground: true,
@@ -184,7 +184,7 @@ function printLedger(accountId) {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -232,10 +232,10 @@ function printAllAgentsLedgerPdf() {
     if (results.message === "success") {
       let data = results.data;
 
-      //   let templateHtml = fs.readFileSync(
-      //     path.join(app.getAppPath(), "../build/allledgertemplate.html"),
-      //     "utf8",
-      //   );
+      // let templateHtml = fs.readFileSync(
+      //   path.join(app.getAppPath(), "../build/allledgertemplate.html"),
+      //   "utf8"
+      // );
 
       let templateHtml = fs.readFileSync(
         path.join(__dirname, "../build/allledgertemplate.html"),
@@ -245,7 +245,7 @@ function printAllAgentsLedgerPdf() {
       let template = handlebars.compile(templateHtml);
       let html = template(data);
 
-      const pdfPath = `C://pdfreports//LEDGER.pdf`;
+      const pdfPath = `C://PDF_REPORTS//LEDGER.pdf`;
 
       let options = {
         printBackground: true,
@@ -257,7 +257,7 @@ function printAllAgentsLedgerPdf() {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });

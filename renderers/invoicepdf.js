@@ -113,7 +113,7 @@ function printInvoicePdf(invoice_id) {
 
       // let templateHtml = fs.readFileSync(
       //   path.join(app.getAppPath(), "../build/invoicetemplate.html"),
-      //   "utf8",
+      //   "utf8"
       // );
 
       let templateHtml = fs.readFileSync(
@@ -124,7 +124,7 @@ function printInvoicePdf(invoice_id) {
       let template = handlebars.compile(templateHtml);
       let html = template(data);
 
-      const pdfPath = `C://pdfreports//${data.Invoice_Number}.pdf`;
+      const pdfPath = `C://PDF_REPORTS//${data.Invoice_Number}.pdf`;
 
       let options = {
         printBackground: true,
@@ -136,7 +136,7 @@ function printInvoicePdf(invoice_id) {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe",
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
