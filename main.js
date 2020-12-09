@@ -142,7 +142,7 @@ function createHomeWindow() {
     },
   });
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -461,7 +461,7 @@ ipcMain.on("create:customerwindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -499,7 +499,7 @@ ipcMain.on("create:supplierwindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -564,7 +564,7 @@ ipcMain.on("create:reportWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -595,7 +595,7 @@ ipcMain.on("create:tdsReportWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -625,7 +625,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -678,7 +678,7 @@ ipcMain.on("invoice:edit", (event, args) => {
     },
   });
 
-  inveditWin.webContents.openDevTools();
+  // inveditWin.webContents.openDevTools();
 
   inveditWin.loadURL(modalPath);
 
@@ -981,7 +981,7 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
     },
   });
 
-  rWin.webContents.openDevTools();
+  // rWin.webContents.openDevTools();
 
   rWin.loadURL(modalPath);
 

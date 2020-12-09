@@ -54,7 +54,7 @@ function printAgentLedgerPdf(id) {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-818858/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -124,7 +124,7 @@ function printGeneralLedgerPdf(id) {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-818858/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -184,7 +184,7 @@ function printLedger(accountId) {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-818858/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -257,7 +257,7 @@ function printAllAgentsLedgerPdf() {
         headless: true,
         // executablePath: path.join(
         //   app.getAppPath(),
-        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
+        //   "../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-818858/chrome-win/chrome.exe"
         // ),
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });

@@ -130,31 +130,38 @@
       <div>Cruise Base Fare</div>
       <div>{{{currency}}} {{Base_Amt}}</div>
     </div>
+    {{#if NCF_Amt}}
     <div class="container row">
-      {{#if NCF_Amt}}
+    
       <div>N C F</div>
       <div>{{{currency}}} {{NCF_Amt}}</div>
-      {{/if}}
+     
     </div>
+    {{/if}}
+    {{#if TAX_Amt}}
     <div class="container row">
-      {{#if TAX_Amt}}
+     
       <div>TAX</div>
       <div>{{{currency}}} {{TAX_Amt}}</div>
-      {{/if}}
+    
     </div>
+    {{/if}}
+    {{#if HS_Amt}}
     <div class="container row">
-      {{#if HS_Amt}}
+    
       <div>Holiday Surcharge</div>
       <div>{{{currency}}} {{HS_Amt}}</div>
-      {{/if}}
+     
     </div>
+    {{/if}}
+    {{#if Grat_Amt}}
     <div class="container row">
-      {{#if Grat_Amt}}
+    
       <div>Gratuity</div>
       <div>{{{currency}}} {{Grat_Amt}}</div>
-      {{/if}}
+    
     </div>
-   
+    {{/if}}
       {{#if Misc}}
       <div class="container row">
       <div>Extra Charges</div>

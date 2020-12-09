@@ -30,7 +30,7 @@ $(document).ready(function () {
   const btnClose = document.getElementById("btnClose");
   btnClose.addEventListener("click", (event) => {
     const window = remote.getCurrentWindow();
-    window.hide();
+    window.close();
   });
 });
 
@@ -84,7 +84,9 @@ form.addEventListener("submit", function (event) {
         }
       )
       .then((response) => {
-        alert(response.data.message);
+        const window = remote.getCurrentWindow();
+        window.close();
+        // alert(response.data.message);
       })
       .catch((error) => {
         alert(error.response.data.message);
