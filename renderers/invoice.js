@@ -267,7 +267,7 @@ function GetTotal(obj) {
     (parseFloat(token_amount) + parseFloat(total_gst)) *
     parseFloat(val18)
   ).toFixed(2);
-  // console.log(gstSwitchStatus);
+  console.log(val8);
 
   if (gstSwitchStatus) {
     gross_amount =
@@ -567,43 +567,3 @@ const getInvoiceNumber = async () => {
       if (error) throw new Error(error);
     });
 };
-
-// async function generatepdfInvoice() {
-// 	const ledResults = {
-// 		Invoice_Number: "sadghjsgd676",
-// 		CompanyGSTIN: "37B76C238B7E1Z5",
-// 	};
-
-// 	let templateHtml = fs.readFileSync(
-// 		path.join(__dirname, "../build/invoicetemplate.html"),
-// 		"utf8"
-// 	);
-
-// 	let template = handlebars.compile(templateHtml);
-// 	let html = template(ledResults);
-
-// 	const pdfPath = `C://pdfreports//Ledger.pdf`;
-
-// 	let options = {
-// 		printBackground: true,
-// 		path: pdfPath,
-// 		format: "A4",
-// 	};
-
-// 	const browser = await puppeteer.launch({
-// 		headless: true,
-// 		// executablePath: path.join(
-// 		// 	app.getAppPath(),
-// 		// 	"../app.asar.unpacked/node_modules/puppeteer/.local-chromium/win64-722234/chrome-win/chrome.exe"
-// 		// ),
-// 		args: ["--no-sandbox", "--disable-setuid-sandbox"],
-// 	});
-
-// 	let page = await browser.newPage();
-// 	await page.setContent(html);
-
-// 	await page.pdf(options);
-// 	await browser.close();
-
-// 	alert("LEDGER GENERATED");
-// }

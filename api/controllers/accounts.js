@@ -193,7 +193,7 @@ module.exports = {
 			ON concat(customers.Prefix,customers.id) = payments.Debit_Account
 			LEFT JOIN accounts
 			ON concat(accounts.Prefix,accounts.id) = payments.Debit_Account
-			where payments.EntryType <>'INVOICE'
+			where payments.EntryType <>'Invoice' and payments.EntryType <>'Token Invoice'
 			ORDER BY payments.EntryDate`,
       [],
       (error, results) => {
@@ -219,7 +219,7 @@ module.exports = {
 			ON concat(customers.Prefix,customers.id) = receive.Credit_Account
 			LEFT JOIN accounts
 			ON concat(accounts.Prefix,accounts.id) = receive.Credit_Account
-			where receive.EntryType <>'INVOICE'
+			where receive.EntryType <>'Invoice'
 			ORDER BY receive.EntryDate`,
       [],
       (error, results) => {

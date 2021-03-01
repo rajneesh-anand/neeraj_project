@@ -390,6 +390,7 @@
 								name="roe"
 								class="validate"
 								onkeypress="return isNumberKey(event,this);"	
+								onkeyup="GetTotal(this);"
 												
 							
 							/>
@@ -512,7 +513,8 @@
 						id="btnSave"
 						name="action"
 					>
-						UPDATE<i class="material-icons right">save</i>
+						UPDATE
+						<!-- <i class="material-icons right">save</i> -->
 					</button>
 					<button
 						class="btn-small waves-effect waves-light"					

@@ -447,14 +447,14 @@ function generateInvoiceDataTable() {
         },
         targets: 2,
       },
+      {
+        render: function (data, type, row) {
+          return data.toFixed(2);
+        },
+        targets: 4,
+      },
     ],
-    // columns: [
-    //   { data: "Invoice_Id" },
-    //   { data: "Invoice_Number" },
-    //   { data: "Invoice_Date" },
-    //   { data: "Agent_Name" },
-    //   { data: "Total_Payable_Amt" },
-    // ],
+
     dom: "Bfrtip",
     select: true,
 
@@ -936,7 +936,7 @@ function generatePaymentDataTable() {
   });
 }
 
-// Receive table List
+// Generate Receive DataTable
 
 function generateReceiveDataTable() {
   let rowIndex;
