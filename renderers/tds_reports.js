@@ -270,7 +270,7 @@ genButton.addEventListener("click", (event) => {
   let accountId = document.getElementById("accountList").value;
   if (isValid()) {
     if (document.getElementById("tdsRadio").checked) {
-      //   printTdsLedgerPdf(accountId);
+      printTdsLedgerPdf(accountId);
     } else {
       //   printGstLedgerPdf(accountId);
     }

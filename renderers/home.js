@@ -438,8 +438,14 @@ function generateInvoiceDataTable() {
     language: {
       searchPlaceholder: "Search Invoice",
       sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
     },
+    info: false,
     pageLength: 100,
+
     columnDefs: [
       {
         render: function (data, type, row) {
@@ -693,18 +699,15 @@ function generateCustomerDataTable() {
     language: {
       searchPlaceholder: "Search Customer",
       sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
     },
+    info: false,
+
     pageLength: 100,
 
-    // data: dataTableRecords,
-
-    // columns: [
-    // 	{ data: "id" },
-    // 	{ data: "first_name" },
-    // 	{ data: "city" },
-    // 	{ data: "State_Name" },
-    // 	{ data: "gstin" },
-    // ],
     dom: "Bfrtip",
     select: true,
 
@@ -774,20 +777,17 @@ function generateSupplierDataTable() {
     serverSide: true,
     ajax: "http://localhost:3000/api/suppliers",
     language: {
-      searchPlaceholder: "Search Supplier",
+      searchPlaceholder: "Search Suuplier",
       sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
     },
+    info: false,
+
     pageLength: 100,
 
-    // data: dataTableRecords,
-
-    // columns: [
-    // 	{ data: "id" },
-    // 	{ data: "first_name" },
-    // 	{ data: "city" },
-    // 	{ data: "State_Name" },
-    // 	{ data: "gstin" },
-    // ],
     dom: "Bfrtip",
     select: true,
 
@@ -857,9 +857,14 @@ function generatePaymentDataTable() {
     searching: true,
     responsive: true,
     language: {
-      searchPlaceholder: "Search records",
+      searchPlaceholder: "Search Records",
       sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
     },
+    info: false,
     pageLength: 100,
     data: dataTableRecords,
     columnDefs: [
@@ -963,9 +968,14 @@ function generateReceiveDataTable() {
     searching: true,
     responsive: true,
     language: {
-      searchPlaceholder: "Search records",
+      searchPlaceholder: "Search Records",
       sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
     },
+    info: false,
     pageLength: 100,
     data: dataTableRecords,
     columnDefs: [
