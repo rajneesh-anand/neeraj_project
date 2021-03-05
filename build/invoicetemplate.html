@@ -77,9 +77,9 @@
         <div>GSTIN :</div>
       </div>
       <div class="invoice_details">
-        <div class="tophead">INVOICE NO :  {{Invoice_Number}}</div>
+        <div class="tophead">INVOICE NO : {{Invoice_Number}}</div>
         <div class="tophead">INVOICE DATE : {{formatDate Invoice_Date}}</div>
-        <div class="tophead" style="text-align: center;">
+        <div class="tophead" style="text-align: center">
           TOTAL AMOUNT PAYABLE
         </div>
         <div
@@ -132,92 +132,74 @@
     </div>
 
     {{#if NCF_Amt}}
-    <div class="container row">    
+    <div class="container row">
       <div>N C F</div>
-      <div>{{{currency}}} {{NCF_Amt}}</div>     
+      <div>{{{currency}}} {{NCF_Amt}}</div>
     </div>
-    {{/if}}
-
-    {{#if TAX_Amt}}
-    <div class="container row">     
+    {{/if}} {{#if TAX_Amt}}
+    <div class="container row">
       <div>TAX</div>
-      <div>{{{currency}}} {{TAX_Amt}}</div>    
+      <div>{{{currency}}} {{TAX_Amt}}</div>
     </div>
-    {{/if}}
-
-    {{#if HS_Amt}}
-    <div class="container row">    
+    {{/if}} {{#if HS_Amt}}
+    <div class="container row">
       <div>Holiday Surcharge</div>
-      <div>{{{currency}}} {{HS_Amt}}</div>     
+      <div>{{{currency}}} {{HS_Amt}}</div>
     </div>
-    {{/if}}
-
-    {{#if Grat_Amt}}
-    <div class="container row">    
+    {{/if}} {{#if Grat_Amt}}
+    <div class="container row">
       <div>Gratuity</div>
-      <div>{{{currency}}} {{Grat_Amt}}</div>    
+      <div>{{{currency}}} {{Grat_Amt}}</div>
     </div>
-    {{/if}}
-
-    {{#if Misc}}
-      <div class="container row">
+    {{/if}} {{#if Misc}}
+    <div class="container row">
       <div>Extra Charges</div>
       <div>{{{currency}}} {{Misc}}</div>
-      </div>
-    {{/if}}
-
-    {{#if Comm_Amt}}
-    <div class="container row">    
-      <div>Less Commission</div>
-      <div>{{{currency}}} {{Comm_Amt}}</div>     
     </div>
-    {{/if}}
-    
-    {{#if TDS_Amt}}
-      <div class="container row">
+    {{/if}} {{#if Comm_Amt}}
+    <div class="container row">
+      <div>Less Commission</div>
+      <div>{{{currency}}} {{Comm_Amt}}</div>
+    </div>
+    {{/if}} {{#if TDS_Amt}}
+    <div class="container row">
       <div>TDS Applicable</div>
       <div>{{{currency}}} {{TDS_Amt}}</div>
-      </div>
+    </div>
     {{/if}}
-     
+
     <hr />
     <div class="container row">
-      <div>Sub Total </div>
+      <div>Sub Total</div>
       <div>{{{currency}}} {{SubTotal}}</div>
     </div>
 
     {{#if GSTRate}}
-    <div class="container row">     
+    <div class="container row">
       <div>GST @ {{GSTRate}} %</div>
-      <div>{{GST_Amt}}</div>    
+      <div>{{GST_Amt}}</div>
     </div>
-    {{/if}}
-
-    {{#if CGST}}
-    <div class="container row">     
+    {{/if}} {{#if CGST}}
+    <div class="container row">
       <div></div>
       <div>CGST @ {{CGST}} %</div>
       <div>{{CGSTAmt}}</div>
-      <div></div>    
+      <div></div>
     </div>
-    {{/if}}
-
-    {{#if SGST}}
-    <div class="container row">   
+    {{/if}} {{#if SGST}}
+    <div class="container row">
       <div></div>
       <div>SGST @ {{SGST}} %</div>
       <div>{{SGSTAmt}}</div>
       <div></div>
     </div>
-    {{/if}}    
-     
-    {{#if Token_Amt}}
-    <div class="container row">    
+    {{/if}} {{#if Token_Amt}}
+    <div class="container row">
       <div>Token Amount</div>
-      <div>{{{currency}}} {{Token_Amt}}</div>     
+      <div>{{{currency}}} {{Token_Amt}}</div>
     </div>
     {{/if}}
-    
+
     <div
       class="container row"
       style="
@@ -228,51 +210,49 @@
         margin-top: 10px;
       "
     >
-      <div>GRAND TOTAL </div>
+      <div>GRAND TOTAL</div>
       <div>{{{currency}}} {{Total}}</div>
     </div>
 
-    <!-- <div class="container row" style="padding-top: 8px; padding-bottom: 8px;">
-      {{#if ROE}}
-      <div>Amount Payable in INR :</div>
-      <div>Applicable Rate Of Exchange - {{ROE}}</div>
-      <div>&#x20B9; {{Token_Amt_INR}}</div>
-      {{/if}}
-    </div> -->
     {{#ifEqual checkCurr 4}}
     <div></div>
     {{else}}
-    <div class="container row" style="padding-top: 8px; padding-bottom: 8px;">
+    <div class="container row" style="padding-top: 8px; padding-bottom: 8px">
       {{#ifEqual Invoice_Type "Token Invoice"}}
-      <div>Amount Payable in INR </div>
+      <div>Amount Payable in INR</div>
       <div>( Applicable Rate of Exchange <strong>{{ROE}}</strong> )</div>
       <div>&#x20B9; {{Token_Amt_INR}}</div>
       {{else}}
-      <div>Amount Payable in INR </div>
+      <div>Amount Payable in INR</div>
       <div>( Applicable Rate of Exchange <strong>{{ROE}}</strong> )</div>
       <div>&#x20B9; {{TotalINR}}</div>
       {{/ifEqual}}
     </div>
     {{/ifEqual}}
 
-    
-    <div class="footer" style="padding-top: 60px;">
+    <div class="footer" style="padding-top: 60px">
       Terms and conditions apply *
     </div>
     <div class="footer">
-      Payment in Indian Rupees at the prevalent rate of exchange via <strong>
-      Cheque/Demand Draft/RTGS </strong>, should be payable to Carrot Cruise Shipping Pvt
-      Ltd.
+      Payment in Indian Rupees at the prevalent rate of exchange via
+      <strong> Cheque/Demand Draft/RTGS </strong>, should be payable to Carrot
+      Cruise Shipping Pvt Ltd.
     </div>
-    <div class="footer" style="padding-top: 10px;font-size: 16px;">
+    <div class="footer" style="padding-top: 10px; font-size: 16px">
       <strong>
-      HDFC BANK (Carrot Cruise Shipping Pvt. Ltd ) A/C No. 50200024394736<br>
-      IFSC/RTGS/NEFT Code : HDFC0001441</strong>
+        HDFC BANK (Carrot Cruise Shipping Pvt. Ltd ) A/C No. 50200024394736<br />
+        IFSC/RTGS/NEFT Code : HDFC0001441</strong
+      >
     </div>
-    <div class="footer" style="padding-top: 10px; padding-bottom: 10px; font-size: 16px;">
+    <div
+      class="footer"
+      style="padding-top: 10px; padding-bottom: 10px; font-size: 16px"
+    >
       <strong>
-      YES BANK (Carrot Cruise Shipping Pvt. Ltd) A/C No. 059861900002113 <br>
-      IFSC/RTGS/NEFT Code : YESB0000598</strong>
+        YES BANK (Carrot Cruise Shipping Pvt. Ltd) A/C No. 059861900002113
+        <br />
+        IFSC/RTGS/NEFT Code : YESB0000598</strong
+      >
     </div>
     <div class="footer">
       *This is computer generated copy, hence does not require any signature.

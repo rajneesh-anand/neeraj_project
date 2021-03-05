@@ -604,6 +604,8 @@ ipcMain.on("create:tdsReportWindow", (event, fileName) => {
   });
 });
 
+// Invoice window
+
 ipcMain.on("create:invoiceWindow", (event, fileName) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   //  console.log(height);
@@ -625,7 +627,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -643,8 +645,7 @@ ipcMain.on("create:invoiceWindow", (event, fileName) => {
   });
 });
 
-//------- Invoice Section ---------
-//----------nvoice Edit------------
+// Invoice edit window
 
 const fetchInvoiceDataByID = async (id) => {
   return await axios
@@ -658,7 +659,6 @@ const fetchInvoiceDataByID = async (id) => {
 };
 
 ipcMain.on("invoice:edit", (event, args) => {
-  // console.log(args);
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const modalPath = path.join(
     `file://${__dirname}/renderers/invoice_edit.html`
@@ -688,36 +688,12 @@ ipcMain.on("invoice:edit", (event, args) => {
     });
 
     fetchInvoiceDataByID(args.invoiceId).then((invData) => {
-      // console.log(invData);
       inveditWin.webContents.send("sendInvoiceDataForEdit", invData);
     });
   });
 });
 
-//-----------------------
-
-ipcMain.on("add:invoice", async function (event, args) {
-  await axios
-    .post(
-      `http://localhost:3000/api/invoice`,
-      args,
-
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((Response) => {
-      event.reply("invoice:added", Response.data.message);
-    })
-    .catch((error) => {
-      event.reply("invoice:added", error.response.data.message);
-    });
-});
-
-// Payment Window
+// Payment window
 
 ipcMain.on("create:paymentWindow", (event, fileName) => {
   const modalPath = path.join(
@@ -1072,6 +1048,8 @@ ipcMain.on("fetchCustomers", (event, args) => {
 });
 
 ipcMain.on("data:backup", (event, args) => {
+  shell.openPath(path.join(app.getAppPath(), "../build/dbbackup.bat"));
+
   // var wstream = fs.createWriteStream(path.join(__dirname, "dumpfilename.sql"));
   // var child = spawn("mysqldump", ["-u", "root", "-praj2neo", "shipping"]);
   // child.stdout.pipe(wstream).on("finish", function () {

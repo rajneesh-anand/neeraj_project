@@ -478,8 +478,6 @@ ipcRenderer.on("fetchCustomers", (event, data) => {
 
 ipcRenderer.on("sendInvoiceNumber", (event, args) => {
   let date = new Date();
-  // console.log(`CC${date.getFullYear()}${date.getMonth() + 1}-00001`);
-
   let extractInvoice = args[0];
 
   let generatedInvoice = extractInvoice["@Invoice_Number"]
