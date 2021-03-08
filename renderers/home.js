@@ -198,7 +198,7 @@ function getReceiveListAPICall(callback) {
     });
 }
 
-$(document).ready(function () {
+$(function () {
   dataPath = path.join(storage.getDataPath(), "../storage");
   storage.setDataPath(dataPath);
 
@@ -208,35 +208,34 @@ $(document).ready(function () {
     document.getElementById("userName").innerText = data.name;
 
     if (data.role === "guest") {
-      $("#setAccount ").hover(function () {
+      $("#setAccount ").on("mouseenter", function () {
         $(this)
           .children("a")
-          .click(function () {
+          .on("click", function () {
             return false;
           });
       });
 
-      $("#setPayment ").hover(function () {
+      $("#setPayment ").on("mouseenter", function () {
         $(this)
           .children("a")
-          .click(function () {
+          .on("click", function () {
             return false;
           });
       });
 
-      $("#setReceive ").hover(function () {
+      $("#setReceive ").on("mouseenter", function () {
         $(this)
           .children("a")
-          .click(function () {
+          .on("click", function () {
             return false;
           });
       });
 
-      $("#newUser a").click(function () {
+      $("#newUser a").on("click", function () {
         return false;
       });
     }
-    // document.getElementById("userEmail").innerText = data.email;
   });
 
   // getInvoiceListAPICall((response) => {
@@ -337,8 +336,7 @@ ledgerButton.addEventListener("click", (event) => {
 
 const generalledgerButton = document.getElementById("generalledger");
 generalledgerButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
-  $("#cusTable_wrapper").remove();
+  $("table").remove();
 
   getGeneralLedgerListAPICall((response) => {
     if (response === "success") {
@@ -349,10 +347,7 @@ generalledgerButton.addEventListener("click", (event) => {
 
 const listPaymentButton = document.getElementById("listPayments");
 listPaymentButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
-  $("#cusTable_wrapper").remove();
-  $("#ledTable_wrapper").remove();
-  $("#recTable_wrapper").remove();
+  $("table").remove();
 
   getPaymentListAPICall((response) => {
     if (response === "success") {
@@ -363,11 +358,7 @@ listPaymentButton.addEventListener("click", (event) => {
 
 const listReceiveButton = document.getElementById("listReceive");
 listReceiveButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
-  $("#cusTable_wrapper").remove();
-  $("#ledTable_wrapper").remove();
-  $("#payTable_wrapper").remove();
-
+  $("table").remove();
   getReceiveListAPICall((response) => {
     if (response === "success") {
       generateReceiveDataTable();
@@ -377,7 +368,7 @@ listReceiveButton.addEventListener("click", (event) => {
 
 const cusListButton = document.getElementById("cusList");
 cusListButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
+  $("table").remove();
 
   generateCustomerDataTable();
 
@@ -390,13 +381,13 @@ cusListButton.addEventListener("click", (event) => {
 
 const supListButton = document.getElementById("supList");
 supListButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
+  $("table").remove();
   generateSupplierDataTable();
 });
 
 const invListButton = document.getElementById("invList");
 invListButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
+  $("table").remove();
 
   generateInvoiceDataTable();
 
@@ -777,7 +768,7 @@ function generateSupplierDataTable() {
     serverSide: true,
     ajax: "http://localhost:3000/api/suppliers",
     language: {
-      searchPlaceholder: "Search Suuplier",
+      searchPlaceholder: "Search Supplier",
       sSearch: "",
       paginate: {
         next: "&#8594;", // or '→'

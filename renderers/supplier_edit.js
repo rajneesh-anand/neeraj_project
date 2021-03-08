@@ -24,15 +24,28 @@ function isNumberKey(evt, obj) {
   return true;
 }
 
-$(document).ready(function () {
-  M.updateTextFields();
-  $("select").formSelect();
-
+$(function () {
   const btnClose = document.getElementById("btnClose");
   btnClose.addEventListener("click", (event) => {
     const window = remote.getCurrentWindow();
-    window.hide();
+    window.close();
   });
+
+  $(".datepicker").datepicker({
+    defaultDate: new Date(),
+    autoClose: true,
+    format: "dd mmm yyyy",
+    setDefaultDate: true,
+  });
+});
+
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "Escape":
+      const window = remote.getCurrentWindow();
+      window.close();
+      break;
+  }
 });
 
 const isvalid = () => {
@@ -82,7 +95,7 @@ form.addEventListener("submit", function (event) {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-        },
+        }
       )
       .then((response) => {
         alert(response.data.message);

@@ -122,7 +122,7 @@ handlebars.registerHelper("formatDate", function (dateString) {
   return `${date} ${month} ${year}`;
 });
 
-$(document).ready(function () {
+$(function () {
   const btnClose = document.getElementById("btnClose");
   btnClose.addEventListener("click", (event) => {
     const window = remote.getCurrentWindow();
@@ -135,8 +135,16 @@ $(document).ready(function () {
     format: "dd mmm yyyy",
     setDefaultDate: true,
   });
-
   populateAccountsList();
+});
+
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "Escape":
+      const window = remote.getCurrentWindow();
+      window.close();
+      break;
+  }
 });
 
 // document.addEventListener("DOMContentLoaded", function () {

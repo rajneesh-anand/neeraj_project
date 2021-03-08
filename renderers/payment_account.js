@@ -18,10 +18,7 @@ function thFormat(num) {
   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return num_parts.join(".");
 }
-
-$(document).ready(function () {
-  //-- closing form
-
+$(function () {
   const btnClose = document.getElementById("btnClose");
   btnClose.addEventListener("click", (event) => {
     const window = remote.getCurrentWindow();
@@ -34,6 +31,15 @@ $(document).ready(function () {
     format: "dd mmm yyyy",
     setDefaultDate: true,
   });
+});
+
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "Escape":
+      const window = remote.getCurrentWindow();
+      window.close();
+      break;
+  }
 });
 
 const isvalid = () => {

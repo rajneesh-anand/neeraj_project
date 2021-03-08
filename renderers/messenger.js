@@ -33,15 +33,29 @@ function populateAccountsList() {
     $("#accountList").formSelect();
   });
 }
-
-$(document).ready(function () {
+$(function () {
   const btnClose = document.getElementById("btnClose");
   btnClose.addEventListener("click", (event) => {
     const window = remote.getCurrentWindow();
     window.close();
   });
 
+  $(".datepicker").datepicker({
+    defaultDate: new Date(),
+    autoClose: true,
+    format: "dd mmm yyyy",
+    setDefaultDate: true,
+  });
   populateAccountsList();
+});
+
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "Escape":
+      const window = remote.getCurrentWindow();
+      window.close();
+      break;
+  }
 });
 
 function fetchContact(contactTag) {
