@@ -142,7 +142,7 @@ function createHomeWindow() {
     },
   });
 
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -601,6 +601,94 @@ ipcMain.on("create:tdsReportWindow", (event, fileName) => {
 
   win.on("closed", () => {
     win = null;
+  });
+});
+
+// Purchase window
+
+ipcMain.on("create:purchasewindow", (event, fileName) => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/` + fileName + `.html`
+  );
+
+  let win = new BrowserWindow({
+    resizable: false,
+    height: 728,
+    width: width - 66,
+    frame: false,
+    title: "Add Purchase",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+
+  win.webContents.openDevTools();
+
+  win.loadURL(modalPath);
+
+  // win.webContents.on("did-finish-load", (event) => {
+  //   customerData().then((data) => {
+  //     win.webContents.send("fetchCustomers", data);
+  //   });
+  //   getInvoiceNumber().then((inv) => {
+  //     win.webContents.send("sendInvoiceNumber", inv);
+  //   });
+  // });
+
+  win.on("closed", () => {
+    win = null;
+  });
+});
+
+// Purchase edit window
+
+const fetchPurchaseDataByID = async (id) => {
+  console.log(id);
+  return await axios
+    .get(`http://localhost:3000/api/purchase/${id}`)
+    .then((response) => {
+      console.log(response.data);
+      return response.data.data;
+    })
+    .catch((error) => {
+      if (error) throw new Error(error);
+    });
+};
+
+ipcMain.on("purchase:edit", (event, args) => {
+  console.log("object", args);
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const modalPath = path.join(
+    `file://${__dirname}/renderers/purchase_edit.html`
+  );
+
+  let win = new BrowserWindow({
+    resizable: false,
+    height: 728,
+    width: width - 66,
+    frame: false,
+    title: "Edit Purchase",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+
+  win.webContents.openDevTools();
+
+  win.loadURL(modalPath);
+
+  win.webContents.on("did-finish-load", (event) => {
+    fetchPurchaseDataByID(args.purID).then((invData) => {
+      console.log(invData);
+      win.webContents.send("sendPurchaseDataForEdit", invData);
+    });
   });
 });
 

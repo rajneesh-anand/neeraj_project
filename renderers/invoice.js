@@ -495,6 +495,7 @@ ipcRenderer.on("sendInvoiceNumber", (event, args) => {
 
 $("#gst-switch").on("change", function () {
   gstSwitchStatus = $(this).is(":checked");
+  console.log(gstSwitchStatus);
   GetTotal();
 });
 

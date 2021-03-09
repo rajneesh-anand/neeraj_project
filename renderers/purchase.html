@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css" />
+    <link rel="stylesheet" href="../assets/css/materialize.min.css" />
+    <style>
+      .input-field {
+        margin-bottom: 0px !important;
+      }
+      td {
+        padding: 8px 5px;
+        text-align: right;
+        color: rgb(3, 19, 11);
+        font-weight: 600;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      tr {
+        border: none;
+      }
+      table#valueInput td {
+        text-align: right;
+      }
+      .print-wrap {
+        width: 500px;
+      }
+    </style>
+  </head>
+
+  <body onkeydown="return (event.keyCode!=13)" style="width: 100%">
+    <div
+      class="row"
+      style="display: flex; padding-left: 1rem; padding-right: 1rem"
+    >
+      <h6 class="flow-text teal-text text-darken-3">NEW PURCHASE</h6>
+
+      <a
+        class="btn-flat"
+        id="btnClose"
+        style="margin-left: auto; padding-top: 1rem"
+      >
+        <i class="material-icons right">close</i></a
+      >
+    </div>
+    <div class="row" style="margin-top: 15px">
+      <form method="post" class="col s12">
+        <div class="row" style="margin-bottom: 0px !important">
+          <div class="input-field col s2">
+            <i class="material-icons prefix">arrow_forward</i>
+            <input
+              id="invoice_no"
+              type="text"
+              class="validate"
+              name="invoice_no"
+              onkeypress="return ValidateNumbers(event)"
+              required
+            />
+            <label for="invoice_no">TAX INVOICE NO.</label>
+          </div>
+
+          <div class="input-field col s2">
+            <i class="material-icons prefix">date_range</i>
+            <input
+              id="invoice_date"
+              type="text"
+              name="invoice_date"
+              class="datepicker"
+              required
+            />
+            <label for="invoice_date">Purchase Date</label>
+          </div>
+          <div class="input-field col s4">
+            <i class="material-icons prefix">edit</i>
+            <input
+              id="commision"
+              name="commision"
+              type="text"
+              class="validate"
+              onkeypress="return isNumberKey(event,this);"
+              onkeyup="GetTotal(this);"
+              required
+            />
+            <label for="commision"
+              >Toward detail of commission on the Cruise cost
+            </label>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 0px !important">
+          <div class="input-field col s8">
+            <i class="material-icons prefix">mode_edit</i>
+            <textarea
+              id="particulars"
+              rows="10"
+              name="particulars"
+              class="materialize-textarea"
+              required
+            ></textarea>
+            <label for="particulars">PARTICULAR'S</label>
+          </div>
+          <div class="col s4">
+            <table>
+              <tbody>
+                <tr>
+                  <td>IGST @RATE :</td>
+                  <td style="width: 45px">
+                    <input
+                      id="igstRate"
+                      name="igstRate"
+                      type="text"
+                      onkeypress="return isNumberKey(event,this);"
+                      onkeyup="GetTotal(this);"
+                    />
+                  </td>
+                  <td id="igstAmount"></td>
+                </tr>
+                <tr>
+                  <td>CGST @RATE :</td>
+                  <td style="width: 45px">
+                    <input
+                      id="cgstRate"
+                      name="cgstRate"
+                      type="text"
+                      onkeypress="return isNumberKey(event,this);"
+                      onkeyup="GetTotal(this);"
+                    />
+                  </td>
+                  <td id="cgstAmount"></td>
+                </tr>
+                <tr>
+                  <td>SGST @RATE :</td>
+                  <td style="width: 45px">
+                    <input
+                      id="sgstRate"
+                      name="sgstRate"
+                      type="text"
+                      onkeypress="return isNumberKey(event,this);"
+                      onkeyup="GetTotal(this);"
+                    />
+                  </td>
+                  <td id="sgstAmount"></td>
+                </tr>
+                <tr>
+                  <td>TOTAL AMOUNT :</td>
+                  <td></td>
+                  <td id="totalAmount"></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <button
+                      class="btn-small waves-effect waves-light"
+                      type="submit"
+                      id="btnSave"
+                      name="action"
+                    >
+                      SAVE
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="btn-small waves-effect waves-light"
+                      id="btnNew"
+                      disabled
+                    >
+                      ADD NEW
+                    </button>
+                  </td>
+                  <td style="text-align: left">
+                    <button
+                      class="btn-small waves-effect waves-light"
+                      id="download"
+                      disabled
+                    >
+                      DOWNLOAD
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="../assets/js/jquery-3.4.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/materialize.min.js"
+    ></script>
+
+    <script src="./purchase.js"></script>
+    <script src="./purchasepdf.js"></script>
+
+    <script>
+      if (window.module) module = window.module;
+    </script>
+  </body>
+</html>

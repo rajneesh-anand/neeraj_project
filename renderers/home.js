@@ -276,6 +276,11 @@ supButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:supplierwindow", "supplier");
 });
 
+const purButton = document.getElementById("newPurchase");
+purButton.addEventListener("click", (event) => {
+  ipcRenderer.send("create:purchasewindow", "purchase");
+});
+
 const invButton = document.getElementById("newInvoice");
 invButton.addEventListener("click", (event) => {
   ipcRenderer.send("create:invoiceWindow", "invoice");
@@ -323,8 +328,7 @@ msgButton.addEventListener("click", (event) => {
 
 const ledgerButton = document.getElementById("ledger");
 ledgerButton.addEventListener("click", (event) => {
-  $("#invTable_wrapper").remove();
-  $("#cusTable_wrapper").remove();
+  $("table").remove();
 
   getLedgerListAPICall((response) => {
     if (response === "success") {
@@ -364,6 +368,12 @@ listReceiveButton.addEventListener("click", (event) => {
       generateReceiveDataTable();
     }
   });
+});
+
+const purList = document.getElementById("purList");
+purList.addEventListener("click", (event) => {
+  $("table").remove();
+  generatePurchaseDataTable();
 });
 
 const cusListButton = document.getElementById("cusList");
@@ -734,6 +744,113 @@ function generateCustomerDataTable() {
 
     var selectedRows = $("tr.selected").length;
     $("#cusTable")
+      .DataTable()
+      .button(0)
+      .enable(selectedRows === 1);
+  });
+}
+
+// Purchase DataTable
+
+function generatePurchaseDataTable() {
+  let purID;
+  const htmlTemplate = `<table id="purTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>INVOICE NUMBER</th>
+					<th>INVOICE DATE</th>
+					<th>COMMISSION</th>
+          <th>GST AMOUNT</th>
+					<th>TOTAL AMOUNT</th>	   
+				</tr>
+			</thead> 
+		</table>
+	`;
+
+  document.getElementById("createTable").innerHTML = htmlTemplate;
+
+  $("#purTable").dataTable({
+    paging: true,
+    sort: true,
+    searching: true,
+    responsive: true,
+    processing: true,
+    serverSide: true,
+    ajax: "http://localhost:3000/api/purchaselist",
+    language: {
+      searchPlaceholder: "Search Purchase",
+      sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
+    },
+    info: false,
+
+    pageLength: 100,
+    columnDefs: [
+      {
+        render: function (data, type, row) {
+          return new Date(data).toLocaleDateString();
+        },
+        targets: 2,
+      },
+      {
+        render: function (data, type, row) {
+          return data.toFixed(2);
+        },
+        targets: 3,
+      },
+      {
+        render: function (data, type, row) {
+          return data.toFixed(2);
+        },
+        targets: 4,
+      },
+      {
+        render: function (data, type, row) {
+          return data.toFixed(2);
+        },
+        targets: 5,
+      },
+    ],
+
+    dom: "Bfrtip",
+    select: true,
+
+    buttons: [
+      {
+        text: "Edit Selected Purchase",
+        action: function (e, dt, node, config) {
+          ipcRenderer.send("purchase:edit", {
+            purID: purID,
+          });
+        },
+
+        enabled: false,
+      },
+    ],
+  });
+
+  //------------- Table row selection condition ------
+
+  $("#purTable tbody").on("click", "tr", function () {
+    if ($(this).hasClass("selected")) {
+      $(this).removeClass("selected");
+    } else {
+      $("#purTable").dataTable().$("tr.selected").removeClass("selected");
+      $(this).addClass("selected");
+    }
+  });
+
+  $("#purTable tbody").on("click", "tr", function () {
+    rowIndex = $("#purTable").DataTable().row(this).index();
+
+    purID = $("#purTable").DataTable().cell(".selected", 0).data();
+
+    var selectedRows = $("tr.selected").length;
+    $("#purTable")
       .DataTable()
       .button(0)
       .enable(selectedRows === 1);
