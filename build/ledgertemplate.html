@@ -8,9 +8,9 @@
     />
 
     <style type="text/css">
-      table {      
+      table {
         width: 98%;
-        font: normal medium/1.4 "Roboto", sans-serif;
+        font-family: "Roboto", sans-serif;
         margin-top: 8px;
         margin-left: 10px;
       }
@@ -18,8 +18,6 @@
       th,
       td {
         padding: 0.25rem;
-        text-align: left;
-      
       }
 
       tbody tr:nth-child(odd) {
@@ -51,7 +49,7 @@
       }
 
       .tophead {
-        padding: 5px 0px;
+        padding: 3px 0px;
       }
 
       .row {
@@ -74,7 +72,7 @@
         <div>357, 3rd Floor , Vardhman City Center 2</div>
         <div>Shakti Nagar Under Bridge – Delhi 110007</div>
         <div>Call Us @ +918189457845 / 98978789787</div>
-        <div>GSTIN :</div>
+        <div>GSTIN : 07AAGCC8458F1ZG</div>
       </div>
       {{#each this}} {{#ifEqual @index 0}} {{#each this}}
       <div class="agent_details">
@@ -92,19 +90,19 @@
         <div class="tophead">{{address_line_one}}</div>
         <div class="tophead">{{city}}</div>
         <div class="tophead">{{State_Name}} {{pincode}}</div>
-        <div class="tophead">GSTIN : {{gstin}} </div>
+        <div class="tophead">GSTIN : {{gstin}}</div>
       </div>
       {{/each}} {{/ifEqual}} {{/each}}
     </div>
     <hr />
     <table class="zebra">
       <thead>
-        <th>ENTRY DATE</th>
-        <th>ENTRY TYPE</th>
-        <th>DESCRIPTION</th>
-        <th>CREDIT</th>
-        <th>DEBIT</th>
-        <th>BALANCE</th>
+        <th style="text-align: center">ENTRY DATE</th>
+        <th style="text-align: center">ENTRY TYPE</th>
+        <th style="text-align: center">DESCRIPTION</th>
+        <th style="text-align: center">CREDIT</th>
+        <th style="text-align: center">DEBIT</th>
+        <th style="text-align: center">BALANCE</th>
       </thead>
 
       <tbody>
@@ -113,24 +111,30 @@
           <td>{{formatDate EntryDate}}</td>
           <td>{{EntryType}} {{Invoice_Number}}</td>
           <td>{{Comments}}</td>
-          <td>{{formatNumber Credit}}</td>
-          <td>{{formatNumber Debit}}</td>
-          <td>{{runningBalance this}}</td>
+          <td style="text-align: right">{{formatNumber Credit}}</td>
+          <td style="text-align: right">{{formatNumber Debit}}</td>
+          <td style="text-align: right">{{runningBalance this}}</td>
         </tr>
         {{/each}} {{/ifEqual}} {{/each}}
-       <tr></tr>
+        <tr></tr>
+        <tr></tr>
         {{#each this}} {{#ifEqual @index 1}}
         <tr>
           <td></td>
           <td></td>
-          <td><strong>TOTAL</strong></td>
-          <td><strong>{{sumCredit this}}</strong></td>
-          <td><strong>{{sumDebit this}}</strong></td>
-          <td><strong>{{balance this}}</strong></td>
+          <td style="font-weight: 600; font-size: 15.5px">TOTAL</td>
+          <td style="font-weight: 600; font-size: 15.5px; text-align: right">
+            {{sumCredit this}}
+          </td>
+          <td style="font-weight: 600; font-size: 15.5px; text-align: right">
+            {{sumDebit this}}
+          </td>
+          <td style="font-weight: 600; font-size: 15.5px; text-align: right">
+            {{balance this}}
+          </td>
         </tr>
         {{/ifEqual}} {{/each}}
       </tbody>
     </table>
-  
   </body>
 </html>

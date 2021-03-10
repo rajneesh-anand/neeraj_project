@@ -2,63 +2,47 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
     <style type="text/css">
       .container {
         display: flex;
         justify-content: space-between;
-        font-family: "Lato", sans-serif;
       }
 
       .company_details {
         padding-left: 30px;
-        padding-top: 40px;
-        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-          sans-serif;
-        font-size: 13.5px;
-      }
-
-      .pass_details {
-        padding-left: 30px;
-        padding-right: 60px;
-        padding-top: 10px;
-        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-          sans-serif;
-        font-size: 15px;
-      }
-
-      .agent_details {
-        padding-left: 30px;
-        padding-top: 10px;
-        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-          sans-serif;
-        font-size: 14px;
+        padding-top: 20px;
+        font-family: "Roboto", sans-serif;
+        font-size: 12.5px;
       }
 
       .invoice_details {
         padding-right: 30px;
         padding-top: 30px;
+        font-family: "Roboto", sans-serif;
+        font-size: 13.5px;
       }
 
       .tophead {
-        padding: 5px 0px;
+        padding: 3px 0px;
       }
 
       .row {
         padding-top: 8px;
         padding-left: 30px;
         padding-right: 60px;
-        font-family: "Lato", sans-serif;
+        font-family: "Roboto ", sans-serif;
       }
 
       .footer {
         padding-top: 8px;
         padding-left: 30px;
         padding-right: 30px;
-        font-family: "Lato", sans-serif;
+        font-family: "Roboto ", sans-serif;
         font-size: 14px;
       }
     </style>
@@ -68,22 +52,23 @@
     <div class="container">
       <div class="company_details">
         <div><img src="http://localhost:3000/logo.png" alt="logo" /></div>
-        <div>CARROT CRUISE SHIPPING PVT.LTD</div>
-        <div>357, 3rd Floor , Vardhman City Center 2</div>
-        <div>Shakti Nagar Under Bridge – Delhi 110007</div>
-        <div>Call Us @ +918189457845 / 98978789787</div>
-        <div>GSTIN : 07AAGCC8458F1ZG</div>
+        <div class="tophead">CARROT CRUISE SHIPPING PVT.LTD</div>
+        <div class="tophead">357, 3rd Floor , Vardhman City Center 2</div>
+        <div class="tophead">Shakti Nagar Under Bridge – Delhi 110007</div>
+        <div class="tophead">Call Us @ +918189457845 / 98978789787</div>
+        <div class="tophead">GSTIN : 07AAGCC8458F1ZG</div>
       </div>
       <div class="invoice_details">
-        <div class="tophead">Tax Invoice No : {{Invoice_Number}}</div>
-        <div class="tophead">Invoice Date: {{formatDate Invoice_Date}}</div>
-        <div class="tophead" style="text-align: center">TOTAL BILL AMOUNT</div>
+        <div class="tophead">TAX INVOICE NO : {{Invoice_Number}}</div>
+        <div class="tophead">INVOICE DATE: {{formatDate Invoice_Date}}</div>
+        <div class="tophead" style="text-align: center">TOTAL AMOUNT</div>
         <div
           style="
             text-align: center;
             border-radius: 10px;
             background: #bada55;
             padding: 5px 5px;
+            font-size: 16px;
           "
         >
           &#x20B9; {{TotalAmount}}
@@ -91,17 +76,19 @@
       </div>
     </div>
     <hr />
-    <div class="container">
-      <div class="agent_details">
-        <div><strong>Recipient Details</strong></div>
+    <div class="container row">
+      <div>Recipient Details</div>
+      <div style="text-align: left; font-size: 12.5px">
         <div>{{first_name}}</div>
         <div>{{address_line_one}}</div>
         <div>{{city}}</div>
         <div>{{state}} - {{pincode}}</div>
         <div>GSTIN : {{gstin}}</div>
-        <div>
-          Place of Supply : Whether tax payable under reverse charge Yes/No
-        </div>
+      </div>
+    </div>
+    <div class="container row">
+      <div>
+        Place of Supply : Whether tax payable under reverse charge Yes/No
       </div>
     </div>
     <hr />
@@ -119,7 +106,7 @@
     <hr />
     {{#if TotalGst}}
     <div class="container row">
-      <div>Total GST Amount @ {{TotalGst}} %</div>
+      <div>GST Amount @ {{TotalGst}} %</div>
       <div>&#x20B9; {{TotalGSTAmt}}</div>
     </div>
     {{/if}} {{#if CGST}}
@@ -158,23 +145,23 @@
     </div>
     <div class="footer">
       Payment in Indian Rupees at the prevalent rate of exchange via
-      <strong> Cheque/Demand Draft/RTGS </strong>, should be payable to Carrot
-      Cruise Shipping Pvt Ltd.
+      <span style="font-weight: 500"> Cheque/Demand Draft/RTGS </span>, should
+      be payable to Carrot Cruise Shipping Pvt Ltd.
     </div>
     <div class="footer" style="padding-top: 10px; font-size: 16px">
-      <strong>
+      <span style="font-weight: 500">
         HDFC BANK (Carrot Cruise Shipping Pvt. Ltd ) A/C No. 50200024394736<br />
-        IFSC/RTGS/NEFT Code : HDFC0001441</strong
+        IFSC/RTGS/NEFT Code : HDFC0001441</span
       >
     </div>
     <div
       class="footer"
       style="padding-top: 10px; padding-bottom: 10px; font-size: 16px"
     >
-      <strong>
+      <span style="font-weight: 500">
         YES BANK (Carrot Cruise Shipping Pvt. Ltd) A/C No. 059861900002113
         <br />
-        IFSC/RTGS/NEFT Code : YESB0000598</strong
+        IFSC/RTGS/NEFT Code : YESB0000598</span
       >
     </div>
     <div class="footer">

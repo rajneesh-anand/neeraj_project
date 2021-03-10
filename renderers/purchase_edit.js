@@ -126,6 +126,17 @@ function formattedDate(dateValue) {
   return `${year}-${month}-${getdate}`;
 }
 
+document.getElementById("download").addEventListener("click", (event) => {
+  event.preventDefault();
+  fs.access("C://PDF_REPORTS", function (error) {
+    if (error) {
+      fs.mkdirSync("C://PDF_REPORTS");
+    }
+  });
+  const InvoiceNumber = document.getElementById("invoice_no").value;
+  printPurchasePdf(InvoiceNumber);
+});
+
 const isvalid = () => {
   let invoice_bo = document.getElementById("invoice_no").value;
   let commision = document.getElementById("commision").value;
@@ -195,12 +206,14 @@ function GetTotal(obj) {
   ).toFixed(2);
 }
 
-let editor;
+var editor;
 
 ClassicEditor.create(document.querySelector("#particulars"))
   .then((newEditor) => {
     editor = newEditor;
+    GetTotal();
   })
+
   .catch((error) => {
     console.error(error);
   });
@@ -308,6 +321,7 @@ ipcRenderer.on("fetchSuppliers", (event, data) => {
 });
 
 ipcRenderer.on("sendPurchaseDataForEdit", (event, data) => {
+  console.log(data);
   document.getElementById("invoice_no").value = data.Invoice_Number;
   document.getElementById("invoice_date").value = dateddmmmyyyy(
     data.Invoice_Date
@@ -315,12 +329,16 @@ ipcRenderer.on("sendPurchaseDataForEdit", (event, data) => {
   document.getElementById("commision").value = data.Commission;
 
   document.getElementById("agentName").value = data.Supplier_Name;
-  document.getElementById("particulars").value = data.Particulars;
+  document.getElementById("particulars").innerHTML = editor.setData(
+    data.Particulars
+  );
   document.getElementById("igstRate").value = data.Igst_Rate;
   document.getElementById("sgstRate").value = data.Sgst_Rate;
   document.getElementById("cgstRate").value = data.Cgst_Rate;
-  document.getElementById("igstAmount").innerText = data.Igst_Amount;
-  document.getElementById("cgstAmount").innerText = data.Cgst_Amount;
-  document.getElementById("sgstAmount").innerText = data.Sgst_Amount;
-  document.getElementById("totalAmount").innerText = data.Total_Amount;
+  document.getElementById("igstAmount").innerText = data.Igst_Amount.toFixed(2);
+  document.getElementById("cgstAmount").innerText = data.Cgst_Amount.toFixed(2);
+  document.getElementById("sgstAmount").innerText = data.Sgst_Amount.toFixed(2);
+  document.getElementById("totalAmount").innerText = data.Total_Amount.toFixed(
+    2
+  );
 });
