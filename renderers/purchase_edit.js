@@ -195,6 +195,16 @@ function GetTotal(obj) {
   ).toFixed(2);
 }
 
+let editor;
+
+ClassicEditor.create(document.querySelector("#particulars"))
+  .then((newEditor) => {
+    editor = newEditor;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
 var form = document.querySelector("form");
 
 form.addEventListener("submit", function (event) {
@@ -205,7 +215,8 @@ form.addEventListener("submit", function (event) {
       Invoice_Number: data.get("invoice_no"),
       Invoice_Date: formattedDate(data.get("invoice_date")),
       Commission: parseFloat(commision),
-      Particulars: data.get("particulars"),
+      Supplier_Name: data.get("agentName"),
+      Particulars: editor.getData(),
       Igst_Rate: parseFloat(igstRate),
       Cgst_Rate: parseFloat(cgstRate),
       Sgst_Rate: parseFloat(sgstRate),
@@ -285,13 +296,25 @@ function dateddmmmyyyy(args) {
   return `${date} ${month} ${year}`;
 }
 
+ipcRenderer.on("fetchSuppliers", (event, data) => {
+  var Options = "";
+  data.map(function (element, i) {
+    Options =
+      Options + `<option value='${element.id}'>${element.first_name}</option>`;
+  });
+
+  $(".agentName").append(Options);
+  $(".agentName").formSelect();
+});
+
 ipcRenderer.on("sendPurchaseDataForEdit", (event, data) => {
-  console.log(data);
   document.getElementById("invoice_no").value = data.Invoice_Number;
   document.getElementById("invoice_date").value = dateddmmmyyyy(
     data.Invoice_Date
   );
   document.getElementById("commision").value = data.Commission;
+
+  document.getElementById("agentName").value = data.Supplier_Name;
   document.getElementById("particulars").value = data.Particulars;
   document.getElementById("igstRate").value = data.Igst_Rate;
   document.getElementById("sgstRate").value = data.Sgst_Rate;

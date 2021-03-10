@@ -20,6 +20,29 @@ exports.generatePdf = (req, res) => {
     }
   );
 };
+
+exports.generatePurchasePdf = (req, res) => {
+  const Invoice_Number = req.params.id;
+
+  pool.query(
+    "SELECT p.Invoice_Number,p.Invoice_Date,p.Commission,p.Particulars,p.Sgst_Rate,p.Cgst_Rate,p.Igst_Rate,p.Sgst_Amount,p.Cgst_Amount,p.Igst_Amount,p.Total_Gst, p.Total_Amount,s.first_name,s.address_line_one,s.city,s.gstin,s.pan,s.pincode,st.State_Name from purchases p, suppliers s, states st where Invoice_Number =? and p.Supplier_Name =concat(s.Prefix,s.id) and s.state =st.id",
+    [Invoice_Number],
+    (error, results) => {
+      if (error) {
+        return res.status(403).json({
+          error: error,
+          message: `Error : ${error}`,
+        });
+      } else {
+        return res.status(200).json({
+          message: "success",
+          data: results,
+        });
+      }
+    }
+  );
+};
+
 exports.generateAllLedgerPdfDatewise = (req, res) => {
   pool.query(
     `select t.Acc,SUM(IFNULL( t.Credit, 0 )) AS Credit,SUM(IFNULL( t.Debit, 0 )) AS Debit, c.first_name,c.city from (

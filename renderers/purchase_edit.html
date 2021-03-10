@@ -67,7 +67,7 @@
               class="datepicker"
               required
             />
-            <label for="invoice_date">Purchase Date</label>
+            <label for="invoice_date">PURCHASE DATE</label>
           </div>
           <div class="input-field col s4">
             <i class="material-icons prefix">edit</i>
@@ -85,19 +85,35 @@
               >Toward detail of commission on the Cruise cost
             </label>
           </div>
+          <div class="col s4">
+            <label>SUPPLIER NAME</label>
+            <select
+              name="agentName"
+              id="agentName"
+              class="browser-default agentName"
+              onchange="GetTotal(this);"
+            >
+              <option value="" disabled selected>Select Supplier</option>
+            </select>
+          </div>
         </div>
         <div class="row" style="margin-bottom: 0px !important">
           <div class="input-field col s8">
-            <i class="material-icons prefix">mode_edit</i>
+            <label for="particulars">PARTICULAR'S DETAILS</label>
+            <textarea id="particulars" name="particulars">
+              Particulars details here .....
+            </textarea>
+            <!-- <i class="material-icons prefix">mode_edit</i>
             <textarea
               placeholder=""
               id="particulars"
-              rows="10"
               name="particulars"
               class="materialize-textarea"
+              style="height: 350px"
+              onkeyup="GetTotal(this);"
               required
             ></textarea>
-            <label for="particulars">PARTICULAR'S</label>
+            <label for="particulars">PARTICULAR'S</label> -->
           </div>
           <div class="col s4">
             <table>
@@ -159,13 +175,13 @@
                     </button>
                   </td>
                   <td>
-                    <button
+                    <!-- <button
                       class="btn-small waves-effect waves-light"
                       id="btnNew"
                       disabled
                     >
                       ADD NEW
-                    </button>
+                    </button> -->
                   </td>
                   <td style="text-align: left">
                     <button

@@ -4,7 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../assets/fonts/material-icons.css" />
     <link rel="stylesheet" href="../assets/css/materialize.min.css" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
     <style>
+      .ck.ck-editor__editable_inline {
+        height: 320px;
+      }
+      .ck.ck-editor {
+        padding-top: 10px;
+      }
       .input-field {
         margin-bottom: 0px !important;
       }
@@ -67,7 +74,7 @@
               class="datepicker"
               required
             />
-            <label for="invoice_date">Purchase Date</label>
+            <label for="invoice_date">PURCHASE DATE</label>
           </div>
           <div class="input-field col s4">
             <i class="material-icons prefix">edit</i>
@@ -84,19 +91,33 @@
               >Toward detail of commission on the Cruise cost
             </label>
           </div>
+          <div class="col s4">
+            <label>SUPPLIER NAME</label>
+            <select name="agentName" class="browser-default agentName">
+              <option value="" disabled selected>Select Supplier</option>
+            </select>
+          </div>
         </div>
         <div class="row" style="margin-bottom: 0px !important">
           <div class="input-field col s8">
-            <i class="material-icons prefix">mode_edit</i>
+            <label for="particulars">PARTICULAR'S DETAILS</label>
+            <textarea id="particulars" name="particulars">
+              Particulars details here .....
+          </textarea
+            >
+            <!-- <i class="material-icons prefix">mode_edit</i>
             <textarea
               id="particulars"
-              rows="10"
               name="particulars"
               class="materialize-textarea"
+              style="height: 350px"
               required
             ></textarea>
-            <label for="particulars">PARTICULAR'S</label>
+            <label for="particulars">PARTICULAR'S</label> -->
           </div>
+          <!-- <textarea name="content" id="editor">
+            &lt;p&gt;This is some sample content.&lt;/p&gt;
+        </textarea> -->
           <div class="col s4">
             <table>
               <tbody>
@@ -157,13 +178,13 @@
                     </button>
                   </td>
                   <td>
-                    <button
+                    <!-- <button
                       class="btn-small waves-effect waves-light"
                       id="btnNew"
                       disabled
                     >
                       ADD NEW
-                    </button>
+                    </button> -->
                   </td>
                   <td style="text-align: left">
                     <button

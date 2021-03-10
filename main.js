@@ -220,6 +220,19 @@ const customerData = async () => {
     });
 };
 
+// Fetching Suppliers records --
+
+const supplierData = async () => {
+  return await axios
+    .get(`http://localhost:3000/api/fetchsuppliers`)
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((error) => {
+      if (error) throw new Error(error);
+    });
+};
+
 // customerData().then((data) => {
 // 	mainWindow.webContents.on("did-finish-load", (event) => {
 // 		mainWindow.webContents.send("fetchCustomers", data);
@@ -630,14 +643,11 @@ ipcMain.on("create:purchasewindow", (event, fileName) => {
 
   win.loadURL(modalPath);
 
-  // win.webContents.on("did-finish-load", (event) => {
-  //   customerData().then((data) => {
-  //     win.webContents.send("fetchCustomers", data);
-  //   });
-  //   getInvoiceNumber().then((inv) => {
-  //     win.webContents.send("sendInvoiceNumber", inv);
-  //   });
-  // });
+  win.webContents.on("did-finish-load", (event) => {
+    supplierData().then((data) => {
+      win.webContents.send("fetchSuppliers", data);
+    });
+  });
 
   win.on("closed", () => {
     win = null;
@@ -685,6 +695,10 @@ ipcMain.on("purchase:edit", (event, args) => {
   win.loadURL(modalPath);
 
   win.webContents.on("did-finish-load", (event) => {
+    supplierData().then((data) => {
+      win.webContents.send("fetchSuppliers", data);
+    });
+
     fetchPurchaseDataByID(args.purID).then((invData) => {
       console.log(invData);
       win.webContents.send("sendPurchaseDataForEdit", invData);

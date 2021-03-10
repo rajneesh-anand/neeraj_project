@@ -5,10 +5,12 @@ const {
   getSupplierById,
   updateSupplier,
   getSupplierslist,
+  fetchSuppliers,
 } = require("../controllers/suppliers");
 router.get("/suppliers", getSupplierslist);
 router.post("/supplier", createSupplier);
 router.get("/supplier/:id", getSupplierById);
 router.put("/supplier", updateSupplier);
+router.get("/fetchsuppliers", fetchSuppliers);
 
 module.exports = router;

@@ -20,14 +20,15 @@ module.exports = {
             message: "Invoice already exists !",
           });
         }
-        const Sql = `insert into purchases (Invoice_Number,Invoice_Date,Commission,Particulars,Sgst_Rate,Cgst_Rate,Igst_Rate, Sgst_Amount,Cgst_Amount,Igst_Amount, Total_Gst,Total_Amount)                
-                    values(?,?,?,?,?,?,?,?,?,?,?,?);`;
+        const Sql = `insert into purchases (Invoice_Number,Invoice_Date,Supplier_Name,Commission,Particulars,Sgst_Rate,Cgst_Rate,Igst_Rate, Sgst_Amount,Cgst_Amount,Igst_Amount, Total_Gst,Total_Amount)                
+                    values(?,?,?,?,?,?,?,?,?,?,?,?,?);`;
 
         pool.query(
           Sql,
           [
             body.Invoice_Number,
             body.Invoice_Date,
+            body.Supplier_Name,
             body.Commission,
             body.Particulars,
             body.Sgst_Rate,
@@ -113,7 +114,7 @@ module.exports = {
   fetchPurchaseById: (req, res) => {
     const id = req.params.id;
     pool.query(
-      `select * from purchases where Id = ?`,
+      `select * from purchases where Invoice_Number = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -131,9 +132,10 @@ module.exports = {
     const body = req.body;
 
     pool.query(
-      `update purchases set Invoice_Date=?,Commission=?,Particulars=?,Sgst_Rate=?,Cgst_Rate=?,Igst_Rate=?, Sgst_Amount=?,Cgst_Amount=?,Igst_Amount=?, Total_Gst=?,Total_Amount=? where Invoice_Number = ?`,
+      `update purchases set Invoice_Date=?,Supplier_Name=?,Commission=?,Particulars=?,Sgst_Rate=?,Cgst_Rate=?,Igst_Rate=?, Sgst_Amount=?,Cgst_Amount=?,Igst_Amount=?, Total_Gst=?,Total_Amount=? where Invoice_Number = ?`,
       [
         body.Invoice_Date,
+        body.Supplier_Name,
         body.Commission,
         body.Particulars,
         body.Sgst_Rate,

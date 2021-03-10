@@ -195,6 +195,27 @@ function GetTotal(obj) {
   ).toFixed(2);
 }
 
+document.getElementById("download").addEventListener("click", (event) => {
+  event.preventDefault();
+  fs.access("C://PDF_REPORTS", function (error) {
+    if (error) {
+      fs.mkdirSync("C://PDF_REPORTS");
+    }
+  });
+  const InvoiceNumber = document.getElementById("invoice_no").value;
+  printPurchasePdf(InvoiceNumber);
+});
+
+let editor;
+
+ClassicEditor.create(document.querySelector("#particulars"))
+  .then((newEditor) => {
+    editor = newEditor;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
 var form = document.querySelector("form");
 
 form.addEventListener("submit", function (event) {
@@ -205,7 +226,8 @@ form.addEventListener("submit", function (event) {
       Invoice_Number: data.get("invoice_no"),
       Invoice_Date: formattedDate(data.get("invoice_date")),
       Commission: parseFloat(commision),
-      Particulars: data.get("particulars"),
+      Supplier_Name: data.get("agentName"),
+      Particulars: editor.getData(),
       Igst_Rate: parseFloat(igstRate),
       Cgst_Rate: parseFloat(cgstRate),
       Sgst_Rate: parseFloat(sgstRate),
@@ -234,4 +256,15 @@ form.addEventListener("submit", function (event) {
         alert(error.response.data.message);
       });
   }
+});
+
+ipcRenderer.on("fetchSuppliers", (event, data) => {
+  var Options = "";
+  data.map(function (element, i) {
+    Options =
+      Options + `<option value='${element.id}'>${element.first_name}</option>`;
+  });
+
+  $(".agentName").append(Options);
+  $(".agentName").formSelect();
 });

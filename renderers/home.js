@@ -830,6 +830,14 @@ function generatePurchaseDataTable() {
 
         enabled: false,
       },
+      {
+        text: "Print Selected Invoice",
+        action: function (e, dt, node, config) {
+          printPurchasePdf(purID);
+        },
+
+        enabled: false,
+      },
     ],
   });
 
@@ -847,12 +855,15 @@ function generatePurchaseDataTable() {
   $("#purTable tbody").on("click", "tr", function () {
     rowIndex = $("#purTable").DataTable().row(this).index();
 
-    purID = $("#purTable").DataTable().cell(".selected", 0).data();
-
+    purID = $("#purTable").DataTable().cell(".selected", 1).data();
     var selectedRows = $("tr.selected").length;
     $("#purTable")
       .DataTable()
       .button(0)
+      .enable(selectedRows === 1);
+    $("#purTable")
+      .DataTable()
+      .button(1)
       .enable(selectedRows === 1);
   });
 }

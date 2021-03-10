@@ -50,10 +50,10 @@ module.exports = {
               return res.status(200).json({
                 message: "Supplier Record Added",
               });
-            },
+            }
           );
         }
-      },
+      }
     );
   },
   getSupplierslist: (req, res) => {
@@ -93,7 +93,7 @@ module.exports = {
       requestQuery,
       query,
       primaryKey,
-      columnsMap,
+      columnsMap
     );
 
     nodeTable.output((err, data) => {
@@ -119,7 +119,7 @@ module.exports = {
         return res.status(200).json({
           data: results[0],
         });
-      },
+      }
     );
   },
   updateSupplier: (req, res) => {
@@ -149,7 +149,26 @@ module.exports = {
         return res.status(200).json({
           message: "Supplier Record Updated",
         });
-      },
+      }
+    );
+  },
+  fetchSuppliers: (req, res) => {
+    pool.query(
+      `SELECT concat(Prefix,id) as id, first_name,mobile FROM suppliers`,
+      [],
+      (error, results) => {
+        if (error) {
+          res.status(403).json({
+            message: "Database connection error !",
+            error: `Error :${error}`,
+          });
+        } else {
+          res.status(200).json({
+            message: "success",
+            data: results,
+          });
+        }
+      }
     );
   },
 };

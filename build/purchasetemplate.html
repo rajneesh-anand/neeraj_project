@@ -2,12 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8" />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
       rel="stylesheet"
     />
-
     <style type="text/css">
       .container {
         display: flex;
@@ -74,17 +72,12 @@
         <div>357, 3rd Floor , Vardhman City Center 2</div>
         <div>Shakti Nagar Under Bridge – Delhi 110007</div>
         <div>Call Us @ +918189457845 / 98978789787</div>
-        <div>GSTIN :</div>
+        <div>GSTIN : 07AAGCC8458F1ZG</div>
       </div>
       <div class="invoice_details">
-        <div class="tophead">
-          {{#ifEqual Invoice_Type "Token Invoice"}} PERFORMA INVOICE : {{else}}
-          INVOICE NO :{{/ifEqual}} {{Invoice_Number}}
-        </div>
-        <div class="tophead">INVOICE DATE : {{formatDate Invoice_Date}}</div>
-        <div class="tophead" style="text-align: center">
-          TOTAL AMOUNT PAYABLE
-        </div>
+        <div class="tophead">Tax Invoice No : {{Invoice_Number}}</div>
+        <div class="tophead">Invoice Date: {{formatDate Invoice_Date}}</div>
+        <div class="tophead" style="text-align: center">TOTAL BILL AMOUNT</div>
         <div
           style="
             text-align: center;
@@ -93,110 +86,58 @@
             padding: 5px 5px;
           "
         >
-          {{#ifEqual Invoice_Type "Token Invoice"}} &#x20B9; {{Token_Amt_INR}}
-          {{else}} &#x20B9; {{TotalINR}} {{/ifEqual}}
+          &#x20B9; {{TotalAmount}}
         </div>
       </div>
     </div>
     <hr />
     <div class="container">
       <div class="agent_details">
-        <div><stron>INVOICE TO </stron></div>
+        <div><strong>Recipient Details</strong></div>
         <div>{{first_name}}</div>
         <div>{{address_line_one}}</div>
         <div>{{city}}</div>
-        <div>{{state}} {{pincode}}</div>
+        <div>{{state}} - {{pincode}}</div>
         <div>GSTIN : {{gstin}}</div>
-      </div>
-      <div class="pass_details">
-        <div>Passenger Name : {{Pass_Name}}</div>
-        <div>Cruise : {{Cruise}}</div>
-        <div>Ship Name : {{Cruise_Ship}}</div>
-        <div>Cabin / Suite : {{Cabin}} {{Cat_Bkg}}</div>
-        <div>Departure Date - {{formatDate Departure_Date}}</div>
-        <div>P A X : {{PAX}}</div>
+        <div>
+          Place of Supply : Whether tax payable under reverse charge Yes/No
+        </div>
       </div>
     </div>
     <hr />
 
     <div class="container row">
-      <div>Cruise Base Fare</div>
-      <div>{{{currency}}} {{Base_Amt}}</div>
+      <div>Toward detail of Commission on Cruise cost</div>
+      <div>&#x20B9; {{Commission}}</div>
     </div>
-
-    {{#if NCF_Amt}}
+    {{#if Particluars}}
     <div class="container row">
-      <div>N C F</div>
-      <div>{{{currency}}} {{NCF_Amt}}</div>
-    </div>
-    {{/if}} {{#if TAX_Amt}}
-    <div class="container row">
-      <div>TAX</div>
-      <div>{{{currency}}} {{TAX_Amt}}</div>
-    </div>
-    {{/if}} {{#if HS_Amt}}
-    <div class="container row">
-      <div>Holiday Surcharge</div>
-      <div>{{{currency}}} {{HS_Amt}}</div>
-    </div>
-    {{/if}} {{#if Grat_Amt}}
-    <div class="container row">
-      <div>Gratuity</div>
-      <div>{{{currency}}} {{Grat_Amt}}</div>
-    </div>
-    {{/if}} {{#if Misc}}
-    <div class="container row">
-      <div>Extra Charges</div>
-      <div>{{{currency}}} {{Misc}}</div>
-    </div>
-    {{/if}} {{#if Comm_Amt}}
-    <div class="container row">
-      <div>Less Commission</div>
-      <div>{{{currency}}} {{Comm_Amt}}</div>
-    </div>
-    {{/if}} {{#if TDS_Amt}}
-    <div class="container row">
-      <div>TDS Applicable</div>
-      <div>{{{currency}}} {{TDS_Amt}}</div>
+      <div>{{{Particluars}}}</div>
+      <div></div>
     </div>
     {{/if}}
-
     <hr />
+    {{#if TotalGst}}
     <div class="container row">
-      <div>Sub Total</div>
-      <div>{{{currency}}} {{SubTotal}}</div>
-    </div>
-
-    {{#if GSTRate}}
-    <div class="container row">
-      <div>GST @ {{GSTRate}} %</div>
-      <div>{{GST_Amt}}</div>
+      <div>Total GST Amount @ {{TotalGst}} %</div>
+      <div>&#x20B9; {{TotalGSTAmt}}</div>
     </div>
     {{/if}} {{#if CGST}}
     <div class="container row">
       <div></div>
       <div>CGST @ {{CGST}} %</div>
-      <div>{{CGSTAmt}}</div>
+      <div>&#x20B9; {{CGSTAmt}}</div>
       <div></div>
     </div>
     {{/if}} {{#if SGST}}
     <div class="container row">
       <div></div>
       <div>SGST @ {{SGST}} %</div>
-      <div>{{SGSTAmt}}</div>
+      <div>&#x20B9; {{SGSTAmt}}</div>
       <div></div>
     </div>
-    {{/if}} {{#if Token_Amt}} {{#ifEqual Invoice_Type "Token Invoice"}}
-    <div class="container row">
-      <div>Token Amount</div>
-      <div>{{{currency}}} {{Token_Amt}}</div>
-    </div>
-    {{else}}
-    <div class="container row">
-      <div>Less Token Amount</div>
-      <div>{{{currency}}} {{Token_Amt}}</div>
-    </div>
-    {{/ifEqual}} {{/if}}
+    {{/if}}
+    <hr />
 
     <div
       class="container row"
@@ -208,25 +149,9 @@
         margin-top: 10px;
       "
     >
-      <div>GRAND TOTAL</div>
-      <div>{{{currency}}} {{Total}}</div>
+      <div>TOTAL AMOUNT</div>
+      <div>&#x20B9; {{TotalAmount}}</div>
     </div>
-
-    {{#ifEqual checkCurr 4}}
-    <div></div>
-    {{else}}
-    <div class="container row" style="padding-top: 8px; padding-bottom: 8px">
-      {{#ifEqual Invoice_Type "Token Invoice"}}
-      <div>Amount Payable in INR</div>
-      <div>( Applicable Rate of Exchange <strong>{{ROE}}</strong> )</div>
-      <div>&#x20B9; {{Token_Amt_INR}}</div>
-      {{else}}
-      <div>Amount Payable in INR</div>
-      <div>( Applicable Rate of Exchange <strong>{{ROE}}</strong> )</div>
-      <div>&#x20B9; {{TotalINR}}</div>
-      {{/ifEqual}}
-    </div>
-    {{/ifEqual}}
 
     <div class="footer" style="padding-top: 60px">
       Terms and conditions apply *
