@@ -2,6 +2,8 @@ const { create, getUserByUserEmail, getUsers } = require("../services/users");
 
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
+const NodeTable = require("../services/nodetable");
+
 const pool = require("../config/database");
 
 module.exports = {
@@ -38,11 +40,11 @@ module.exports = {
             });
           }
           return res.status(200).json({
-            message: "User saved successfully !",
+            message: "User created successfully !",
             data: results,
           });
         });
-      },
+      }
     );
   },
   login: (req, res) => {
@@ -73,7 +75,7 @@ module.exports = {
       } else {
         return res.json({
           success: 0,
-          message: "Password || Email does not match !",
+          message: "Email and Password mismatch !",
         });
       }
     });
@@ -113,42 +115,124 @@ module.exports = {
                   message: "Password updated successfully",
                 });
               }
-            },
+            }
           );
         }
-      },
+      }
     );
+  },
+  updateUserById: (req, res) => {
+    const data = req.body;
+    console.log(data);
+    if (data.password === "") {
+      pool.query(
+        `update users set first_name=?, last_name=?, email=?, mobile=?, gender=?, role=? where id = ?`,
+        [
+          data.first_name,
+          data.last_name,
+          data.email,
+          data.mobile,
+          data.gender,
+          data.role,
+          data.id,
+        ],
+        (error, results, fields) => {
+          if (error) {
+            return res.status(403).json({
+              message: error,
+            });
+          }
+          return res.status(200).json({
+            message: "User record updated",
+          });
+        }
+      );
+    } else {
+      const salt = genSaltSync(10);
+      data.password = hashSync(data.password, salt);
+      pool.query(
+        `update users set first_name=?, last_name=?, email=?,password=?, mobile=?, gender=?, role=? where id = ?`,
+        [
+          data.first_name,
+          data.last_name,
+          data.email,
+          data.password,
+          data.mobile,
+          data.gender,
+          data.role,
+          data.id,
+        ],
+        (error, results, fields) => {
+          if (error) {
+            return res.status(403).json({
+              message: error,
+            });
+          }
+          return res.status(200).json({
+            message: "User record updated",
+          });
+        }
+      );
+    }
   },
   getUserByUserId: (req, res) => {
     const id = req.params.id;
-    getUserByUserId(id, (err, results) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!results) {
-        return res.json({
-          success: 0,
-          message: "Record not Found",
+    pool.query(
+      `select * from users where id = ?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          return res.status(403).json({
+            message: error,
+          });
+        }
+        return res.status(200).json({
+          data: results[0],
         });
       }
-      results.password = undefined;
-      return res.json({
-        success: 1,
-        data: results,
-      });
-    });
+    );
   },
   getUsers: (req, res) => {
-    getUsers((err, results) => {
+    const requestQuery = req.query;
+
+    let columnsMap = [
+      {
+        db: "id",
+        dt: 0,
+      },
+      {
+        db: "first_name",
+        dt: 1,
+      },
+      {
+        db: "email",
+        dt: 2,
+      },
+      {
+        db: "role",
+        dt: 3,
+      },
+    ];
+
+    // Custome SQL query
+    const query = "SELECT u.id,u.first_name,u.email,u.role FROM users u";
+    // NodeTable requires table's primary key to work properly
+    const primaryKey = "id";
+
+    const nodeTable = new NodeTable(
+      requestQuery,
+      query,
+      primaryKey,
+      columnsMap
+    );
+
+    nodeTable.output((err, data) => {
       if (err) {
         console.log(err);
         return;
       }
-      return res.json({
-        success: 1,
-        data: results,
-      });
+      // Directly send this data as output to Datatable
+      res.send(data);
     });
   },
   updateUsers: (req, res) => {

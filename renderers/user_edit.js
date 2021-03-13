@@ -40,9 +40,8 @@ $("#cbAdmin").on("change", function () {
 const isvalid = () => {
   let firstName = document.getElementById("fname").value;
   let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
 
-  if (firstName === "" || email === "" || password === "") {
+  if (firstName === "" || email === "") {
     return false;
   } else {
     return true;
@@ -56,7 +55,8 @@ form.addEventListener("submit", function (event) {
   var data = new FormData(form);
 
   if (isvalid()) {
-    accountData = {
+    userData = {
+      id: data.get("id"),
       first_name: data.get("fname").toUpperCase(),
       last_name: data.get("lname").toUpperCase(),
       gender: data.get("gender") ? data.get("gender").toUpperCase() : "",
@@ -67,23 +67,30 @@ form.addEventListener("submit", function (event) {
     };
 
     axios
-      .post(
-        `http://localhost:3000/api/signup`,
-        accountData,
-
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .put(`http://localhost:3000/api/useredit`, userData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         alert(response.data.message);
-        $("input").val("");
       })
       .catch((error) => {
         alert(error.response.data.message);
       });
   }
+});
+
+ipcRenderer.on("sendUserDataForEdit", (event, data) => {
+  document.getElementById("id").value = data.id;
+  document.getElementById("fname").value = data.first_name;
+  document.getElementById("lname").value = data.last_name;
+  document.getElementById("gender").value = data.gender;
+  document.getElementById("mobile").value = data.mobile;
+  document.getElementById("email").value = data.email;
+  data.role === "Admin"
+    ? $("#cbAdmin").prop("checked", true)
+    : $("#cbAdmin").prop("checked", false);
+  data.role === "Admin" ? (userType = "Admin") : (userType = "Member");
 });

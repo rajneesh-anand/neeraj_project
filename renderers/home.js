@@ -207,7 +207,7 @@ $(function () {
 
     document.getElementById("userName").innerText = data.name;
 
-    if (data.role === "guest") {
+    if (data.role === "Member") {
       $("#setAccount ").on("mouseenter", function () {
         $(this)
           .children("a")
@@ -263,7 +263,8 @@ btnlogOut.addEventListener("click", (event) => {
 
 const button = document.getElementById("newUser");
 button.addEventListener("click", (event) => {
-  ipcRenderer.send("create:user", "user");
+  $("table").remove();
+  generateUserDataTable();
 });
 
 const custButton = document.getElementById("newCustomer");
@@ -862,6 +863,90 @@ function generatePurchaseDataTable() {
       .button(0)
       .enable(selectedRows === 1);
     $("#purTable")
+      .DataTable()
+      .button(1)
+      .enable(selectedRows === 1);
+  });
+}
+
+// User DataTable
+
+function generateUserDataTable() {
+  let userID;
+  const htmlTemplate = `<table id="userTable" class=" display table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>USER NAME</th>
+					<th>EMAIL</th>
+					<th>USER TYPE</th>         
+				</tr>
+			</thead> 
+		</table>
+	`;
+
+  document.getElementById("createTable").innerHTML = htmlTemplate;
+
+  $("#userTable").dataTable({
+    paging: true,
+    sort: true,
+    searching: true,
+    responsive: true,
+    processing: true,
+    serverSide: true,
+    ajax: "http://localhost:3000/api/users",
+    language: {
+      searchPlaceholder: "Search User",
+      sSearch: "",
+      paginate: {
+        next: "&#8594;", // or '→'
+        previous: "&#8592;", // or '←'
+      },
+    },
+    info: false,
+    pageLength: 100,
+    dom: "Bfrtip",
+    select: true,
+
+    buttons: [
+      {
+        text: "Add New User",
+        action: function (e, dt, node, config) {
+          ipcRenderer.send("user:add", "user");
+        },
+        enabled: true,
+      },
+      {
+        text: "Edit Selected User",
+        action: function (e, dt, node, config) {
+          ipcRenderer.send("user:edit", {
+            userID: userID,
+          });
+        },
+
+        enabled: false,
+      },
+    ],
+  });
+
+  //------------- Table row selection condition ------
+
+  $("#userTable tbody").on("click", "tr", function () {
+    if ($(this).hasClass("selected")) {
+      $(this).removeClass("selected");
+    } else {
+      $("#userTable").dataTable().$("tr.selected").removeClass("selected");
+      $(this).addClass("selected");
+    }
+  });
+
+  $("#userTable tbody").on("click", "tr", function () {
+    rowIndex = $("#userTable").DataTable().row(this).index();
+
+    userID = $("#userTable").DataTable().cell(".selected", 0).data();
+    var selectedRows = $("tr.selected").length;
+
+    $("#userTable")
       .DataTable()
       .button(1)
       .enable(selectedRows === 1);

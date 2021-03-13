@@ -142,7 +142,7 @@ function createHomeWindow() {
     },
   });
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(modalPath);
 
@@ -627,7 +627,7 @@ ipcMain.on("create:purchasewindow", (event, fileName) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 728,
+    height: 680,
     width: width - 66,
     frame: false,
     title: "Add Purchase",
@@ -639,7 +639,7 @@ ipcMain.on("create:purchasewindow", (event, fileName) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -678,7 +678,7 @@ ipcMain.on("purchase:edit", (event, args) => {
 
   let win = new BrowserWindow({
     resizable: false,
-    height: 728,
+    height: 680,
     width: width - 66,
     frame: false,
     title: "Edit Purchase",
@@ -690,7 +690,7 @@ ipcMain.on("purchase:edit", (event, args) => {
     },
   });
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.loadURL(modalPath);
 
@@ -1077,7 +1077,7 @@ ipcMain.on("create:receiptWindow", (event, fileName) => {
 
 //-----------------------
 
-//---Account ---
+// Account window
 
 ipcMain.on("create:accountWindow", (event, fileName) => {
   const modalPath = path.join(
@@ -1115,7 +1115,7 @@ ipcMain.on("create:accountWindow", (event, fileName) => {
 
 // User window
 
-ipcMain.on("create:user", (event, fileName) => {
+ipcMain.on("user:add", (event, fileName) => {
   const modalPath = path.join(
     `file://${__dirname}/renderers/` + fileName + `.html`
   );
@@ -1140,6 +1140,52 @@ ipcMain.on("create:user", (event, fileName) => {
 
   aWin.on("closed", () => {
     aWin = null;
+  });
+});
+
+// User edit window
+
+const fetchUserDataByID = async (id) => {
+  return await axios
+    .get(`http://localhost:3000/api/user/${id}`)
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((error) => {
+      if (error) throw new Error(error);
+    });
+};
+
+ipcMain.on("user:edit", function (event, args) {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const modalPath = path.join(`file://${__dirname}/renderers/user_edit.html`);
+
+  let win = new BrowserWindow({
+    resizable: false,
+    height: 480,
+    width: 700,
+    frame: false,
+    title: "User",
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+
+  // win.webContents.openDevTools();
+
+  win.loadURL(modalPath);
+
+  win.webContents.on("did-finish-load", (event) => {
+    fetchUserDataByID(args.userID).then((uData) => {
+      win.webContents.send("sendUserDataForEdit", uData);
+    });
+  });
+
+  win.on("closed", () => {
+    win = null;
   });
 });
 

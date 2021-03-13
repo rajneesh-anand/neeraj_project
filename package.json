@@ -11,6 +11,7 @@
   "author": "Rajneesh",
   "license": "MIT",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^26.0.0",
     "aws-sdk": "^2.685.0",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",

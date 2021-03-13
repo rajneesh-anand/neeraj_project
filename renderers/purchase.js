@@ -6,6 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const handlebars = require("handlebars");
+const ClassicEditor = require("@ckeditor/ckeditor5-build-classic");
 
 handlebars.registerHelper("ifEqual", function (a, b, options) {
   if (a === b) {
